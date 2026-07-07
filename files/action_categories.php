@@ -1,0 +1,1 @@
+<?php	$_SESSION["content_type"]='categories';	include 'login_db.php';	include ("page_builder.php");?>
