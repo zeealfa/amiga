@@ -36,6 +36,7 @@ pages backed by real data.
 - `t_users` table (schema below), created via a migration script
 - One seeded admin account (`scottp`) via a one-time bootstrap script
 - Shared login page (`files/admin/login.php`) — username-or-email + password
+- Brute-force lockout: 5 wrong passwords locks the account for 15 minutes
 - Logout (`files/admin/logout.php`)
 - Session guard (`files/admin/_auth.php`) — included first on every admin page
 - Shared layout partials (`files/admin/_header.php`, `_nav.php`, `_footer.php`)
@@ -61,6 +62,8 @@ CREATE TABLE t_users (
   password_hash VARCHAR(255) NOT NULL,
   role ENUM('admin','user') NOT NULL DEFAULT 'user',
   status ENUM('active','removed') NOT NULL DEFAULT 'active',
+  failed_login_attempts TINYINT UNSIGNED NOT NULL DEFAULT 0,
+  locked_until TIMESTAMP NULL DEFAULT NULL,
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
@@ -76,6 +79,8 @@ CREATE TABLE t_users (
   `status='removed'` is rejected at login even with a correct password.
 - `username` and `email` both `UNIQUE` — either can be used to log in
   (requirement: "users may use both email and username").
+- `failed_login_attempts` / `locked_until`: back the brute-force lockout —
+  see section 3.
 - Migration follows the Phase 01 pattern: paired apply/undo SQL scripts,
   full DB backup taken immediately before applying, both directions tested
   before leaving the DB in its new state.
@@ -105,14 +110,30 @@ response — **not** committed to any file, migration script, or the repo.
 - Query: `SELECT * FROM t_users WHERE (username = ? OR email = ?) AND status = 'active'`
   via a prepared statement (consistent with the mysqli-prepared-statement
   standard already applied across the site in Phase 02b).
+- Before checking the password: if a matching row exists and
+  `locked_until` is set and still in the future, reject immediately
+  (skip `password_verify()` entirely) with "Account temporarily locked due
+  to too many failed attempts. Try again in a few minutes." — this is the
+  one case where the message differs from the generic one, because the user
+  needs to know *why* a correct password isn't working.
 - `password_verify($input, $row['password_hash'])`.
-- On success: `session_regenerate_id(true)`, store `$_SESSION['user_id']`
-  and `$_SESSION['role']`, redirect to `files/admin/dashboard.php`.
-- On failure (bad identifier OR bad password OR status=removed): same
-  generic message, "Invalid username/email or password" — never reveals
-  which part was wrong or whether the account exists/is removed.
-- No rate limiting/lockout in 03a (not requested; can be added later if
-  brute-force becomes a real concern on a low-traffic admin area).
+- On success: reset `failed_login_attempts = 0` and `locked_until = NULL`,
+  `session_regenerate_id(true)`, store `$_SESSION['user_id']` and
+  `$_SESSION['role']`, redirect to `files/admin/dashboard.php`.
+- On failure (bad identifier OR bad password OR status=removed): generic
+  message, "Invalid username/email or password" — never reveals which part
+  was wrong or whether the account exists/is removed.
+- On a wrong password specifically (matching row found, `status=active`,
+  not currently locked): increment `failed_login_attempts`. When it reaches
+  5, set `locked_until = NOW() + INTERVAL 15 MINUTE` in the same update.
+  Lockout is **per-account** (tied to the matched row), not per-IP — simplest
+  option that still stops credential-stuffing against a specific known
+  username, appropriate for a low-traffic internal tool. Counter and lock
+  are on the user row itself (no separate attempts table) — keeps this in
+  one table per YAGNI, revisit only if IP-based tracking is ever needed.
+- Bad identifier (no matching row at all): no counter to increment, same
+  generic failure message — not distinguishable from a locked/wrong-password
+  case by design.
 
 ## 4. Session guard (`files/admin/_auth.php`)
 
@@ -172,6 +193,10 @@ CRUD logic into `files/admin/`.
   (rejected), removed-status account (rejected), session persists across a
   page reload, logout clears session and redirect-to-login works on a
   direct hit to `dashboard.php` afterward.
+- Lockout test: 5 consecutive wrong passwords locks the account; the 6th
+  attempt is rejected even with the *correct* password while
+  `locked_until` is still in the future; a correct password after
+  `locked_until` passes resets the counter and succeeds.
 - Re-run the existing SQL-injection regression payloads from Phase 02 to
   confirm nothing in 03a introduces a new interpolated-query risk.
 
