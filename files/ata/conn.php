@@ -1,26 +1,2 @@
 <?php
-	
-	//godaddy
-	//$host = "localhost";
-	$user = "DbUser11";
-	//$pw   = "guy&^%&fhs**7tRfg";
-	//$dbn  = "tmainasdb";
-	
-	
-	
-	//godaddy
-	$host = "localhost";
-	$user = "DbUser11";
-	$pw = "guy&^%&fhs**7tRfg";
-	$dbn = "asdb";
-	
-
-	//login
-	$myConnection= mysqli_connect("$host","$user","$pw", "$dbn") or die ("could not connect to mysql"); 
-
-	//tells sql to use the database "asdb" with $db supplying the access information			
-	mysqli_select_db($myConnection,$dbn) 
-
-	//or display warning and error
-	or die("Could not select database!!!");
-    ?>
+require_once __DIR__ . '/../includes/db.php';
