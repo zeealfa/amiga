@@ -80,6 +80,36 @@ function require_login()
     }
 }
 
+function change_password($myConnection, $user_id, $current_password, $new_password, $confirm_password)
+{
+    $stmt = mysqli_prepare($myConnection, "SELECT password_hash FROM t_users WHERE id = ?");
+    mysqli_stmt_bind_param($stmt, 'i', $user_id);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    $row = mysqli_fetch_assoc($result);
+    mysqli_stmt_close($stmt);
+
+    if (!$row || !password_verify($current_password, $row['password_hash'])) {
+        return ['success' => false, 'error' => 'Current password is incorrect.'];
+    }
+
+    if (strlen($new_password) < 8) {
+        return ['success' => false, 'error' => 'New password must be at least 8 characters.'];
+    }
+
+    if ($new_password !== $confirm_password) {
+        return ['success' => false, 'error' => 'New password and confirmation do not match.'];
+    }
+
+    $new_hash = password_hash($new_password, PASSWORD_BCRYPT);
+    $stmt = mysqli_prepare($myConnection, "UPDATE t_users SET password_hash = ? WHERE id = ?");
+    mysqli_stmt_bind_param($stmt, 'si', $new_hash, $user_id);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_close($stmt);
+
+    return ['success' => true, 'error' => null];
+}
+
 function require_admin()
 {
     if ($_SESSION['role'] !== 'admin') {
