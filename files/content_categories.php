@@ -19,69 +19,69 @@
 			?>
 			<br>
 			
-			<table align=center cellpadding="1" cellspacing="0" width="50%"  bgcolor="#637B94">	
+			<table align=center cellpadding="1" cellspacing="0" width="50%" class="bg-637b94">
 				<tr>
 				<td>
 
-					<table width="100%" cellpadding="1"  cellspacing="0" bgcolor="#FFFFFF">			
+					<table width="100%" cellpadding="1"  cellspacing="0" class="bg-fff">
 						<tr>
 							<td>
-								
-								<table width="100%"  cellspacing="0" cellpadding="12">	
+
+								<table width="100%"  cellspacing="0" cellpadding="12">
 									<tr>
-										<td align="center" valign="top" bgcolor="#FF2626">
-											<font face="Verdana, sans-serif" size=6 color=#ffffff>		
+										<td align="center" valign="top" class="bg-ff2626">
+											<span class="txt-6-fff">
 												<b>
-													<?php 
+													<?php
 														echo $ph;
-													?>	
+													?>
 												</b>
-											</font>	
+											</span>
 										</td>
-									</tr>	
-								</table>	
+									</tr>
+								</table>
 
 								<table width="100%"  cellspacing="0" cellpadding="4">
 									<tr>
-										<td align="left" valign="top" bgcolor="#F4F4F4">
-											<font face="Verdana, sans-serif" size=4	color=#000000>	
+										<td align="left" valign="top" class="bg-f4f4f4">
+											<span class="txt-4-000">
 												<center>
 													<?php
 														echo $pd;
-													?>		
+													?>
 												</center>
-											</font>		
-										</td>		
+											</span>
+										</td>
 									</tr>
 								</table>
-								
-							</td>	
-						</tr>	
-					</table>	
-					
+
+							</td>
+						</tr>
+					</table>
+
 				</td>
 				</tr>
 			</table>
 			<br>
-			
+
 			<?php	}
 				while ($line1=mysqli_fetch_array($query1,MYSQLI_ASSOC))
-			?>	
-		
+			?>
+
 			<?php
 				include ("table_result_cat.php");
 			?>
 
-			<font face="Verdana, sans-serif" size=3>
+			<span class="txt-3">
 			<b>
 			<center>
 
-			<?php 
+			<?php
 				echo "<p>Total number of web sites found in this category: $total_records </p>";
 			?>
 			</center>
 			</b>
-			</font>
+			</span>
 		</td>
 	</tr>
 </table>		

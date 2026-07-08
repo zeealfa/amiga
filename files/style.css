@@ -1,0 +1,19 @@
+/* Phase 02d: extracted from inline bgcolor="" / <font face="" size="" color=""> attributes.
+   Class naming: .bg-<hexcolor> for backgrounds, .txt-<size>-<hexcolor|inherit> for font blocks.
+   Verdana/sans-serif is the site-wide font family — set once on body, not repeated per class. */
+
+body {
+    font-family: Verdana, sans-serif;
+}
+
+.bg-fff { background-color: #ffffff; }
+.bg-ff2626 { background-color: #ff2626; }
+.bg-f4f4f4 { background-color: #f4f4f4; }
+.bg-637b94 { background-color: #637b94; }
+.bg-575748 { background-color: #575748; }
+.bg-dddddd { background-color: #dddddd; }
+
+.txt-6-fff { font-size: 32px; color: #ffffff; }
+.txt-4-000 { font-size: 18px; color: #000000; }
+.txt-3 { font-size: 16px; }
+.txt-2 { font-size: 13px; }

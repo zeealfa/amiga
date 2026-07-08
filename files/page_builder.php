@@ -1,4 +1,5 @@
 
+<link rel="stylesheet" href="/style.css">
 <table width="80%" align="center" cellpadding="0">
  	<tr>
 		<td> 
