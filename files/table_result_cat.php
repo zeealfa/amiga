@@ -3,10 +3,11 @@
 <!-------- Get the current page number of pagination (if nothing is set, it is page number 1) ------------>
 <?php
 if (isset($_GET['page_no']) && $_GET['page_no']!="") {
-    $page_no = $_GET['page_no'];
+    $page_no = max(1, intval($_GET['page_no']));
     } else {
         $page_no = 1;
         }
+$cat_id = intval($cat_id);
 ?>
 
 <!-------- Set total records per page number for pagination ------------>
@@ -24,10 +25,10 @@ $adjacents = "2";
 
 <!-------- Calculate total pages for pagination ------------>
 <?php
-$result_count = mysqli_query(
-$myConnection,
-"SELECT COUNT(*) As total_records FROM t_links where (links_dead=0 or links_dead=1 and links_archived_url<>'') and (links_cat_1=$cat_id or links_cat_2=$cat_id or links_cat_3=$cat_id or links_cat_4=$cat_id or links_cat_5=$cat_id)"
-);
+$stmt_count = mysqli_prepare($myConnection, "SELECT COUNT(*) As total_records FROM t_links where (links_dead=0 or links_dead=1 and links_archived_url<>'') and (links_cat_1=? or links_cat_2=? or links_cat_3=? or links_cat_4=? or links_cat_5=?)");
+mysqli_stmt_bind_param($stmt_count, "iiiii", $cat_id, $cat_id, $cat_id, $cat_id, $cat_id);
+mysqli_stmt_execute($stmt_count);
+$result_count = mysqli_stmt_get_result($stmt_count);
 $total_records = mysqli_fetch_array($result_count);
 $total_records = $total_records['total_records'];
 $total_no_of_pages = ceil($total_records / $total_records_per_page);
@@ -133,10 +134,10 @@ echo " | <a href='?cat_id=$cat_id&page_no=$total_no_of_pages'>Last &rsaquo;&rsaq
 
 <!-------- Show defined number of results ------------>
 <?php
-$result = mysqli_query(
-    $myConnection,
-    "SELECT * FROM t_links where (links_dead=0 or links_dead=1 and links_archived_url<>'') and (links_cat_1=$cat_id or links_cat_2=$cat_id or links_cat_3=$cat_id or links_cat_4=$cat_id or links_cat_5=$cat_id) ORDER BY links_name ASC LIMIT $offset, $total_records_per_page"
-    );
+$stmt = mysqli_prepare($myConnection, "SELECT * FROM t_links where (links_dead=0 or links_dead=1 and links_archived_url<>'') and (links_cat_1=? or links_cat_2=? or links_cat_3=? or links_cat_4=? or links_cat_5=?) ORDER BY links_name ASC LIMIT ?, ?");
+mysqli_stmt_bind_param($stmt, "iiiiiii", $cat_id, $cat_id, $cat_id, $cat_id, $cat_id, $offset, $total_records_per_page);
+mysqli_stmt_execute($stmt);
+$result = mysqli_stmt_get_result($stmt);
 while($line2 = mysqli_fetch_array($result)){
 ?>
 
