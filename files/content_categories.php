@@ -2,8 +2,11 @@
 	<tr>
 		<td> 
 			<?php	
-			$cat_id = $_GET['cat_id'];	$sqlcommand="SELECT * FROM t_cat_sub where cat_sub_id=$cat_id";
-			$query1=mysqli_query($myConnection, $sqlcommand) or die(mysqli_error($myConnection));
+			$cat_id = intval($_GET['cat_id']);
+			$stmt = mysqli_prepare($myConnection, "SELECT * FROM t_cat_sub where cat_sub_id=?");
+			mysqli_stmt_bind_param($stmt, "i", $cat_id);
+			mysqli_stmt_execute($stmt);
+			$query1 = mysqli_stmt_get_result($stmt);
 			$line1=mysqli_fetch_array($query1, MYSQLI_ASSOC);
 
 				do{
