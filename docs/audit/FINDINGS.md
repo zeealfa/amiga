@@ -31,18 +31,19 @@ fixed as part of this audit.
 | content_search_proc.php | `$_POST['search']` | `... links_desc LIKE '%$search_2%' OR ...` |
 | table_result_cat.php:29,138 | `$cat_id` (same source as above) | `SELECT ... WHERE ... links_cat_1=$cat_id OR ...` |
 
-None use prepared statements or input sanitization. `cat_id` looks numeric-only
-in current usage, which limits (but doesn't eliminate) exploitability; the
-search field is free text and is the higher-risk one. Flagged for Phase 02/03
-remediation — no fix applied during audit.
+**Fixed in Phase 02b:** all three (`content_categories.php`, `content_search_proc.php`,
+`table_result_cat.php`) now use mysqli prepared statements with bound
+parameters instead of string interpolation. Re-verified after every
+subsequent Phase 02 edit (02c–02f) with the original injection payloads
+(`cat_id=2 OR 1=1`, `page_no=1 OR 1=1`, a UNION SELECT search string) —
+all return 0 SQL error occurrences.
 
 ## Risk: DB credentials are duplicated and hardcoded in two files
 
-`files/login_db.php` and `files/ata/conn.php` each hardcode DB credentials
-inline (currently pointing at `127.0.0.1` / user `admin` — a local clone of
-the live GoDaddy DB — with commented-out alternates for other hosts). No
-shared config file. Any credential rotation means editing two files by hand
-and keeping them in sync manually.
+**Fixed in Phase 02a:** `files/login_db.php` and `files/ata/conn.php` now both
+delegate to the shared `files/includes/db.php` (which reads from
+`files/includes/config.php`). Credentials live in one place; rotation means
+editing one file instead of two.
 
 ## Note: no authentication on files/ata/
 

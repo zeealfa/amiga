@@ -2,8 +2,8 @@
 
 | File | Status | Evidence |
 |---|---|---|
-| files/content_news-(old).php | Orphaned — 145 lines, nothing includes it | `grep -rn "content_news-(old)" files` returns nothing |
-| files/sidebar_tabor.php | Orphaned — include is commented out | mod_sidebar_chooser.php: `//include 'sidebar_tabor.php'; // not yet dynamically generated` |
+| files/content_news-(old).php | **Deleted in Phase 02e** — was orphaned, 145 lines, nothing included it | `grep -rn "content_news-(old)" files` returned nothing before deletion |
+| files/sidebar_tabor.php | Orphaned — include is commented out (not deleted, out of scope for Phase 02) | mod_sidebar_chooser.php: `//include 'sidebar_tabor.php'; // not yet dynamically generated` |
 
 ## Also found in the database (not code, but same "unused" category)
 
@@ -23,13 +23,16 @@ is limited to `links_cat_1`-`5` — the display logic uses all 10. See DB_TABLES
 
 Every file in `files/` (except a handful) has no trailing newline and most logic
 is written as one long single-line block rather than across multiple lines —
-makes diffs and code review harder. Example: `login_db.php`, `sidebar_calendar.php`,
-`content_search_proc.php` are each a single physical line. Reformatting is in
-scope for Phase 02, not this audit.
+makes diffs and code review harder. Example: `sidebar_calendar.php`,
+`content_search_proc.php` are each a single physical line (`login_db.php` was
+reformatted to two lines in Phase 02a when it was reduced to a delegating
+include). Further reformatting beyond what Phase 02 already touched is not in
+scope.
 
 ## Recommendation
 
-Delete `content_news-(old).php` and `sidebar_tabor.php` in Phase 02 once the client
-confirms neither is needed for reference. Confirm with client whether `t_cat_spec`
+`content_news-(old).php` was deleted in Phase 02e. `sidebar_tabor.php` remains
+on disk (out of scope for Phase 02) — confirm with client whether it's still
+needed before deleting. Confirm with client whether `t_cat_spec`
 and the unused `t_links` category slots are intentionally unfinished or safe to
-drop/ignore. Nothing deleted during Phase 00 — audit only.
+drop/ignore.

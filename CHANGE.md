@@ -82,3 +82,27 @@ Backed up the live database first, applied the same tested changes, and then
 checked the homepage, a category page, and the search box directly on the
 live site to confirm everything still works correctly. Also removed the two
 old, now-unused page files so they don't cause confusion for future work.
+
+---
+
+## 2026-07-08 (code cleanup)
+
+Closed the security gap flagged in the audit: the category page, the search
+box, and the search results page no longer accept raw, unchecked text from
+visitors — all three now check and safely handle what's typed before it ever
+reaches the database.
+
+Pulled all the site's scattered colors and text styling into one shared
+style sheet, so a color or font size only needs to be changed in one place
+going forward instead of hunting through dozens of pages. Also gathered the
+handful of magic numbers (like how many links or news items show per page)
+into one settings file instead of leaving them buried in the page code.
+
+Removed a leftover duplicate copy of the news page that nothing on the site
+was using, and took out a broken link on the link-listing page that pointed
+to a long-dead outside tool.
+
+Checked the whole site afterward — homepage, category pages, search, and the
+admin prototype pages — to confirm every page still loads and works exactly
+as before, and re-ran the security checks from the audit to confirm the gap
+is actually closed, not just visually unchanged.
