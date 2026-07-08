@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="/style.css">
 <a href="http://testamigasource.com/ata/a_links_check.php">new search</a><br><br>
 
 <?php	
@@ -30,7 +31,7 @@ foreach($needles as $needle)
 
 if($partial)
 {
-    echo '<b><font size=6> **************right here:</b> id: '.$line2['id']."  ".$line2['links_url']."<font size=3><br>";
+    echo '<b><span class="txt-6"> **************right here:</b> id: '.$line2['id']."  ".$line2['links_url']."<span class=\"txt-3\"><br>";
 		//echo  "id".$line2['id']."  ".$line2['links_url']."<font size=3><br>";
 }
 else

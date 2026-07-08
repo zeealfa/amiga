@@ -1,15 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-
+<link rel="stylesheet" href="/style.css">
 </head>
 <body>
 <center>
-	<font face="Verdana, sans-serif">
 <h1>Admin Portal</h1>
 
 <table width=50% border=1>
-	<font face="Verdana, sans-serif">
   <tr>
     <th colspan="2">Admin Options</th>
   </tr>
@@ -55,7 +53,6 @@
 <br><br><br>
 
 <table width=50% border=1>
-<font face="Verdana, sans-serif">
   <tr>
     <th colspan="2">User Options</th>
   </tr>
