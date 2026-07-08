@@ -1,7 +1,7 @@
 <!-- Footer starts here -->
 <table width="100%">
 	<tr>
-		<td align="center" class="bg-dddddd" width="100%">
+		<td align="center" class="bg-lightgray" width="100%">
 			<span class="txt-2">
 				<br>
 					<center>

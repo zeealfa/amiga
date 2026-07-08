@@ -5,13 +5,13 @@
 
 ?>
 <center>
-	<table cellpadding="1" cellspacing="0" width="95%"  class="bg-575748">
+	<table cellpadding="1" cellspacing="0" width="95%"  class="bg-darkolive">
 		<tr><td>
-			<table width="100%" cellpadding="0"  cellspacing="0" class="bg-fff">
+			<table width="100%" cellpadding="0"  cellspacing="0" class="bg-white">
 				<tr><td>
 					<table width="100%"  cellspacing="0" cellpadding="0">
 							<tr>
-									<td align="left" valign="top" class="bg-fff">
+									<td align="left" valign="top" class="bg-white">
 
 									<!----------results icon pic (row 1: !C-2A) --------->
 										<table width=100%>
@@ -50,7 +50,7 @@
 												</TD>
 
 									<!----------results site name as a link output (row 1: !C-2B) --------->
-												<TD colspan="2" width=100% class="bg-ff2626">&nbsp;
+												<TD colspan="2" width=100% class="bg-red">&nbsp;
 													<a target=new href="
 													<?php
 														if ($line2['links_archived_url']<>null and $line2['links_active']="1") { ?>
@@ -65,11 +65,11 @@
 							<!----- use to add a link back to as
 							<a target=new href=" <?php // echo $line2['links_url']."?utm-source=amigasource.com";?>"   -->
 
-															<span class="txt-3-fff"> <b>
+															<span class="txt-3-white"> <b>
 													<?php
 														}
 													?>	
-															<span class="txt-3-fff"> <b>
+															<span class="txt-3-white"> <b>
 																<?php 
 																	$str=$line2['links_name'];
 																	if(!isset($search_f)){
@@ -90,7 +90,7 @@
 												<?php
 													if ($line2['links_archived_url']<>'') { 
 												?>
-														<TD width=40% class="bg-dddddd">&nbsp;
+														<TD width=40% class="bg-lightgray">&nbsp;
 														<span class="txt-2"><b> Author:</>
 														<a href="<?php echo $line2['links_email'];?>">
 															<?php 
@@ -103,11 +103,11 @@
 																}
 															?></a>
 														</TD>
-														<TD width=30% class="bg-dddddd">&nbsp;
+														<TD width=30% class="bg-lightgray">&nbsp;
 														<span class="txt-2"><b>Archived:</b>
 														<?php echo $line2['links_archived_date'];?>
 														</TD>
-														<TD  class="bg-dddddd">&nbsp;
+														<TD  class="bg-lightgray">&nbsp;
 														<?php 
 															if ($line2['links_date_verified']>'2021-12-21') { 
 														?>	
@@ -126,7 +126,7 @@
 														} else {
 													?>	
 													<!----- AUTHOR ----->	
-													<TD width=70% class="bg-dddddd">&nbsp;
+													<TD width=70% class="bg-lightgray">&nbsp;
 														<span class="txt-2"><b> Author:</>
 														<a href="<?php echo $line2['links_email'];?>">
 															<?php 
@@ -140,7 +140,7 @@
 															?></a>
 													</TD>
 														<!----- just date verified ----->	
-															<TD  class="bg-dddddd">&nbsp;
+															<TD  class="bg-lightgray">&nbsp;
 															<?php 
 																if ($line2['links_date_verified']>'2021-12-21') { 
 															?>	
@@ -163,7 +163,7 @@
 									<!----------results description output (row 3): !c-2E)  ---------> 
 										<table width=100%>
 											<TR>
-												<TD colspan="3" class="bg-fff">&nbsp;
+												<TD colspan="3" class="bg-white">&nbsp;
 													<span class="txt-2">
 														<?php 
 															$str=$line2['links_desc'];
@@ -185,14 +185,14 @@
 										<table width=100%>
 											<TR>
 												<!----------results category numbers (row 4: !C-2g) --------->
-												<TD  class="bg-dddddd" width=15%>&nbsp;
+												<TD  class="bg-lightgray" width=15%>&nbsp;
 													<span class="txt-2">
 													<?php
 														echo "<a target=\"_blank\" href=$ao".$line2['links_url'].">archive.org</a> {temp}";
 													?>
 												</TD>
 												<!----------results category numbers (row 4: !C-2h) --------->
-												<TD  class="bg-dddddd">&nbsp;
+												<TD  class="bg-lightgray">&nbsp;
 													<span class="txt-1"> 
 													<b> cat #: </b>
 													<?php 
@@ -209,7 +209,7 @@
 													?>
 												</TD>
 												<!----------results id #### (row 4: !C-2i) --------->
-												<TD  class="bg-dddddd">&nbsp;
+												<TD  class="bg-lightgray">&nbsp;
 													<span class="txt-2"> 
 													<b> id: </b>
 													<?php echo $line2['id'];?>

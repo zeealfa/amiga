@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <title>AmigaSource.com - My Profile</title>
 <link rel="stylesheet" href="../style.css">
 </head>
-<body class="bg-dddddd">
+<body class="bg-lightgray">
 
 <?php require __DIR__ . '/_header.php'; ?>
 
@@ -35,28 +35,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <center>
 <table width="70%" align="center" cellpadding="0" cellspacing="0">
 <tr>
-	<td width="22%" valign="top" class="bg-bbbbbb">
+	<td width="22%" valign="top" class="bg-gray">
 		<?php require __DIR__ . '/_nav.php'; ?>
 	</td>
 	<td width="3%"></td>
 	<td width="75%" valign="top">
-		<table width="100%" cellpadding="1" cellspacing="0" class="bg-637b94">
+		<table width="100%" cellpadding="1" cellspacing="0" class="bg-slateblue">
 			<tr><td>
-				<table width="100%" cellpadding="1" cellspacing="1" class="bg-fff">
+				<table width="100%" cellpadding="1" cellspacing="1" class="bg-white">
 					<tr>
-						<td align="center" class="bg-ff2626">
-							<span class="txt-4-fff"><b>MY PROFILE</b></span>
+						<td align="center" class="bg-red">
+							<span class="txt-4-white"><b>MY PROFILE</b></span>
 						</td>
 					</tr>
 					<tr>
-						<td class="bg-fff" style="padding:12px;">
-							<span class="txt-2-000">
+						<td class="bg-white" style="padding:12px;">
+							<span class="txt-2-black">
 
 <?php if ($success): ?>
-								<p class="txt-2-000" style="color:#229c22;"><b>Password updated.</b></p>
+								<p class="txt-2-black" style="color:#229c22;"><b>Password updated.</b></p>
 <?php endif; ?>
 <?php if ($error): ?>
-								<p class="txt-2-000" style="color:#c70000;"><b><?php echo htmlspecialchars($error); ?></b></p>
+								<p class="txt-2-black" style="color:#c70000;"><b><?php echo htmlspecialchars($error); ?></b></p>
 <?php endif; ?>
 
 								<form method="post" action="profile.php">
@@ -76,7 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 									<tr>
 										<td colspan="2" align="center">
 											<br>
-											<input type="submit" value="Change Password" class="bg-637b94" style="color:#ffffff; font-weight:bold; padding:4px 20px;">
+											<input type="submit" value="Change Password" class="bg-slateblue" style="color:#ffffff; font-weight:bold; padding:4px 20px;">
 										</td>
 									</tr>
 								</table>

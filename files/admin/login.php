@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <title>AmigaSource.com - Login</title>
 <link rel="stylesheet" href="../style.css">
 </head>
-<body class="bg-dddddd">
+<body class="bg-lightgray">
 
 <table width="100%">
 	<tr>
@@ -41,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 				</a>
 			</tr>
 			<tr>
-				<td align="right" class="bg-ff9900" cellpadding="16" cellspacing="8">
+				<td align="right" class="bg-orange" cellpadding="16" cellspacing="8">
 					<span class="txt-5">
 						<marquee><b>Since 2001...  Your BEST source for Amiga information... Again &nbsp; </b></marquee><br>
 					</span>
@@ -54,28 +54,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <br><br>
 
 <center>
-<table cellpadding="1" cellspacing="0" width="360" class="bg-637b94">
+<table cellpadding="1" cellspacing="0" width="360" class="bg-slateblue">
 	<tr>
 		<td>
-			<table width="100%" cellpadding="1" cellspacing="1" class="bg-fff">
+			<table width="100%" cellpadding="1" cellspacing="1" class="bg-white">
 				<tr>
 					<td>
 
 						<table width="100%" cellspacing="0" cellpadding="12">
 							<tr>
-								<td align="center" valign="top" class="bg-ff2626">
-									<span class="txt-5-fff"><b>LOGIN</b></span>
+								<td align="center" valign="top" class="bg-red">
+									<span class="txt-5-white"><b>LOGIN</b></span>
 								</td>
 							</tr>
 						</table>
 
 						<table width="100%" cellspacing="0" cellpadding="16">
 							<tr>
-								<td class="bg-fff">
-									<span class="txt-2-000">
+								<td class="bg-white">
+									<span class="txt-2-black">
 
 <?php if ($error): ?>
-										<p class="txt-2-000" style="color:#c70000;"><b><?php echo htmlspecialchars($error); ?></b></p>
+										<p class="txt-2-black" style="color:#c70000;"><b><?php echo htmlspecialchars($error); ?></b></p>
 <?php endif; ?>
 
 										<form method="post" action="login.php">
@@ -91,7 +91,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 											<tr>
 												<td colspan="2" align="center">
 													<br>
-													<input type="submit" value="Log In" class="bg-637b94" style="color:#ffffff; font-weight:bold; padding:4px 20px;">
+													<input type="submit" value="Log In" class="bg-slateblue" style="color:#ffffff; font-weight:bold; padding:4px 20px;">
 												</td>
 											</tr>
 										</table>
@@ -104,7 +104,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 						<table width="100%" cellspacing="0" cellpadding="8">
 							<tr>
-								<td align="center" class="bg-f4f4f4">
+								<td align="center" class="bg-whitesmoke">
 									<span class="txt-1">
 										One login for everyone — admins and users sign in here.<br>
 										What you see next depends on your account's role.

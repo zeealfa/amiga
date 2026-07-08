@@ -1,13 +1,13 @@
-<table cellpadding="0" cellspacing="1" width="100%"  class="bg-637b94">
+<table cellpadding="0" cellspacing="1" width="100%"  class="bg-slateblue">
 	<tr>
 		<td>
-			<table width="100%" cellpadding="1"  cellspacing="0" class="bg-fff">
+			<table width="100%" cellpadding="1"  cellspacing="0" class="bg-white">
 				<tr>
 					<td>
 						<table width="100%" cellspacing="1" cellpadding="3">
 							<tr>
-								<td align="left" valign="top" class="bg-dc7633">
-									<span class="txt-4-fff">
+								<td align="left" valign="top" class="bg-burntorange">
+									<span class="txt-4-white">
 										<b>Shops and Vendors</b>
 									</span>
 								</td>
@@ -16,7 +16,7 @@
 
 						<table width="100%" cellspacing="0" cellpadding="7">
 							<tr>
-								<td align="left" valign="top" class="bg-fff">
+								<td align="left" valign="top" class="bg-white">
 									<span class="txt-2">
 										<?php
 											include 'sidebar_shops_vendors_sub.php';

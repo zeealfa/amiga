@@ -8,10 +8,10 @@
 				</a>		
 			</tr>
 			<tr>
-				<td align="left" class="bg-ff9900" cellpadding="16">
+				<td align="left" class="bg-orange" cellpadding="16">
 					<span class="txt-5"><b>Since 2001...  Your BEST source for Amiga information... Again &nbsp; </b></span>
 				</td>
-				<td align="right" class="bg-ff9900" cellpadding="4">
+				<td align="right" class="bg-orange" cellpadding="4">
 					<span class="txt-3">
 <?php if (isset($_SESSION['user_id'])): ?>
 						<b><?php echo htmlspecialchars(strtoupper($_SESSION['username'])); ?> &nbsp;|&nbsp; <a href="admin/dashboard.php">Dashboard</a> &nbsp;|&nbsp; <a href="admin/logout.php">Logout</a></b>

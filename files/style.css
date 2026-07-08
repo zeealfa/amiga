@@ -1,47 +1,47 @@
 /* Phase 02d: extracted from inline bgcolor="" / <font face="" size="" color=""> attributes.
-   Class naming: .bg-<hexcolor> for backgrounds, .txt-<size>-<hexcolor|inherit> for font blocks.
+   Class naming: .bg-<colorname> for backgrounds, .txt-<size>-<colorname|inherit> for font blocks.
    Verdana/sans-serif is the site-wide font family — set once on body, not repeated per class. */
 
 body {
     font-family: Verdana, sans-serif;
 }
 
-.bg-fff { background-color: #ffffff; }
-.bg-ff2626 { background-color: #ff2626; }
-.bg-f4f4f4 { background-color: #f4f4f4; }
-.bg-637b94 { background-color: #637b94; }
-.bg-575748 { background-color: #575748; }
-.bg-dddddd { background-color: #dddddd; }
-.bg-ff9900 { background-color: #ff9900; }
-.bg-bbbbbb { background-color: #bbbbbb; }
-.bg-6699cc { background-color: #6699cc; }
-.bg-c70000 { background-color: #c70000; }
-.bg-00ffff { background-color: #00ffff; }
-.bg-f1c40f { background-color: #f1c40f; }
-.bg-006cd9 { background-color: #006cd9; }
-.bg-842dce { background-color: #842dce; }
-.bg-336666 { background-color: #336666; }
-.bg-990099 { background-color: #990099; }
-.bg-dc7633 { background-color: #dc7633; }
-.bg-333333 { background-color: #333333; }
-.bg-229c22 { background-color: #229c22; }
+.bg-white { background-color: #ffffff; }
+.bg-red { background-color: #ff2626; }
+.bg-whitesmoke { background-color: #f4f4f4; }
+.bg-slateblue { background-color: #637b94; }
+.bg-darkolive { background-color: #575748; }
+.bg-lightgray { background-color: #dddddd; }
+.bg-orange { background-color: #ff9900; }
+.bg-gray { background-color: #bbbbbb; }
+.bg-skyblue { background-color: #6699cc; }
+.bg-darkred { background-color: #c70000; }
+.bg-cyan { background-color: #00ffff; }
+.bg-gold { background-color: #f1c40f; }
+.bg-blue { background-color: #006cd9; }
+.bg-purple { background-color: #842dce; }
+.bg-teal { background-color: #336666; }
+.bg-magenta { background-color: #990099; }
+.bg-burntorange { background-color: #dc7633; }
+.bg-charcoal { background-color: #333333; }
+.bg-green { background-color: #229c22; }
 
-.bg-fafafa { background-color: #fafafa; }
-.bg-d61baf { background-color: #d61baf; }
+.bg-offwhite { background-color: #fafafa; }
+.bg-pink { background-color: #d61baf; }
 
 .txt-6 { font-size: 32px; }
-.txt-6-fff { font-size: 32px; color: #ffffff; }
+.txt-6-white { font-size: 32px; color: #ffffff; }
 .txt-5 { font-size: 24px; }
-.txt-5-fff { font-size: 24px; color: #ffffff; }
-.txt-4-000 { font-size: 18px; color: #000000; }
-.txt-4-fff { font-size: 18px; color: #ffffff; }
+.txt-5-white { font-size: 24px; color: #ffffff; }
+.txt-4-black { font-size: 18px; color: #000000; }
+.txt-4-white { font-size: 18px; color: #ffffff; }
 .txt-3 { font-size: 16px; }
-.txt-3-000 { font-size: 16px; color: #000000; }
-.txt-3-fff { font-size: 16px; color: #ffffff; }
+.txt-3-black { font-size: 16px; color: #000000; }
+.txt-3-white { font-size: 16px; color: #ffffff; }
 .txt-2 { font-size: 13px; }
-.txt-2-000 { font-size: 13px; color: #000000; }
-.txt-2-fff { font-size: 13px; color: #ffffff; }
+.txt-2-black { font-size: 13px; color: #000000; }
+.txt-2-white { font-size: 13px; color: #ffffff; }
 .txt-1 { font-size: 11px; }
-.txt-1-fff { font-size: 11px; color: #ffffff; }
+.txt-1-white { font-size: 11px; color: #ffffff; }
 .txt-0 { font-size: 10px; }
-.txt-0-000 { font-size: 10px; color: #000000; }
+.txt-0-black { font-size: 10px; color: #000000; }

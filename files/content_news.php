@@ -9,19 +9,19 @@
 
 <center><br> 
 
-<table cellpadding="1" cellspacing="0" width="70%"  class="bg-637b94">
+<table cellpadding="1" cellspacing="0" width="70%"  class="bg-slateblue">
 	<tr>
 		<td>
-			<table width="100%" cellpadding="1"  cellspacing="1" class="bg-fff">
+			<table width="100%" cellpadding="1"  cellspacing="1" class="bg-white">
 				<tr>
 					<td>
 
 						<table width="100%"  cellspacing="0" cellpadding="15">
 							<tr>
-								<td align="center" valign="top" class="bg-ff2626">
-									<span class="txt-6-fff">
+								<td align="center" valign="top" class="bg-red">
+									<span class="txt-6-white">
 										<b>LATEST NEWS</b><br>
-									<span class="txt-5-fff">
+									<span class="txt-5-white">
 										<b>Celebrating our 23rd year</b><br>
 									</span></span>
 								</td>
@@ -30,7 +30,7 @@
 
 						<table width="100%"  cellspacing="0" cellpadding="0">
 							<tr>
-								<td align="left" valign="top" class="bg-fff">
+								<td align="left" valign="top" class="bg-white">
 								</td>
 							</tr>
 						</table>
@@ -45,14 +45,14 @@
 </center><br>
 
 <center>
-<table width="30%" cellpadding="1" cellspacing="0" width="70%"  class="bg-637b94">
+<table width="30%" cellpadding="1" cellspacing="0" width="70%"  class="bg-slateblue">
 	<tr>
 		<td>
-			<table cellpadding="1"  cellspacing="1" class="bg-fff">
+			<table cellpadding="1"  cellspacing="1" class="bg-white">
 				<center>
-				<span class="txt-3-000">
+				<span class="txt-3-black">
 				<b>TEMP LINK COUNT</b><br>
-				<span class="txt-2-000">
+				<span class="txt-2-black">
 				<?php
 				$result_count = mysqli_query(
 				$myConnection,

@@ -19,18 +19,18 @@
 			?>
 			<br>
 			
-			<table align=center cellpadding="1" cellspacing="0" width="50%" class="bg-637b94">
+			<table align=center cellpadding="1" cellspacing="0" width="50%" class="bg-slateblue">
 				<tr>
 				<td>
 
-					<table width="100%" cellpadding="1"  cellspacing="0" class="bg-fff">
+					<table width="100%" cellpadding="1"  cellspacing="0" class="bg-white">
 						<tr>
 							<td>
 
 								<table width="100%"  cellspacing="0" cellpadding="12">
 									<tr>
-										<td align="center" valign="top" class="bg-ff2626">
-											<span class="txt-6-fff">
+										<td align="center" valign="top" class="bg-red">
+											<span class="txt-6-white">
 												<b>
 													<?php
 														echo $ph;
@@ -43,8 +43,8 @@
 
 								<table width="100%"  cellspacing="0" cellpadding="4">
 									<tr>
-										<td align="left" valign="top" class="bg-f4f4f4">
-											<span class="txt-4-000">
+										<td align="left" valign="top" class="bg-whitesmoke">
+											<span class="txt-4-black">
 												<center>
 													<?php
 														echo $pd;
