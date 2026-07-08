@@ -14,3 +14,6 @@ define('DB_NAME', 'asdb');
 
 define('LINKS_PER_PAGE', 25);   // was hardcoded in table_result_cat.php:14
 define('NEWS_PER_PAGE', 5);     // was hardcoded in content_news.php:99
+
+define('LOGIN_MAX_ATTEMPTS', 5);      // Phase 03a: wrong-password count before lockout
+define('LOGIN_LOCKOUT_MINUTES', 15);  // Phase 03a: lockout duration
