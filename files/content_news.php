@@ -9,27 +9,28 @@
 
 <center><br> 
 
-<table cellpadding="1" cellspacing="0" width="70%"  bgcolor="#637B94">
+<table cellpadding="1" cellspacing="0" width="70%"  class="bg-637b94">
 	<tr>
 		<td>
-			<table width="100%" cellpadding="1"  cellspacing="1" bgcolor="#FFFFFF">
+			<table width="100%" cellpadding="1"  cellspacing="1" class="bg-fff">
 				<tr>
 					<td>
 
 						<table width="100%"  cellspacing="0" cellpadding="15">
 							<tr>
-								<td align="center" valign="top" bgcolor="#FF2626">
-									<font face="Verdana, sans-serif" size=6	color=#ffffff>
+								<td align="center" valign="top" class="bg-ff2626">
+									<span class="txt-6-fff">
 										<b>LATEST NEWS</b><br>
-									<font face="Verdana, sans-serif" size=5	color=#ffffff>
+									<span class="txt-5-fff">
 										<b>Celebrating our 23rd year</b><br>
+									</span></span>
 								</td>
 							</tr>
 						</table>
 
 						<table width="100%"  cellspacing="0" cellpadding="0">
 							<tr>
-								<td align="left" valign="top" bgcolor="#ffffff">
+								<td align="left" valign="top" class="bg-fff">
 								</td>
 							</tr>
 						</table>
@@ -44,14 +45,14 @@
 </center><br>
 
 <center>
-<table width="30%" cellpadding="1" cellspacing="0" width="70%"  bgcolor="#637B94">
+<table width="30%" cellpadding="1" cellspacing="0" width="70%"  class="bg-637b94">
 	<tr>
 		<td>
-			<table cellpadding="1"  cellspacing="1" bgcolor="#FFFFFF">
+			<table cellpadding="1"  cellspacing="1" class="bg-fff">
 				<center>
-				<font face="Verdana, sans-serif" size=3	color=#000000>
+				<span class="txt-3-000">
 				<b>TEMP LINK COUNT</b><br>
-				<font face="Verdana, sans-serif" size=2	color=#000000>
+				<span class="txt-2-000">
 				<?php
 				$result_count = mysqli_query(
 				$myConnection,
@@ -80,6 +81,7 @@
 				$total_new = $total_new['total_new'];
 				echo "new links:".$total_new."<br>";
 				?>
+				</span></span>
 				</center>
 			</table>
 		</td>
@@ -126,10 +128,10 @@ $pagination_html = render_pagination_menu($page_no, $total_no_of_pages, $second_
 <!-------- Pagination menu top ------------>
 <center>
 <p>
-<font face="Verdana, sans-serif" size=2>
+<span class="txt-2">
 Page <?php echo $page_no." of ".$total_no_of_pages; ?>
 <?php echo $pagination_html; ?>
-</font>
+</span>
 </p>
 </br>
 </center>
@@ -166,10 +168,10 @@ Page <?php echo $page_no." of ".$total_no_of_pages; ?>
 <!-------- Pagination bottom top ------------>
 <center>
 <p>
-<font face="Verdana, sans-serif" size=2>
+<span class="txt-2">
 Page <?php echo $page_no." of ".$total_no_of_pages; ?>
 <?php echo $pagination_html; ?>
-</font>
+</span>
 </p>
 </br></br>
 </center>
