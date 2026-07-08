@@ -89,7 +89,7 @@
 <!-------- Get the current page number of pagination (if nothing is set, it is page number 1) ------------>
 <?php
 if (isset($_GET['page_no']) && $_GET['page_no']!="") {
-    $page_no = $_GET['page_no'];
+    $page_no = max(1, intval($_GET['page_no']));
     } else {
         $page_no = 1;
         }
@@ -219,10 +219,10 @@ echo " | <a href='?page_no=$total_no_of_pages'>Last &rsaquo;&rsaquo;</a>";
 
  <?php
 
-		$result = mysqli_query(
-		$myConnection,
-		"SELECT * FROM t_news where news_active='1' ORDER BY news_date DESC LIMIT $offset, $total_records_per_page"
-		);
+		$stmt = mysqli_prepare($myConnection, "SELECT * FROM t_news where news_active='1' ORDER BY news_date DESC LIMIT ?, ?");
+		mysqli_stmt_bind_param($stmt, "ii", $offset, $total_records_per_page);
+		mysqli_stmt_execute($stmt);
+		$result = mysqli_stmt_get_result($stmt);
 		while($row = mysqli_fetch_array($result)){	
 		
 ?>
