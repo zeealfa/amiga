@@ -13,7 +13,18 @@
 						<marquee><b>Since 2001...  Your BEST source for Amiga information... Again &nbsp; </b></marquee><br>
 					</span>
 				</td>
-			</tr>	
+			</tr>
+			<tr>
+				<td align="right" class="bg-ff9900" cellpadding="4" cellspacing="0">
+					<span class="txt-3">
+<?php if (isset($_SESSION['user_id'])): ?>
+						<b><?php echo htmlspecialchars(strtoupper($_SESSION['username'])); ?> &nbsp;|&nbsp; <a href="admin/dashboard.php">Dashboard</a> &nbsp;|&nbsp; <a href="admin/logout.php">Logout</a></b>
+<?php else: ?>
+						<b><a href="admin/login.php">Login</a></b>
+<?php endif; ?>
+					</span>
+				</td>
+			</tr>
 		</td>
 	</tr>
 </table>
