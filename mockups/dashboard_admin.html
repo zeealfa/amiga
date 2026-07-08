@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>AmigaSource.com - Admin Dashboard</title>
+<link rel="stylesheet" href="../files/style.css">
+</head>
+<body class="bg-dddddd">
+
+<!-- Header -->
+<table width="100%">
+	<tr>
+		<td>
+			<tr>
+				<a href="#">
+				<img src="../files/web_images/static/lg-asbnr.jpg" alt="Amiga Source" height="120" width="380">
+				</a>
+			</tr>
+			<tr>
+				<td align="right" class="bg-ff9900" cellpadding="16" cellspacing="8">
+					<span class="txt-3"><b>Logged in as: <u>zee</u> (admin) &nbsp; | &nbsp; <a href="login.html">Log Out</a></b></span>
+				</td>
+			</tr>
+		</td>
+	</tr>
+</table>
+
+<br>
+
+<center>
+<table width="90%" align="center" cellpadding="0" cellspacing="0">
+<tr>
+
+	<!-- Left nav -->
+	<td width="18%" valign="top" class="bg-bbbbbb">
+		<table width="100%" cellpadding="8" cellspacing="0">
+			<tr><td class="bg-637b94"><span class="txt-3-fff"><b>ADMIN MENU</b></span></td></tr>
+			<tr><td class="bg-fff"><span class="txt-2"><b>&raquo; Dashboard</b></span></td></tr>
+			<tr><td class="bg-fff"><span class="txt-2">&raquo; Users</span></td></tr>
+			<tr><td class="bg-fff"><span class="txt-2">&raquo; News</span></td></tr>
+			<tr><td class="bg-fff"><span class="txt-2">&raquo; Links</span></td></tr>
+			<tr><td class="bg-fff"><span class="txt-2">&raquo; Categories</span></td></tr>
+		</table>
+	</td>
+
+	<td width="2%"></td>
+
+	<!-- Main content -->
+	<td width="80%" valign="top">
+
+		<!-- At-a-glance counts -->
+		<table width="100%" cellpadding="1" cellspacing="0" class="bg-637b94">
+			<tr><td>
+				<table width="100%" cellpadding="0" cellspacing="1">
+					<tr>
+						<td width="25%" align="center" class="bg-fff" style="padding:12px;">
+							<span class="txt-5">7</span><br><span class="txt-1">Total Users</span>
+						</td>
+						<td width="25%" align="center" class="bg-fff" style="padding:12px;">
+							<span class="txt-5">2</span><br><span class="txt-1">Pending Invites</span>
+						</td>
+						<td width="25%" align="center" class="bg-fff" style="padding:12px;">
+							<span class="txt-5">1524</span><br><span class="txt-1">Links</span>
+						</td>
+						<td width="25%" align="center" class="bg-fff" style="padding:12px;">
+							<span class="txt-5">113</span><br><span class="txt-1">News Posts</span>
+						</td>
+					</tr>
+				</table>
+			</td></tr>
+		</table>
+
+		<br>
+
+		<!-- User management panel -->
+		<table width="100%" cellpadding="1" cellspacing="0" class="bg-637b94">
+			<tr><td>
+				<table width="100%" cellpadding="1" cellspacing="1" class="bg-fff">
+					<tr>
+						<td align="center" class="bg-ff2626">
+							<span class="txt-4-fff"><b>MANAGE USERS</b></span>
+						</td>
+					</tr>
+					<tr>
+						<td class="bg-fff" style="padding:10px;">
+
+							<!-- Add / Invite user form -->
+							<span class="txt-2-000">
+							<form>
+							<table cellpadding="4" cellspacing="0">
+								<tr>
+									<td><b>Username:</b></td>
+									<td><input type="text" style="width:140px;"></td>
+									<td><b>Email:</b></td>
+									<td><input type="text" style="width:180px;"></td>
+									<td><b>Role:</b></td>
+									<td>
+										<select>
+											<option>user</option>
+											<option>admin</option>
+										</select>
+									</td>
+									<td>
+										<input type="submit" value="Add User" class="bg-637b94" style="color:#fff;font-weight:bold;">
+										&nbsp;
+										<input type="submit" value="Invite by Email" class="bg-006cd9" style="color:#fff;font-weight:bold;">
+									</td>
+								</tr>
+							</table>
+							</form>
+							</span>
+
+						</td>
+					</tr>
+				</table>
+			</td></tr>
+		</table>
+
+		<br>
+
+		<!-- User list table -->
+		<table width="100%" cellpadding="1" cellspacing="0" class="bg-637b94">
+			<tr><td>
+				<table width="100%" cellpadding="6" cellspacing="1" class="bg-fff">
+					<tr class="bg-f4f4f4">
+						<td><span class="txt-2-000"><b>Username</b></span></td>
+						<td><span class="txt-2-000"><b>Email</b></span></td>
+						<td><span class="txt-2-000"><b>Role</b></span></td>
+						<td><span class="txt-2-000"><b>Status</b></span></td>
+						<td><span class="txt-2-000"><b>Actions</b></span></td>
+					</tr>
+
+					<tr>
+						<td><span class="txt-2-000">zee</span></td>
+						<td><span class="txt-2-000">zee@amigasource.com</span></td>
+						<td><span class="txt-1-fff bg-c70000" style="padding:2px 6px;">admin</span></td>
+						<td><span class="txt-2-000">Active</span></td>
+						<td><span class="txt-1">(you)</span></td>
+					</tr>
+
+					<tr class="bg-f4f4f4">
+						<td><span class="txt-2-000">renee</span></td>
+						<td><span class="txt-2-000">renee@example.com</span></td>
+						<td><span class="txt-1-fff bg-229c22" style="padding:2px 6px;">user</span></td>
+						<td><span class="txt-2-000">Active</span></td>
+						<td>
+							<span class="txt-1">
+								<a href="#">Promote to admin</a> |
+								<a href="#">Remove</a>
+							</span>
+						</td>
+					</tr>
+
+					<tr>
+						<td><span class="txt-2-000">daren_g</span></td>
+						<td><span class="txt-2-000">daren@example.com</span></td>
+						<td><span class="txt-1-fff bg-229c22" style="padding:2px 6px;">user</span></td>
+						<td><span class="txt-2-000">Active</span></td>
+						<td>
+							<span class="txt-1">
+								<a href="#">Promote to admin</a> |
+								<a href="#">Remove</a>
+							</span>
+						</td>
+					</tr>
+
+					<tr class="bg-f4f4f4">
+						<td><span class="txt-2-000">jason_b</span></td>
+						<td><span class="txt-2-000">jason@example.com</span></td>
+						<td><span class="txt-1-fff bg-c70000" style="padding:2px 6px;">admin</span></td>
+						<td><span class="txt-2-000">Active</span></td>
+						<td>
+							<span class="txt-1">
+								<a href="#">Demote to user</a> |
+								<a href="#">Remove</a>
+							</span>
+						</td>
+					</tr>
+
+					<tr>
+						<td><span class="txt-2-000">m.chuck</span></td>
+						<td><span class="txt-2-000">chuck@example.com</span></td>
+						<td><span class="txt-1-fff bg-dddddd">&nbsp;-&nbsp;</span></td>
+						<td><span class="txt-2-000"><i>Invited (pending)</i></span></td>
+						<td>
+							<span class="txt-1">
+								<a href="#">Resend invite</a> |
+								<a href="#">Cancel</a>
+							</span>
+						</td>
+					</tr>
+
+				</table>
+			</td></tr>
+		</table>
+
+		<br><br>
+
+	</td>
+</tr>
+</table>
+</center>
+
+</body>
+</html>
