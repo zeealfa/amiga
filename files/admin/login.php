@@ -1,0 +1,127 @@
+<?php
+if (!isset($_SESSION)) {
+    session_start();
+}
+require_once __DIR__ . '/../includes/db.php';
+require_once __DIR__ . '/../includes/auth.php';
+
+if (isset($_SESSION['user_id'])) {
+    header('Location: dashboard.php');
+    exit;
+}
+
+$error = null;
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $identifier = trim($_POST['identifier'] ?? '');
+    $password = $_POST['password'] ?? '';
+
+    $result = attempt_login($myConnection, $identifier, $password);
+    if ($result['success']) {
+        header('Location: dashboard.php');
+        exit;
+    }
+    $error = $result['error'];
+}
+?>
+<!DOCTYPE html>
+<html>
+<head>
+<title>AmigaSource.com - Login</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body class="bg-dddddd">
+
+<table width="100%">
+	<tr>
+		<td>
+			<tr>
+				<a href="#">
+				<img src="../web_images/static/lg-asbnr.jpg" alt="Amiga Source" height="120" width="380">
+				</a>
+			</tr>
+			<tr>
+				<td align="right" class="bg-ff9900" cellpadding="16" cellspacing="8">
+					<span class="txt-5">
+						<marquee><b>Since 2001...  Your BEST source for Amiga information... Again &nbsp; </b></marquee><br>
+					</span>
+				</td>
+			</tr>
+		</td>
+	</tr>
+</table>
+
+<br><br>
+
+<center>
+<table cellpadding="1" cellspacing="0" width="360" class="bg-637b94">
+	<tr>
+		<td>
+			<table width="100%" cellpadding="1" cellspacing="1" class="bg-fff">
+				<tr>
+					<td>
+
+						<table width="100%" cellspacing="0" cellpadding="12">
+							<tr>
+								<td align="center" valign="top" class="bg-ff2626">
+									<span class="txt-5-fff"><b>LOGIN</b></span>
+								</td>
+							</tr>
+						</table>
+
+						<table width="100%" cellspacing="0" cellpadding="16">
+							<tr>
+								<td class="bg-fff">
+									<span class="txt-2-000">
+
+<?php if ($error): ?>
+										<p class="txt-2-000" style="color:#c70000;"><b><?php echo htmlspecialchars($error); ?></b></p>
+<?php endif; ?>
+
+										<form method="post" action="login.php">
+										<table width="100%" cellpadding="4" cellspacing="0">
+											<tr>
+												<td align="right"><b>Username or Email:</b></td>
+												<td><input type="text" name="identifier" style="width:180px;"></td>
+											</tr>
+											<tr>
+												<td align="right"><b>Password:</b></td>
+												<td><input type="password" name="password" style="width:180px;"></td>
+											</tr>
+											<tr>
+												<td colspan="2" align="center">
+													<br>
+													<input type="submit" value="Log In" class="bg-637b94" style="color:#ffffff; font-weight:bold; padding:4px 20px;">
+												</td>
+											</tr>
+										</table>
+										</form>
+
+									</span>
+								</td>
+							</tr>
+						</table>
+
+						<table width="100%" cellspacing="0" cellpadding="8">
+							<tr>
+								<td align="center" class="bg-f4f4f4">
+									<span class="txt-1">
+										One login for everyone — admins and users sign in here.<br>
+										What you see next depends on your account's role.
+									</span>
+								</td>
+							</tr>
+						</table>
+
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+</table>
+</center>
+
+<br><br>
+
+</body>
+</html>
