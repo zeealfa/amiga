@@ -11,3 +11,6 @@ define('DB_NAME', 'asdb');
 // define('DB_USER', '<production-user>');
 // define('DB_PASS', '<production-pass>');
 // define('DB_NAME', 'asdb');
+
+define('LINKS_PER_PAGE', 25);   // was hardcoded in table_result_cat.php:14
+define('NEWS_PER_PAGE', 5);     // was hardcoded in content_news.php:99

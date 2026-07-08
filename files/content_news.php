@@ -99,7 +99,7 @@ if (isset($_GET['page_no']) && $_GET['page_no']!="") {
 
 <!-------- Set total records per page number for pagination ------------>
 <?php
-$total_records_per_page = 5;
+$total_records_per_page = NEWS_PER_PAGE;
 ?>
 
 <!-------- Set offset and page calculation for pagination ------------>

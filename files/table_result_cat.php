@@ -12,7 +12,7 @@ $cat_id = intval($cat_id);
 
 <!-------- Set total records per page number for pagination ------------>
 <?php
-$total_records_per_page = 25;
+$total_records_per_page = LINKS_PER_PAGE;
 ?>
 
 <!-------- Set offset and page calculation for pagination ------------>
