@@ -7,8 +7,8 @@ Traced by reading every file in `files/` on 2026-07-08.
 | File | Role |
 |---|---|
 | index.php | Entry point. Starts session, sets content_type=news, includes login_db.php + page_builder.php |
-| action_categories.php | Alt entry point: sets content_type=categories, re-runs the same page_builder chain |
-| action_search.php | Alt entry point: sets content_type=search, re-runs the same page_builder chain |
+| entry_categories.php | Alt entry point: sets content_type=categories, re-runs the same page_builder chain (renamed from action_categories.php per NAMING_CONVENTIONS_DRAFT.md) |
+| entry_search.php | Alt entry point: sets content_type=search, re-runs the same page_builder chain (renamed from action_search.php per NAMING_CONVENTIONS_DRAFT.md) |
 | login_db.php | Opens the one shared `$myConnection` (mysqli) used by every include below |
 | page_builder.php | Outer `<table>` layout, includes sec_header/sec_body/sec_footer |
 | sec_header.php, sec_footer.php | One-line wrappers around mod_header.php / mod_footer.php |

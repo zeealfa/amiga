@@ -19,7 +19,7 @@
 								<td align="center" valign="top" bgcolor="#ffffff">
 		
 									
-									<form action="/action_search.php" method="post">
+									<form action="/entry_search.php" method="post">
 										<input type="text" name="search" size=25 maxlength=125>
 										<p>
 										<font face="Verdana, sans-serif" size="0" color="#000000">

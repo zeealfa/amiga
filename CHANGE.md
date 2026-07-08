@@ -33,3 +33,18 @@ was set up but never finished being built into any page.
 Drafted, for your review only (nothing has been changed yet): a plan for
 consistent, less confusing file naming, and a cleaner folder layout for the
 admin area once it's rebuilt.
+
+---
+
+## 2026-07-08 (naming cleanup)
+
+Applied the first piece of the file-naming cleanup you approved: the two
+public pages that had a confusing, near-duplicate name to the admin area's
+pages were renamed to something clearer. Nothing about how these pages work
+or look changed — only their internal file names, and the couple of spots on
+the site that pointed to those names were updated to match. Checked the live
+site afterward to confirm the category page and the search box still work.
+
+The rest of the naming cleanup (a matching prefix for admin pages) is being
+held until the admin area itself is rebuilt, since renaming it twice would be
+wasted effort.
