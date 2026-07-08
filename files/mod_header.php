@@ -10,7 +10,7 @@
 			<tr>
 				<td align="right" class="bg-ff9900" cellpadding="16" cellspacing="8">
 					<span class="txt-5">
-						<b>Since 2001...  Your BEST source for Amiga information... Again &nbsp; </b><br>
+						<marquee><b>Since 2001...  Your BEST source for Amiga information... Again &nbsp; </b></marquee><br>
 					</span>
 				</td>
 			</tr>	

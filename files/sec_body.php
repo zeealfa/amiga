@@ -11,9 +11,9 @@
 						</td>
 		</center>
 		<center>
-			<td valign="top" class="bg-6699cc">
+			<td valign="top" class="bg-fff">
 				<!----width of main content---->
-				<table class="bg-6699cc" width="80%" align="center" cellpadding="0">
+				<table class="bg-fff" width="80%" align="center" cellpadding="0">
 					<tr>
 						<td>
 								<?php if ($_SESSION["content_type"]=='news'){ include 'content_news.php'; } 
