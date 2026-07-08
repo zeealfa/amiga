@@ -106,3 +106,51 @@ Checked the whole site afterward — homepage, category pages, search, and the
 admin prototype pages — to confirm every page still loads and works exactly
 as before, and re-ran the security checks from the audit to confirm the gap
 is actually closed, not just visually unchanged.
+
+---
+
+## 2026-07-08 (admin login)
+
+Built the real login system the audit flagged as missing: the admin area no
+longer lets anyone in just by knowing the web address. There's now a proper
+login page, a logout link, and a shared account (username `scottp`) with a
+password only that person has. Five wrong password attempts in a row locks
+the account for 15 minutes, so it can't be guessed by brute force. A
+dashboard page and an account page (where the password can be changed) were
+also added as the landing spot after logging in.
+
+---
+
+## 2026-07-08 (header login link)
+
+Added a Login link to the top of every page on the main site. If nobody is
+logged in, it just says "Login." Once someone does log in, it changes to
+show their username along with Dashboard and Logout links instead, so
+there's always a clear, one-click way in and out of the admin area from any
+page. Matching changes went into the admin area's own header too: its logo
+now links back to the main site (previously it went nowhere useful), and a
+"Back to Site" link was added next to the existing "Log Out" link.
+
+---
+
+## 2026-07-08 (header tidy-up)
+
+Cleaned up the main site's header: the scrolling tagline ("Since 2001... "),
+which used to slide across the screen, is now still text that stays in
+place. It and the new Login/Dashboard/Logout links (added above) now sit on
+the same line — tagline on the left, account links on the right — instead of
+stacking on two separate lines.
+
+---
+
+## 2026-07-08 (color names)
+
+Renamed the color classes in the shared style sheet from hex codes (like
+`bg-ff9900`) to plain English names (like `bg-orange`), and updated every
+page that used them. Nothing about how the site looks changed — this only
+makes the styling easier to read and update in the future.
+
+Put all of the above — the login system, the header links, the header
+tidy-up, and the color renaming — onto the live working site (not the real
+public site) and confirmed every uploaded file matches exactly what was
+tested locally before calling it done.
