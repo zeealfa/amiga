@@ -191,3 +191,19 @@ Note: applying `ALTER TABLE` to `t_links` requires temporarily relaxing `sql_mod
 (`NO_ZERO_DATE`/`NO_ZERO_IN_DATE`) for the session, because `links_date_added` has a
 pre-existing `DEFAULT '0000-00-00'` that fails revalidation otherwise — see the
 migration file for details. No column's actual default value was changed.
+
+**Correction (2026-07-08, found via `SHOW INDEX` while verifying the Phase 01
+migration):** `t_cat_main` already had 6 pre-existing indexes the original audit
+missed — `DESCRIBE` only reports one `Key` value per column, so it hid all but one
+index per column. Confirmed via `SHOW INDEX FROM t_cat_main`: `main_id`, `main_id_2`,
+`main_id_3`, `cat_id_2` are four separate, redundant UNIQUE indexes all covering the
+same `id` column, plus `main_cat_id` and `cat_id` are separate non-unique indexes on
+`cat_main_id` and `id` respectively — on top of the `id`/`cat_main_id` PK oddity
+already noted above. None of this was touched by Phase 01 (only `cat_main_title_idx`
+was added by this migration); flagging for a future cleanup pass since 4 duplicate
+unique indexes on one column is pure waste, not a functional bug.
+
+`t_cat_sub` has one smaller instance of the same thing: `cat_id` is a redundant
+unique index duplicating the `PRIMARY` key on `id`, on top of the pre-existing
+`cat_id_2` (the one already noted above as `cat_sub_id`'s `MUL` key). Also not
+touched by Phase 01, also flagged for the same future cleanup pass.
