@@ -28,10 +28,16 @@ FINDINGS.md for the bug this causes.
 | links_v_sub | int(1) | NO | | 0 |
 | links_active | tinyint(1) | NO | | 1 |
 | links_recommended | tinyint(1) | NO | | 0 |
+| links_verified | tinyint(1) | NO | | 0 |
+| created_at | timestamp | NO | | CURRENT_TIMESTAMP |
+| updated_at | timestamp | NO | | CURRENT_TIMESTAMP |
 
-Note: schema has 10 category slots (`links_cat_1`..`links_cat_10`); code only ever
-reads/writes `links_cat_1` through `links_cat_5` (see table_result_cat.php) — the
-other 5 slots exist in the DB but are unused by any current code path.
+Note: schema has 10 category slots (`links_cat_1`..`links_cat_10`). The *filter*
+query in `table_result_cat.php:29,138` only matches against `links_cat_1`-`5`, but
+the row renderer it includes, `table_link.php:212-216`, echoes all 10 slots on
+every link row on both the category-results and search-results pages — all 10
+columns are live and rendered on the public site (correcting an earlier DEAD_CODE.md
+finding that called slots 6-10 unused).
 
 ## t_news (113 rows)
 
@@ -42,6 +48,8 @@ other 5 slots exist in the DB but are unused by any current code path.
 | news_story | mediumtext | YES | | NULL |
 | news_v_sub | tinyint(4) | NO | | 0 |
 | news_active | tinyint(1) | NO | | 1 |
+| created_at | timestamp | NO | | CURRENT_TIMESTAMP |
+| updated_at | timestamp | NO | | CURRENT_TIMESTAMP |
 
 `files/ata/add.php` writes to `t_news_sub`, a table that does not exist in this
 database — see FINDINGS.md.
@@ -53,6 +61,9 @@ database — see FINDINGS.md.
 | id | tinyint(11) | NO | UNI | NULL |
 | cat_main_id | int(11) | NO | PRI | 0 |
 | cat_main_title | varchar(50) | YES | | NULL |
+| created_at | timestamp | NO | | CURRENT_TIMESTAMP |
+| updated_at | timestamp | NO | | CURRENT_TIMESTAMP |
+| cat_main_active | tinyint(1) | NO | | 1 |
 
 ## t_cat_sub
 
@@ -64,6 +75,9 @@ database — see FINDINGS.md.
 | cat_sub_title | varchar(255) | YES | | NULL |
 | cat_sub_desc | varchar(255) | YES | | NULL |
 | cat_sub_title_short | varchar(50) | YES | | NULL |
+| created_at | timestamp | NO | | CURRENT_TIMESTAMP |
+| updated_at | timestamp | NO | | CURRENT_TIMESTAMP |
+| cat_sub_active | tinyint(1) | NO | | 1 |
 
 ## t_cat_spec — exists in DB, unused by any code
 
@@ -75,6 +89,8 @@ database — see FINDINGS.md.
 | cat_spec_title | varchar(255) | NO | | NULL |
 | cat_spec_desc | varchar(255) | NO | | NULL |
 | cat_spec_title_short | varchar(50) | NO | | NULL |
+| created_at | timestamp | NO | | CURRENT_TIMESTAMP |
+| updated_at | timestamp | NO | | CURRENT_TIMESTAMP |
 
 Looks like a planned third category tier (main → sub → spec) that was never wired
 into any PHP file — `grep -rn "cat_spec" files` returns nothing. Confirm with client
@@ -91,6 +107,8 @@ whether this is intentionally unfinished or safe to drop.
 | cal_date_end | date | NO | | NULL |
 | cal_location | text | NO | | NULL |
 | cal_v_sub | tinyint(1) | NO | | NULL |
+| created_at | timestamp | NO | | CURRENT_TIMESTAMP |
+| updated_at | timestamp | NO | | CURRENT_TIMESTAMP |
 
 ## t_cfund
 
@@ -103,6 +121,8 @@ whether this is intentionally unfinished or safe to drop.
 | cfund_date_end | date | NO | | NULL |
 | cfund_active | tinyint(1) | NO | | NULL |
 | cfund_v_sub | tinyint(1) | NO | | NULL |
+| created_at | timestamp | NO | | CURRENT_TIMESTAMP |
+| updated_at | timestamp | NO | | CURRENT_TIMESTAMP |
 
 ## t_mags_online
 
@@ -112,6 +132,8 @@ whether this is intentionally unfinished or safe to drop.
 | online_name | text | NO | | NULL |
 | online_url | text | NO | | NULL |
 | online_issue | int(3) | NO | | NULL |
+| created_at | timestamp | NO | | CURRENT_TIMESTAMP |
+| updated_at | timestamp | NO | | CURRENT_TIMESTAMP |
 
 ## t_mags_print
 
@@ -121,6 +143,8 @@ whether this is intentionally unfinished or safe to drop.
 | print_name | text | NO | | NULL |
 | print_url | text | NO | | NULL |
 | print_issue | int(3) | NO | | NULL |
+| created_at | timestamp | NO | | CURRENT_TIMESTAMP |
+| updated_at | timestamp | NO | | CURRENT_TIMESTAMP |
 
 ## t_repair
 
@@ -130,6 +154,8 @@ whether this is intentionally unfinished or safe to drop.
 | repair_name | text | NO | | NULL |
 | repair_url | text | NO | | NULL |
 | repair_country | text | NO | | NULL |
+| created_at | timestamp | NO | | CURRENT_TIMESTAMP |
+| updated_at | timestamp | NO | | CURRENT_TIMESTAMP |
 
 ## t_top10
 
@@ -139,6 +165,8 @@ whether this is intentionally unfinished or safe to drop.
 | top10_name | text | NO | | NULL |
 | top10_url | text | NO | | NULL |
 | top10_order | int(11) | NO | | NULL |
+| created_at | timestamp | NO | | CURRENT_TIMESTAMP |
+| updated_at | timestamp | NO | | CURRENT_TIMESTAMP |
 
 ## t_vendor
 
@@ -147,11 +175,19 @@ whether this is intentionally unfinished or safe to drop.
 | id | int(11) | NO | PRI (auto_increment) | |
 | vendor_name | text | NO | | NULL |
 | vendor_url | text | NO | | NULL |
+| created_at | timestamp | NO | | CURRENT_TIMESTAMP |
+| updated_at | timestamp | NO | | CURRENT_TIMESTAMP |
 
 ## Indexes observed
 
-Beyond primary keys, only `t_cat_sub.cat_sub_id` has a non-primary key (`MUL`).
-No other table has a secondary index — every other lookup (`t_links` by category,
-`t_news` by active flag, etc.) does a full table scan. Not urgent at current row
-counts (1,524 max), but worth flagging for Phase 01 if the admin module adds
-filtering/search UI that runs these queries more often.
+As of Phase 01 (`db/migrations/0001_phase01_schema_cleanup_up.sql`), indexes exist on:
+`t_links` (links_dead, links_cat_1-5, links_name, links_date_verified, links_date_added),
+`t_news` (news_active, news_date), `t_cat_sub` (cat_sub_id — pre-existing, plus
+cat_sub_ref_main_id and cat_sub_title_short), `t_cat_main` (cat_main_title).
+Text-search columns (links_desc/url/name/author, used only in leading-wildcard
+LIKE queries) are deliberately not indexed — a B-tree index can't serve those lookups.
+
+Note: applying `ALTER TABLE` to `t_links` requires temporarily relaxing `sql_mode`
+(`NO_ZERO_DATE`/`NO_ZERO_IN_DATE`) for the session, because `links_date_added` has a
+pre-existing `DEFAULT '0000-00-00'` that fails revalidation otherwise — see the
+migration file for details. No column's actual default value was changed.

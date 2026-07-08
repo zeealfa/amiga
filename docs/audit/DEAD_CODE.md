@@ -9,8 +9,15 @@
 
 | Item | Status | Evidence |
 |---|---|---|
-| Table `t_cat_spec` | Exists in DB, referenced by zero PHP files | `grep -rn "cat_spec" files` returns nothing; see DB_TABLES.md |
-| `t_links.links_cat_6` through `links_cat_10` | Columns exist, never read/written by any current query | Only `links_cat_1`..`links_cat_5` appear in table_result_cat.php |
+| Table `t_cat_spec` | Exists in DB, referenced by zero PHP files, holds 1 row of real data | `grep -rn "cat_spec" files` returns nothing; see DB_TABLES.md |
+
+**Correction (2026-07-08):** `t_links.links_cat_6` through `links_cat_10` were
+originally listed here as unused. That was wrong — the earlier grep only checked
+`table_result_cat.php` directly and missed that it `include`s `table_link.php`,
+which echoes `links_cat_6` through `links_cat_10` for every row (`table_link.php:212-216`).
+These columns render on both the category-results and search-results public pages
+today. They are **not** dead code; only the *filter* logic (`table_result_cat.php:29,138`)
+is limited to `links_cat_1`-`5` — the display logic uses all 10. See DB_TABLES.md.
 
 ## Other things worth flagging, not orphaned but noise
 

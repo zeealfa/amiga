@@ -48,3 +48,26 @@ site afterward to confirm the category page and the search box still work.
 The rest of the naming cleanup (a matching prefix for admin pages) is being
 held until the admin area itself is rebuilt, since renaming it twice would be
 wasted effort.
+
+---
+
+## 2026-07-08 (database groundwork)
+
+Added groundwork to the database so future features have something solid to
+build on, without changing how anything currently looks or works. Every table
+now automatically records when a row was created and last changed. The two
+category tables gained an on/off switch for hiding a category without deleting
+it. The links table gained a spot to mark a link as "verified" going forward.
+Also added several behind-the-scenes lookups (indexes) so category and search
+pages can find matching links faster as the link list grows.
+
+Took a full backup immediately before making any of these changes, and wrote
+every change as a paired "apply" and "undo" script, tested both directions,
+before leaving the database in its new state. Checked the news page, the
+category page, and the search box afterward to confirm everything still works
+exactly as before.
+
+Two things were deliberately left for later, to avoid building them twice: a
+way to mark submitted links/news as pending/approved/rejected, and any
+moderation controls — both will be designed together with the new admin
+console rather than bolted on now.
