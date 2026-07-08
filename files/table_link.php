@@ -1,7 +1,6 @@
 <!-------- results table output ------------>
 <?php
-	// variables used for the EDIT and AO function
-	$mae_link = "http://testamigasource.com/ata/maestrotest/t_links.php?operation=edit&pk0=";
+	// variable used for the AO function
 	$ao = "https://web.archive.org/web/2020*/";
 
 ?>
@@ -185,13 +184,6 @@
 									<!----------extras bar & archived stuff (row 4) --------->
 										<table width=100%>
 											<TR>
-												<!----------results EDITOR (row 4: !C-2f) --------->
-												<TD  class="bg-dddddd" width=10%>&nbsp;
-													<span class="txt-2">
-													<?php
-														echo "<a target=\"_blank\" href=$mae_link".$line2['id'].">edit</a>";
-													?>
-												</TD>
 												<!----------results category numbers (row 4: !C-2g) --------->
 												<TD  class="bg-dddddd" width=15%>&nbsp;
 													<span class="txt-2">
