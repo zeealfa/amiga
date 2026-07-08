@@ -6,8 +6,9 @@
 	<tr><td class="bg-fff"><span class="txt-2">&raquo; News</span></td></tr>
 	<tr><td class="bg-fff"><span class="txt-2">&raquo; Links</span></td></tr>
 	<tr><td class="bg-fff"><span class="txt-2">&raquo; Categories</span></td></tr>
+	<tr><td class="bg-fff"><span class="txt-2">&raquo; <a href="profile.php">My Profile</a></span></td></tr>
 <?php else: ?>
 	<tr><td class="bg-fff"><span class="txt-2">&raquo; My Submissions</span></td></tr>
-	<tr><td class="bg-fff"><span class="txt-2">&raquo; My Profile</span></td></tr>
+	<tr><td class="bg-fff"><span class="txt-2">&raquo; <a href="profile.php">My Profile</a></span></td></tr>
 <?php endif; ?>
 </table>
