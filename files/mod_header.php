@@ -8,9 +8,10 @@
 				</a>		
 			</tr>
 			<tr>
-				<td align="right" bgcolor="#ff9900" cellpadding="16" cellspacing="8">
-					<font face="Verdana, sans-serif" size="5"> 
+				<td align="right" class="bg-ff9900" cellpadding="16" cellspacing="8">
+					<span class="txt-5">
 						<b>Since 2001...  Your BEST source for Amiga information... Again &nbsp; </b><br>
+					</span>
 				</td>
 			</tr>	
 		</td>

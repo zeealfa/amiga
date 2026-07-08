@@ -12,8 +12,26 @@ body {
 .bg-637b94 { background-color: #637b94; }
 .bg-575748 { background-color: #575748; }
 .bg-dddddd { background-color: #dddddd; }
+.bg-ff9900 { background-color: #ff9900; }
+.bg-bbbbbb { background-color: #bbbbbb; }
+.bg-6699cc { background-color: #6699cc; }
+.bg-c70000 { background-color: #c70000; }
+.bg-00ffff { background-color: #00ffff; }
+.bg-f1c40f { background-color: #f1c40f; }
+.bg-006cd9 { background-color: #006cd9; }
+.bg-842dce { background-color: #842dce; }
+.bg-336666 { background-color: #336666; }
+.bg-990099 { background-color: #990099; }
+.bg-dc7633 { background-color: #dc7633; }
+.bg-333333 { background-color: #333333; }
+.bg-229c22 { background-color: #229c22; }
 
 .txt-6-fff { font-size: 32px; color: #ffffff; }
+.txt-5 { font-size: 24px; }
 .txt-4-000 { font-size: 18px; color: #000000; }
+.txt-4-fff { font-size: 18px; color: #ffffff; }
 .txt-3 { font-size: 16px; }
 .txt-2 { font-size: 13px; }
+.txt-2-fff { font-size: 13px; color: #ffffff; }
+.txt-0 { font-size: 10px; }
+.txt-0-000 { font-size: 10px; color: #000000; }

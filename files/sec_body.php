@@ -1,19 +1,19 @@
 
-<table bgcolor="#ffffff" width="100%" align="center" cellpadding="0" cellspacing="0">
+<table class="bg-fff" width="100%" align="center" cellpadding="0" cellspacing="0">
  	<tr>
 		<center>
-			<td width="70%"> 				
-				<table bgcolor="#ffffff" width="100%" align="center" cellpadding="6">					
-					<tr>	
+			<td width="70%">
+				<table class="bg-fff" width="100%" align="center" cellpadding="6">
+					<tr>
 						<!----width of sidebar---->
-						<td width="21%" valign="top" bgcolor="#bbbbbb">
-								<?php include 'mod_sidebar_chooser.php'; ?>						
+						<td width="21%" valign="top" class="bg-bbbbbb">
+								<?php include 'mod_sidebar_chooser.php'; ?>
 						</td>
 		</center>
 		<center>
-			<td valign="top" bgcolor="#6699CC">
+			<td valign="top" class="bg-6699cc">
 				<!----width of main content---->
-				<table bgcolor="#6699CC" width="80%" align="center" cellpadding="0">
+				<table class="bg-6699cc" width="80%" align="center" cellpadding="0">
 					<tr>
 						<td>
 								<?php if ($_SESSION["content_type"]=='news'){ include 'content_news.php'; } 
