@@ -71,3 +71,14 @@ Two things were deliberately left for later, to avoid building them twice: a
 way to mark submitted links/news as pending/approved/rejected, and any
 moderation controls — both will be designed together with the new admin
 console rather than bolted on now.
+
+---
+
+## 2026-07-08 (live deploy)
+
+Put both of the above changes — the clearer page names and the database
+groundwork — onto the actual working site, not just a local test copy.
+Backed up the live database first, applied the same tested changes, and then
+checked the homepage, a category page, and the search box directly on the
+live site to confirm everything still works correctly. Also removed the two
+old, now-unused page files so they don't cause confusion for future work.
