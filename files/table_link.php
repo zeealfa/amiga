@@ -6,13 +6,13 @@
 
 ?>
 <center>
-	<table cellpadding="1" cellspacing="0" width="95%"  bgcolor="#575748">
+	<table cellpadding="1" cellspacing="0" width="95%"  class="bg-575748">
 		<tr><td>
-			<table width="100%" cellpadding="0"  cellspacing="0" bgcolor="#FFFFFF">
+			<table width="100%" cellpadding="0"  cellspacing="0" class="bg-fff">
 				<tr><td>
 					<table width="100%"  cellspacing="0" cellpadding="0">
 							<tr>
-									<td align="left" valign="top" bgcolor="#FFFFFF">
+									<td align="left" valign="top" class="bg-fff">
 
 									<!----------results icon pic (row 1: !C-2A) --------->
 										<table width=100%>
@@ -51,26 +51,26 @@
 												</TD>
 
 									<!----------results site name as a link output (row 1: !C-2B) --------->
-												<TD colspan="2" width=100% bgcolor=#FF2626>&nbsp;
+												<TD colspan="2" width=100% class="bg-ff2626">&nbsp;
 													<a target=new href="
 													<?php
 														if ($line2['links_archived_url']<>null and $line2['links_active']="1") { ?>
-															<font face="Verdana, sans-serif" size=1>
+															<span class="txt-1">
 															<a target=new href="<?php echo $line2['links_archived_url'] ?>">
 															
 													<?php
 														} else { ?>
-															<font face="Verdana, sans-serif" size=1>
+															<span class="txt-1">
 															<a target=new href="<?php echo $line2['links_url'] ;?>">
 															
 							<!----- use to add a link back to as
 							<a target=new href=" <?php // echo $line2['links_url']."?utm-source=amigasource.com";?>"   -->
 
-															<font face="Verdana, sans-serif" size=3 color=#ffffff> <b>
+															<span class="txt-3-fff"> <b>
 													<?php
 														}
 													?>	
-															<font face="Verdana, sans-serif" size=3 color=#ffffff> <b>
+															<span class="txt-3-fff"> <b>
 																<?php 
 																	$str=$line2['links_name'];
 																	if(!isset($search_f)){
@@ -91,8 +91,8 @@
 												<?php
 													if ($line2['links_archived_url']<>'') { 
 												?>
-														<TD width=40% bgcolor=#DDDDDD>&nbsp;
-														<font face="Verdana, sans-serif" size=2><b> Author:</>
+														<TD width=40% class="bg-dddddd">&nbsp;
+														<span class="txt-2"><b> Author:</>
 														<a href="<?php echo $line2['links_email'];?>">
 															<?php 
 																$str=$line2['links_author'];
@@ -104,31 +104,31 @@
 																}
 															?></a>
 														</TD>
-														<TD width=30% bgcolor=#DDDDDD>&nbsp;
-														<font face="Verdana, sans-serif" size=2><b>Archived:</b>
+														<TD width=30% class="bg-dddddd">&nbsp;
+														<span class="txt-2"><b>Archived:</b>
 														<?php echo $line2['links_archived_date'];?>
 														</TD>
-														<TD  bgcolor=#DDDDDD>&nbsp;
+														<TD  class="bg-dddddd">&nbsp;
 														<?php 
 															if ($line2['links_date_verified']>'2021-12-21') { 
 														?>	
-															<font face="Verdana, sans-serif" size=2><b>Verified:</b>
-															<font face="Verdana, sans-serif" size=5>
+															<span class="txt-2"><b>Verified:</b>
+															<span class="txt-5">
 														<?php 	} else { 
 														?>
-															<font face="Verdana, sans-serif" size=2><b>Verified:</b>
+															<span class="txt-2"><b>Verified:</b>
 														<?php 
 														}
 														?>
 														<?php echo $line2['links_date_verified']; ?>
-														<font face="Verdana, sans-serif" size=2>							
+														<span class="txt-2">							
 														</TD>		
 													<?php
 														} else {
 													?>	
 													<!----- AUTHOR ----->	
-													<TD width=70% bgcolor=#DDDDDD>&nbsp;
-														<font face="Verdana, sans-serif" size=2><b> Author:</>
+													<TD width=70% class="bg-dddddd">&nbsp;
+														<span class="txt-2"><b> Author:</>
 														<a href="<?php echo $line2['links_email'];?>">
 															<?php 
 																$str=$line2['links_author'];
@@ -141,20 +141,20 @@
 															?></a>
 													</TD>
 														<!----- just date verified ----->	
-															<TD  bgcolor=#DDDDDD>&nbsp;
+															<TD  class="bg-dddddd">&nbsp;
 															<?php 
 																if ($line2['links_date_verified']>'2021-12-21') { 
 															?>	
-																<font face="Verdana, sans-serif" size=2><b>Verified:</b>
-																<font face="Verdana, sans-serif" size=5>
+																<span class="txt-2"><b>Verified:</b>
+																<span class="txt-5">
 															<?php 	} else { 
 															?>
-																<font face="Verdana, sans-serif" size=2><b>Verified:</b>
+																<span class="txt-2"><b>Verified:</b>
 															<?php 
 															}
 															?>
 															<?php echo $line2['links_date_verified']; ?>
-															<font face="Verdana, sans-serif" size=2>	
+															<span class="txt-2">	
 															</TD>		
 														<?php	
 														}
@@ -164,8 +164,8 @@
 									<!----------results description output (row 3): !c-2E)  ---------> 
 										<table width=100%>
 											<TR>
-												<TD colspan="3" bgcolor=#FFFFFF>&nbsp;
-													<font face="Verdana, sans-serif" size=2>
+												<TD colspan="3" class="bg-fff">&nbsp;
+													<span class="txt-2">
 														<?php 
 															$str=$line2['links_desc'];
 																														
@@ -186,22 +186,22 @@
 										<table width=100%>
 											<TR>
 												<!----------results EDITOR (row 4: !C-2f) --------->
-												<TD  bgcolor=#DDDDDD width=10%>&nbsp;
-													<font face="Verdana, sans-serif" size=2>
+												<TD  class="bg-dddddd" width=10%>&nbsp;
+													<span class="txt-2">
 													<?php
 														echo "<a target=\"_blank\" href=$mae_link".$line2['id'].">edit</a>";
 													?>
 												</TD>
 												<!----------results category numbers (row 4: !C-2g) --------->
-												<TD  bgcolor=#DDDDDD width=15%>&nbsp;
-													<font face="Verdana, sans-serif" size=2>
+												<TD  class="bg-dddddd" width=15%>&nbsp;
+													<span class="txt-2">
 													<?php
 														echo "<a target=\"_blank\" href=$ao".$line2['links_url'].">archive.org</a> {temp}";
 													?>
 												</TD>
 												<!----------results category numbers (row 4: !C-2h) --------->
-												<TD  bgcolor=#DDDDDD>&nbsp;
-													<font face="Verdana, sans-serif" size=1> 
+												<TD  class="bg-dddddd">&nbsp;
+													<span class="txt-1"> 
 													<b> cat #: </b>
 													<?php 
 														echo $line2['links_cat_1'];echo '  ';
@@ -217,8 +217,8 @@
 													?>
 												</TD>
 												<!----------results id #### (row 4: !C-2i) --------->
-												<TD  bgcolor=#DDDDDD>&nbsp;
-													<font face="Verdana, sans-serif" size=2> 
+												<TD  class="bg-dddddd">&nbsp;
+													<span class="txt-2"> 
 													<b> id: </b>
 													<?php echo $line2['id'];?>
 												</TD>
@@ -230,7 +230,7 @@
 			</td></tr></table>
 	<table>
 		<tr>
-			<font size=1>
+			<span class="txt-1">
 			&nbsp;  
 		</tr>
 	</table>

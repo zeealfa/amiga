@@ -41,10 +41,10 @@ $pagination_html = render_pagination_menu($page_no, $total_no_of_pages, $second_
 <!-------- Pagination menu top ------------>
 <center>
 <p>
-<font face="Verdana, sans-serif" size=2>
+<span class="txt-2">
 Page <?php echo $page_no." of ".$total_no_of_pages; ?>
 <?php echo $pagination_html; ?>
-</font>
+</span>
 </p>
 </br>
 </center>
@@ -77,10 +77,10 @@ while($line2 = mysqli_fetch_array($result)){
 <!-------- Pagination menu bottom ------------>
 <center>
 <p>
-<font face="Verdana, sans-serif" size=2>
+<span class="txt-2">
 Page <?php echo $page_no." of ".$total_no_of_pages; ?>
 <?php echo $pagination_html; ?>
-</font>
+</span>
 </p>
 </br></br>
 </center>
