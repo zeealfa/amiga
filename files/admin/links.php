@@ -255,13 +255,13 @@ unset($_SESSION['flash_message']);
 											<input type="hidden" name="field" value="dead">
 											<input type="hidden" name="return_qs" value="<?php echo htmlspecialchars($full_qs); ?>">
 											<input type="submit" value="<?php echo $link['links_dead'] ? 'Mark Not Dead' : 'Mark Dead'; ?>" class="txt-1">
-										</form>
+										</form> |
 										<form method="post" action="link_quick_action.php" style="display:inline;">
 											<input type="hidden" name="id" value="<?php echo (int) $link['id']; ?>">
 											<input type="hidden" name="field" value="verified">
 											<input type="hidden" name="return_qs" value="<?php echo htmlspecialchars($full_qs); ?>">
 											<input type="submit" value="<?php echo $link['links_verified'] ? 'Unverify' : 'Mark Verified'; ?>" class="txt-1">
-										</form>
+										</form> |
 										<a href="https://web.archive.org/web/*/<?php echo urlencode($link['links_url']); ?>" target="_blank">Archive.org</a>
 <?php endif; ?>
 									</span></td>
