@@ -172,12 +172,20 @@ document.addEventListener('DOMContentLoaded', function () {
 									<tr>
 										<td align="right" valign="top"><b>Categories (up to 5):</b></td>
 										<td>
-<?php foreach ($category_tree as $main): ?>
-											<div><b><?php echo htmlspecialchars($main['title']); ?></b></div>
-<?php foreach ($main['subs'] as $sub_id => $sub_title): ?>
-											<label><input type="checkbox" name="links_cats[]" value="<?php echo (int) $sub_id; ?>" <?php echo in_array($sub_id, $values['links_cats']) ? 'checked' : ''; ?>> <?php echo htmlspecialchars($sub_title); ?></label><br>
-<?php endforeach; ?>
-<?php endforeach; ?>
+<?php
+function render_cat_checkboxes($nodes, $depth, $selected) {
+    foreach ($nodes as $node) {
+        echo str_repeat('&nbsp;&nbsp;&nbsp;&nbsp;', $depth)
+            . '<label><input type="checkbox" name="links_cats[]" value="' . $node['id'] . '" '
+            . (in_array($node['id'], $selected, true) ? 'checked' : '') . '> '
+            . htmlspecialchars($node['title']) . '</label><br>';
+        if (!empty($node['children'])) {
+            render_cat_checkboxes($node['children'], $depth + 1, $selected);
+        }
+    }
+}
+render_cat_checkboxes($category_tree, 0, $values['links_cats']);
+?>
 										</td>
 									</tr>
 									<tr>

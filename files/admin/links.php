@@ -82,6 +82,22 @@ mysqli_stmt_close($stmt);
 
 $category_tree = get_category_tree($myConnection);
 
+function find_cat_title($nodes, $target_id)
+{
+    foreach ($nodes as $node) {
+        if ($node['id'] === $target_id) {
+            return $node['title'];
+        }
+        if (!empty($node['children'])) {
+            $found = find_cat_title($node['children'], $target_id);
+            if ($found !== null) {
+                return $found;
+            }
+        }
+    }
+    return null;
+}
+
 $url_prefix = 'search=' . urlencode($search) . '&status=' . urlencode($status)
     . '&cat_id=' . urlencode((string) $cat_id) . '&show_deleted=' . ($show_deleted ? '1' : '0')
     . '&sort=' . urlencode($sort) . '&dir=' . urlencode($dir) . '&';
@@ -142,13 +158,18 @@ $base_qs = 'search=' . urlencode($search) . '&status=' . urlencode($status)
 								Category:
 								<select name="cat_id">
 									<option value="">All</option>
-									<?php foreach ($category_tree as $main): ?>
-									<optgroup label="<?php echo htmlspecialchars($main['title']); ?>">
-										<?php foreach ($main['subs'] as $sub_id => $sub_title): ?>
-										<option value="<?php echo (int) $sub_id; ?>" <?php echo $cat_id === (int) $sub_id ? 'selected' : ''; ?>><?php echo htmlspecialchars($sub_title); ?></option>
-										<?php endforeach; ?>
-									</optgroup>
-									<?php endforeach; ?>
+									<?php
+									function render_cat_filter_options($nodes, $depth, $cat_id) {
+										foreach ($nodes as $node) {
+											echo '<option value="' . $node['id'] . '" ' . ($cat_id === $node['id'] ? 'selected' : '') . '>'
+												. str_repeat('&mdash;&nbsp;', $depth) . htmlspecialchars($node['title']) . '</option>';
+											if (!empty($node['children'])) {
+												render_cat_filter_options($node['children'], $depth + 1, $cat_id);
+											}
+										}
+									}
+									render_cat_filter_options($category_tree, 0, $cat_id);
+									?>
 								</select>
 								<label><input type="checkbox" name="show_deleted" value="1" <?php echo $show_deleted ? 'checked' : ''; ?>> Show deleted</label>
 								<input type="submit" value="Apply" class="bg-slateblue" style="color:#ffffff; font-weight:bold;">
@@ -175,12 +196,10 @@ $base_qs = 'search=' . urlencode($search) . '&status=' . urlencode($status)
 <?php
     $cat_ids = array_filter([$link['links_cat_1'], $link['links_cat_2'], $link['links_cat_3'], $link['links_cat_4'], $link['links_cat_5']]);
     $cat_label = '&mdash;';
-    foreach ($category_tree as $main) {
-        foreach ($main['subs'] as $sub_id => $sub_title) {
-            if (in_array($sub_id, $cat_ids)) {
-                $cat_label = htmlspecialchars($sub_title) . (count($cat_ids) > 1 ? ' +' . (count($cat_ids) - 1) . ' more' : '');
-                break 2;
-            }
+    if (!empty($cat_ids)) {
+        $first_title = find_cat_title($category_tree, (int) reset($cat_ids));
+        if ($first_title !== null) {
+            $cat_label = htmlspecialchars($first_title) . (count($cat_ids) > 1 ? ' +' . (count($cat_ids) - 1) . ' more' : '');
         }
     }
     $status_parts = [];

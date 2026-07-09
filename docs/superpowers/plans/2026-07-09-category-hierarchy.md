@@ -1343,8 +1343,8 @@ Expected: `No syntax errors detected` for both.
 
 - [ ] **Step 5: Manual browser checks**
 
-1. On `links.php`, open the Category filter dropdown and confirm it shows all 19 root categories with their children indented beneath, filter by INTERVIEWS (id 41), and confirm the same links show as before this plan started.
-2. On `links.php`'s browse table, confirm a link that has a category assigned still shows the correct category label in the "Category" column (spot-check at least one link that was affected by the `42`→`41` remap in Task 1 — it should now show "INTERVIEWS", not blank/wrong).
+1. On `links.php`, open the Category filter dropdown and confirm it shows all 19 root categories with their children indented beneath, filter by INTERVIEWS (id 1017), and confirm the same links show as before this plan started.
+2. On `links.php`'s browse table, confirm a link that has a category assigned still shows the correct category label in the "Category" column (spot-check at least one link that was affected by the `42`→`41` remap in Task 1 — it should now show "AROS/MORPH/AMITHLON/ETC...", not blank/wrong).
 3. On `link_form.php` (edit an existing link), confirm the category checkboxes render at the correct nesting depth and the link's previously-assigned categories are still checked.
 4. Confirm the existing 5-category-max JS enforcement (`enforceCategoryLimit()`, unchanged in this task) still disables unchecked boxes once 5 are checked.
 
