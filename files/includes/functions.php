@@ -144,3 +144,31 @@ function get_category_tree($myConnection)
 
     return $build(0);
 }
+
+// Returns a flat array of ints: $cat_id itself plus every descendant
+// category id, regardless of the active flag (a link tagged with an
+// inactive category should still be findable if reached directly, same
+// as content_categories.php not filtering the requested cat_id by
+// active). Used to roll up a category page's link listing to include
+// links tagged with any child/grandchild/etc. category.
+function get_category_descendant_ids($myConnection, $cat_id)
+{
+    $result = mysqli_query($myConnection, "SELECT id, parent_id FROM t_categories");
+
+    $by_parent = [];
+    while ($row = mysqli_fetch_assoc($result)) {
+        $key = $row['parent_id'] === null ? 0 : (int) $row['parent_id'];
+        $by_parent[$key][] = (int) $row['id'];
+    }
+
+    $ids = [(int) $cat_id];
+    $collect = function ($parent_id) use (&$collect, &$ids, $by_parent) {
+        foreach ($by_parent[$parent_id] ?? [] as $child_id) {
+            $ids[] = $child_id;
+            $collect($child_id);
+        }
+    };
+    $collect((int) $cat_id);
+
+    return $ids;
+}
