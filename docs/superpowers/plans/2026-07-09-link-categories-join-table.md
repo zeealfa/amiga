@@ -25,12 +25,15 @@
 -- unused (deferred cleanup, same pattern as t_cat_main/t_cat_sub after
 -- the category-hierarchy migration).
 
+-- No FOREIGN KEY constraints: t_links is MyISAM, which cannot be the
+-- target of an InnoDB foreign key (errno 150). Matches the existing
+-- schema's style anyway -- links_cat_1..5 never had FK enforcement
+-- either. Referential integrity to t_links/t_categories is enforced in
+-- application code only.
 CREATE TABLE t_link_categories (
     link_id INT NOT NULL,
     category_id INT UNSIGNED NOT NULL,
-    PRIMARY KEY (link_id, category_id),
-    CONSTRAINT fk_t_link_categories_link FOREIGN KEY (link_id) REFERENCES t_links(id),
-    CONSTRAINT fk_t_link_categories_category FOREIGN KEY (category_id) REFERENCES t_categories(id)
+    PRIMARY KEY (link_id, category_id)
 );
 
 -- Backfill from links_cat_1..5 (links_cat_6..10 are confirmed always 0,
