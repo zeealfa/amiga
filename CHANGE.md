@@ -154,3 +154,25 @@ Put all of the above — the login system, the header links, the header
 tidy-up, and the color renaming — onto the live working site (not the real
 public site) and confirmed every uploaded file matches exactly what was
 tested locally before calling it done.
+
+---
+
+## 2026-07-09 (admin link management)
+
+Gave admins a real screen for managing the site's link directory, instead of
+needing to edit the database directly. Admins can now browse every link in
+one sortable, filterable, paginated list (search by name/URL/author,
+narrow down by category or status), add a brand-new link, edit an existing
+one, and remove a link — with every add/edit going through a preview screen
+first so the admin can see exactly how the link will look before it's
+saved. Removing a link doesn't erase it outright: it's hidden from the
+normal list but can still be found and brought back later via a "Show
+Deleted" option, so a mistaken removal isn't permanent.
+
+While reviewing this new screen before calling it finished, found and
+closed two security gaps it introduced: the link web address field would
+have accepted a disguised, harmful web address as if it were a normal one,
+and the link name/author/description fields would have accepted hidden
+code instead of just plain text. Both are now blocked before anything gets
+saved. Also tightened the "restore a removed link" button so it needs a
+confirmed click rather than acting the instant the link is visited.
