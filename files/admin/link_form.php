@@ -182,12 +182,16 @@ document.addEventListener('DOMContentLoaded', function () {
 function render_cat_checkboxes($nodes, $depth, $selected) {
     foreach ($nodes as $node) {
         $is_root = $depth === 0;
-        echo str_repeat('&nbsp;&nbsp;&nbsp;&nbsp;', $depth)
-            . '<label' . ($is_root ? ' style="font-weight:bold;font-style:italic;"' : '') . '>'
-            . '<input type="checkbox" name="links_cats[]" value="' . $node['id'] . '" '
-            . ($is_root ? 'disabled ' : '')
-            . (in_array($node['id'], $selected, true) ? 'checked' : '') . '> '
-            . htmlspecialchars($node['title']) . '</label><br>';
+        if ($is_root) {
+            echo str_repeat('&nbsp;&nbsp;&nbsp;&nbsp;', $depth)
+                . '<span style="font-weight:bold;font-style:italic;">'
+                . htmlspecialchars($node['title']) . '</span><br>';
+        } else {
+            echo str_repeat('&nbsp;&nbsp;&nbsp;&nbsp;', $depth)
+                . '<label><input type="checkbox" name="links_cats[]" value="' . $node['id'] . '" '
+                . (in_array($node['id'], $selected, true) ? 'checked' : '') . '> '
+                . htmlspecialchars($node['title']) . '</label><br>';
+        }
         if (!empty($node['children'])) {
             render_cat_checkboxes($node['children'], $depth + 1, $selected);
         }
