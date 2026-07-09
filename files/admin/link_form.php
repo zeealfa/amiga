@@ -181,8 +181,11 @@ document.addEventListener('DOMContentLoaded', function () {
 <?php
 function render_cat_checkboxes($nodes, $depth, $selected) {
     foreach ($nodes as $node) {
+        $is_root = $depth === 0;
         echo str_repeat('&nbsp;&nbsp;&nbsp;&nbsp;', $depth)
-            . '<label><input type="checkbox" name="links_cats[]" value="' . $node['id'] . '" '
+            . '<label' . ($is_root ? ' style="font-weight:bold;font-style:italic;"' : '') . '>'
+            . '<input type="checkbox" name="links_cats[]" value="' . $node['id'] . '" '
+            . ($is_root ? 'disabled ' : '')
             . (in_array($node['id'], $selected, true) ? 'checked' : '') . '> '
             . htmlspecialchars($node['title']) . '</label><br>';
         if (!empty($node['children'])) {
