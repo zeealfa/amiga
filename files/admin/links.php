@@ -129,6 +129,9 @@ $full_qs = $base_qs . '&sort=' . urlencode($sort) . '&dir=' . urlencode($dir)
     . '&page_no=' . $page_no;
 $flash = $_SESSION['flash_message'] ?? null;
 unset($_SESSION['flash_message']);
+// Quick-action buttons (Mark Dead/Verified, Archive.org) are built but hidden for now.
+// Flip to true to show them again; link_quick_action.php still works either way.
+$show_quick_actions = false;
 ?>
 <!DOCTYPE html>
 <html>
@@ -249,7 +252,9 @@ unset($_SESSION['flash_message']);
 										<a href="link_delete.php?id=<?php echo (int) $link['id']; ?>&action=restore">Restore</a>
 <?php else: ?>
 										<a href="link_form.php?id=<?php echo (int) $link['id']; ?>">Edit</a> |
-										<a href="link_delete.php?id=<?php echo (int) $link['id']; ?>">Delete</a> |
+										<a href="link_delete.php?id=<?php echo (int) $link['id']; ?>">Delete</a>
+<?php if ($show_quick_actions): ?>
+										|
 										<form method="post" action="link_quick_action.php" style="display:inline;">
 											<input type="hidden" name="id" value="<?php echo (int) $link['id']; ?>">
 											<input type="hidden" name="field" value="dead">
@@ -263,6 +268,7 @@ unset($_SESSION['flash_message']);
 											<input type="submit" value="<?php echo $link['links_verified'] ? 'Unverify' : 'Mark Verified'; ?>" class="txt-1">
 										</form> |
 										<a href="https://web.archive.org/web/*/<?php echo urlencode($link['links_url']); ?>" target="_blank">Archive.org</a>
+<?php endif; ?>
 <?php endif; ?>
 									</span></td>
 								</tr>
