@@ -176,3 +176,26 @@ and the link name/author/description fields would have accepted hidden
 code instead of just plain text. Both are now blocked before anything gets
 saved. Also tightened the "restore a removed link" button so it needs a
 confirmed click rather than acting the instant the link is visited.
+
+---
+
+## 2026-07-09 (category structure rebuild)
+
+Rebuilt how the site's categories are stored so they can now be nested as
+deep as needed, instead of being stuck at exactly two levels (a main
+category and one sub-category under it). Admins get a new screen to add,
+edit, remove, and reorder categories at any depth, with simple up/down
+buttons to control the order they appear in (kept deliberately simple, no
+drag-and-drop, so it keeps working in very old browsers).
+
+While rebuilding this, found and fixed two data problems that were already
+quietly present: one category's web address didn't match the ID used to
+file links under it (so visiting it from the sidebar could show the wrong
+page), and two whole categories — used by 40 existing links — had become
+invisible everywhere because of a broken internal reference. Both are now
+fixed and those categories are visible and working again. A handful of
+links (25) also had a leftover placeholder category value from years ago,
+which has been cleared out.
+
+The old two-table category storage is left in place, untouched, to be
+cleaned up later — nothing currently uses it anymore.
