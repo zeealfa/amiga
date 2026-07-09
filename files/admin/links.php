@@ -291,5 +291,95 @@ $show_quick_actions = false;
 
 <?php require __DIR__ . '/_footer.php'; ?>
 
+<script>
+function checkAllRequestUrlStatus(url, applyResult) {
+    if (window.fetch) {
+        fetch('link_url_check.php?url=' + encodeURIComponent(url), {
+            headers: { 'X-Requested-With': 'XMLHttpRequest' }
+        })
+            .then(function (response) { return response.json(); })
+            .then(function (data) { applyResult(data.status); })
+            .catch(function () { applyResult('down'); });
+        return;
+    }
+
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', 'link_url_check.php?url=' + encodeURIComponent(url), true);
+    xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4) {
+            if (xhr.status === 200) {
+                try {
+                    applyResult(JSON.parse(xhr.responseText).status);
+                } catch (e) {
+                    applyResult('down');
+                }
+            } else {
+                applyResult('down');
+            }
+        }
+    };
+    xhr.send();
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    var btn = document.getElementById('check_all_links_btn');
+    if (!btn) {
+        return;
+    }
+
+    btn.addEventListener('click', function () {
+        var rows = document.querySelectorAll('tr[data-link-id]');
+        var queue = [];
+        rows.forEach(function (row) {
+            var urlCell = row.querySelector('td:nth-child(2) span.txt-1');
+            var statusEl = row.querySelector('[data-url-status]');
+            if (urlCell && statusEl) {
+                queue.push({ url: urlCell.textContent, statusEl: statusEl });
+            }
+        });
+
+        if (queue.length === 0) {
+            return;
+        }
+
+        btn.disabled = true;
+        btn.textContent = 'Checking...';
+
+        var remaining = queue.length;
+        var concurrency = 4;
+
+        function runNext() {
+            if (queue.length === 0) {
+                return;
+            }
+            var item = queue.shift();
+            item.statusEl.textContent = '...';
+            item.statusEl.style.color = '#666666';
+            checkAllRequestUrlStatus(item.url, function (status) {
+                if (status === 'up') {
+                    item.statusEl.textContent = String.fromCharCode(0x2713);
+                    item.statusEl.style.color = '#008000';
+                } else {
+                    item.statusEl.textContent = String.fromCharCode(0x2717);
+                    item.statusEl.style.color = '#c70000';
+                }
+                remaining -= 1;
+                if (remaining === 0) {
+                    btn.disabled = false;
+                    btn.textContent = 'Check All';
+                } else {
+                    runNext();
+                }
+            });
+        }
+
+        for (var i = 0; i < concurrency && i < queue.length; i++) {
+            runNext();
+        }
+    });
+});
+</script>
+
 </body>
 </html>
