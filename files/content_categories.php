@@ -3,15 +3,15 @@
 		<td> 
 			<?php	
 			$cat_id = intval($_GET['cat_id']);
-			$stmt = mysqli_prepare($myConnection, "SELECT * FROM t_cat_sub where cat_sub_id=?");
+			$stmt = mysqli_prepare($myConnection, "SELECT * FROM t_categories where id=?");
 			mysqli_stmt_bind_param($stmt, "i", $cat_id);
 			mysqli_stmt_execute($stmt);
 			$query1 = mysqli_stmt_get_result($stmt);
 			$line1=mysqli_fetch_array($query1, MYSQLI_ASSOC);
 
 				do{
-					$ph=$line1['cat_sub_title'];
-					$pd=$line1['cat_sub_desc'];
+					$ph=$line1['title'];
+					$pd=$line1['description'];
 			?>
 			
 			<?php 

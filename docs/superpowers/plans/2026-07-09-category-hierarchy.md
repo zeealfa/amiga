@@ -438,7 +438,7 @@ Expected: `No syntax errors detected`.
 
 - [ ] **Step 3: Manual browser check**
 
-Visit `entry_categories.php?cat_id=41` (INTERVIEWS) locally and confirm the page header shows "INTERVIEWS" and its description, and the link listing below still shows the correct links (same as before migration, since `table_result_cat.php` is unchanged).
+Visit `entry_categories.php?cat_id=1017` (INTERVIEWS) locally and confirm the page header shows "INTERVIEWS" and its description, and the link listing below still shows the correct links (same as before migration, since `table_result_cat.php` is unchanged).
 
 Visit `entry_categories.php?cat_id=43` ("Companies", a promoted-orphan root category) and confirm it now renders correctly with its title/description and its 40-way-shared links — previously this category was unreachable from any UI.
 
