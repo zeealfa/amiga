@@ -302,3 +302,17 @@ On the admin "Manage Links" screen, a link's web address is now
 clickable and opens the actual site in a new browser tab, instead of
 just being plain text an admin had to copy and paste elsewhere to
 visit.
+
+---
+
+## 2026-07-09 (news admin)
+
+Built a real news editor for admins, replacing an old, broken, unlocked
+prototype that silently failed to save new posts (it saved to a table
+the site doesn't actually use). Admins can now browse, search, and
+page through news posts; add or edit a post using a proper formatting
+toolbar (bold, lists, links, tables) instead of typing raw website
+code by hand; preview exactly how a post will look on the homepage
+before saving; publish or unpublish a post with one click; and delete
+a post (recoverable later via "Show Deleted") instead of losing it
+for good.
