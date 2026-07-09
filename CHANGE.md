@@ -224,3 +224,16 @@ pages — visitors were never meant to see that.
 The old five-slot columns are left in place, untouched, to be cleaned up
 later alongside the other deferred cleanup items — nothing currently uses
 them anymore.
+
+---
+
+## 2026-07-09 (link URL status check)
+
+Added a small live indicator on the admin "Add/Edit Link" screen: next to
+the web address field, a green checkmark or red cross now shows whether
+that address currently loads, checked automatically as soon as the page
+opens (when editing an existing link) and again a moment after typing a
+new or changed address. This is just a quick visual hint for the admin
+while filling out the form — it doesn't change or save anything on its
+own; the "Dead" checkbox still has to be set and saved manually as
+before.
