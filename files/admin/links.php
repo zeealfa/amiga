@@ -125,6 +125,10 @@ function sort_link($column, $label, $current_sort, $current_dir, $base_qs)
 
 $base_qs = 'search=' . urlencode($search) . '&status=' . urlencode($status)
     . '&cat_id=' . urlencode((string) $cat_id) . '&show_deleted=' . ($show_deleted ? '1' : '0');
+$full_qs = $base_qs . '&sort=' . urlencode($sort) . '&dir=' . urlencode($dir)
+    . '&page_no=' . $page_no;
+$flash = $_SESSION['flash_message'] ?? null;
+unset($_SESSION['flash_message']);
 ?>
 <!DOCTYPE html>
 <html>
@@ -154,6 +158,13 @@ $base_qs = 'search=' . urlencode($search) . '&status=' . urlencode($status)
 							<span class="txt-4-white"><b>MANAGE LINKS</b></span>
 						</td>
 					</tr>
+<?php if ($flash): ?>
+					<tr>
+						<td class="bg-orange" style="padding:8px;">
+							<span class="txt-2-black"><?php echo htmlspecialchars($flash); ?></span>
+						</td>
+					</tr>
+<?php endif; ?>
 					<tr>
 						<td class="bg-whitesmoke" style="padding:12px;">
 							<form method="get" action="links.php">
