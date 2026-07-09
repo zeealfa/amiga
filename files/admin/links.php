@@ -208,6 +208,7 @@ $show_quick_actions = false;
 								<td style="white-space:nowrap;"><a href="link_form.php" class="bg-green" style="color:#ffffff; font-weight:bold; padding:4px 10px; text-decoration:none;">+ Add Link</a></td>
 								</tr></table>
 							</form>
+							<button type="button" id="check_all_links_btn" class="txt-1">Check All</button>
 						</td>
 					</tr>
 					<tr>
@@ -240,9 +241,9 @@ $show_quick_actions = false;
     if ($link['links_recommended']) { $status_parts[] = 'recommended'; }
     if ($link['links_deleted_at'] !== null) { $status_parts[] = 'DELETED'; }
 ?>
-								<tr>
+								<tr<?php echo $link['links_deleted_at'] === null ? ' data-link-id="' . (int) $link['id'] . '"' : ''; ?>>
 									<td><span class="txt-2-black"><?php echo htmlspecialchars($link['links_name']); ?></span></td>
-									<td><span class="txt-1"><?php echo htmlspecialchars($link['links_url']); ?></span></td>
+									<td><span class="txt-1"><?php echo htmlspecialchars($link['links_url']); ?></span><?php if ($link['links_deleted_at'] === null): ?><span class="txt-1" data-url-status></span><?php endif; ?></td>
 									<td><span class="txt-1"><?php echo $cat_label; ?></span></td>
 									<td><span class="txt-1"><?php echo htmlspecialchars(implode(', ', $status_parts)); ?></span></td>
 									<td><span class="txt-1">
