@@ -114,7 +114,7 @@ $adjacents = "2";
 <?php
 $result_count = mysqli_query(
 $myConnection,
-"SELECT COUNT(*) As total_records FROM t_news where news_active='1'"
+"SELECT COUNT(*) As total_records FROM t_news where news_active='1' AND news_deleted_at IS NULL"
 );
 $total_records = mysqli_fetch_array($result_count);
 $total_records = $total_records['total_records'];
@@ -139,7 +139,7 @@ Page <?php echo $page_no." of ".$total_no_of_pages; ?>
 
  <?php
 
-		$stmt = mysqli_prepare($myConnection, "SELECT * FROM t_news where news_active='1' ORDER BY news_date DESC LIMIT ?, ?");
+		$stmt = mysqli_prepare($myConnection, "SELECT * FROM t_news where news_active='1' AND news_deleted_at IS NULL ORDER BY news_date DESC LIMIT ?, ?");
 		mysqli_stmt_bind_param($stmt, "ii", $offset, $total_records_per_page);
 		mysqli_stmt_execute($stmt);
 		$result = mysqli_stmt_get_result($stmt);
