@@ -347,7 +347,7 @@ document.addEventListener('DOMContentLoaded', function () {
         btn.textContent = 'Checking...';
 
         var remaining = queue.length;
-        var concurrency = 4;
+        var concurrency = queue.length;
 
         function runNext() {
             if (queue.length === 0) {
