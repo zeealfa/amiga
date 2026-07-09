@@ -107,8 +107,8 @@ function enforceCategoryLimit() {
         }
     });
 }
-var urlCheckTimer = null;
 var urlCheckSeq = 0;
+var lastCheckedUrl = null;
 
 function requestUrlStatus(url, seq, statusEl) {
     function applyResult(status) {
@@ -163,6 +163,8 @@ function checkUrlStatus() {
     urlCheckSeq += 1;
     var seq = urlCheckSeq;
 
+    lastCheckedUrl = value;
+
     if (value === '') {
         statusEl.textContent = '';
         return;
@@ -181,11 +183,11 @@ document.addEventListener('DOMContentLoaded', function () {
     enforceCategoryLimit();
 
     var urlField = document.getElementById('links_url');
-    urlField.addEventListener('input', function () {
-        if (urlCheckTimer) {
-            clearTimeout(urlCheckTimer);
+    urlField.addEventListener('blur', function () {
+        var value = urlField.value.replace(/^\s+|\s+$/g, '');
+        if (value !== lastCheckedUrl) {
+            checkUrlStatus();
         }
-        urlCheckTimer = setTimeout(checkUrlStatus, 600);
     });
 
     if (urlField.value.replace(/^\s+|\s+$/g, '') !== '') {
