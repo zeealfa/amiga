@@ -2,3 +2,4 @@ error_log
 docs/audit/*.sql
 
 .worktrees/
+.superpowers/
