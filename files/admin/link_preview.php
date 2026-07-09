@@ -92,7 +92,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm_save'])) {
 
     if (!empty($data['links_cats'])) {
         $stmt = mysqli_prepare($myConnection, "INSERT INTO t_link_categories (link_id, category_id) VALUES (?, ?)");
-        foreach ($data['links_cats'] as $category_id) {
+        foreach (array_unique($data['links_cats']) as $category_id) {
             mysqli_stmt_bind_param($stmt, 'ii', $link_id, $category_id);
             mysqli_stmt_execute($stmt);
         }
