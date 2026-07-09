@@ -63,3 +63,79 @@ function render_pagination_menu($page_no, $total_no_of_pages, $second_last, $adj
 
     return $out;
 }
+
+// Returns rows from t_links whose links_url contains any whitespace-separated
+// token from $url (case-insensitive), excluding soft-deleted rows.
+// Ports the substring-match logic from files/ata/a_links_check_02.php into a
+// reusable, prepared-statement-based function.
+function find_similar_link_urls($myConnection, $url, $exclude_id = null)
+{
+    $needle = preg_replace("#^[^:/.]*[:/]+#i", "", $url);
+    $tokens = array_filter(explode(' ', $needle), function ($t) {
+        return trim($t) !== '';
+    });
+
+    if (empty($tokens)) {
+        return [];
+    }
+
+    $sql = "SELECT id, links_name, links_url FROM t_links WHERE links_deleted_at IS NULL";
+    $types = '';
+    $params = [];
+
+    if ($exclude_id !== null) {
+        $sql .= " AND id <> ?";
+        $types .= 'i';
+        $params[] = $exclude_id;
+    }
+
+    $conditions = [];
+    foreach ($tokens as $token) {
+        $conditions[] = "links_url LIKE ?";
+        $types .= 's';
+        $params[] = '%' . $token . '%';
+    }
+    $sql .= " AND (" . implode(' OR ', $conditions) . ")";
+    $sql .= " ORDER BY links_name ASC";
+
+    $stmt = mysqli_prepare($myConnection, $sql);
+    mysqli_stmt_bind_param($stmt, $types, ...$params);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+
+    $matches = [];
+    while ($row = mysqli_fetch_assoc($result)) {
+        $matches[] = $row;
+    }
+    mysqli_stmt_close($stmt);
+
+    return $matches;
+}
+
+// Returns active categories as a nested array:
+// [cat_main_id => ['title' => string, 'subs' => [cat_sub_id => sub_title, ...]], ...]
+// Ordered by cat_main_title, then cat_sub_title within each group.
+function get_category_tree($myConnection)
+{
+    $tree = [];
+
+    $result = mysqli_query(
+        $myConnection,
+        "SELECT cat_main_id, cat_main_title FROM t_cat_main WHERE cat_main_active = 1 ORDER BY cat_main_title ASC"
+    );
+    while ($row = mysqli_fetch_assoc($result)) {
+        $tree[$row['cat_main_id']] = ['title' => $row['cat_main_title'], 'subs' => []];
+    }
+
+    $result = mysqli_query(
+        $myConnection,
+        "SELECT cat_sub_id, cat_sub_ref_main_id, cat_sub_title FROM t_cat_sub WHERE cat_sub_active = 1 ORDER BY cat_sub_title ASC"
+    );
+    while ($row = mysqli_fetch_assoc($result)) {
+        if (isset($tree[$row['cat_sub_ref_main_id']])) {
+            $tree[$row['cat_sub_ref_main_id']]['subs'][$row['cat_sub_id']] = $row['cat_sub_title'];
+        }
+    }
+
+    return $tree;
+}
