@@ -25,11 +25,11 @@ $values = [
 ];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $values['links_name'] = trim($_POST['links_name'] ?? '');
+    $values['links_name'] = strip_tags(trim($_POST['links_name'] ?? ''));
     $values['links_url'] = trim($_POST['links_url'] ?? '');
-    $values['links_author'] = trim($_POST['links_author'] ?? '');
+    $values['links_author'] = strip_tags(trim($_POST['links_author'] ?? ''));
     $values['links_email'] = trim($_POST['links_email'] ?? '');
-    $values['links_desc'] = trim($_POST['links_desc'] ?? '');
+    $values['links_desc'] = strip_tags(trim($_POST['links_desc'] ?? ''));
     $values['links_cats'] = array_map('intval', $_POST['links_cats'] ?? []);
     $values['links_date_added'] = trim($_POST['links_date_added'] ?? date('Y-m-d'));
     $values['links_active'] = isset($_POST['links_active']);
@@ -42,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     if ($values['links_url'] === '') {
         $errors[] = 'URL is required.';
-    } elseif (!filter_var($values['links_url'], FILTER_VALIDATE_URL)) {
+    } elseif (!filter_var($values['links_url'], FILTER_VALIDATE_URL) || !in_array(strtolower((string) parse_url($values['links_url'], PHP_URL_SCHEME)), ['http', 'https'], true)) {
         $errors[] = 'URL is not a well-formed URL.';
     }
     if ($values['links_email'] !== '' && !filter_var($values['links_email'], FILTER_VALIDATE_EMAIL)) {

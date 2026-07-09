@@ -24,7 +24,7 @@ if (!$link) {
     exit;
 }
 
-if ($action === 'restore') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && $action === 'restore' && isset($_POST['confirm_restore'])) {
     $stmt = mysqli_prepare($myConnection, "UPDATE t_links SET links_deleted_at = NULL WHERE id = ?");
     mysqli_stmt_bind_param($stmt, 'i', $id);
     mysqli_stmt_execute($stmt);
@@ -69,9 +69,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm_delete'])) {
 				<table width="100%" cellpadding="1" cellspacing="1" class="bg-white">
 					<tr>
 						<td align="center" class="bg-red">
-							<span class="txt-4-white"><b>DELETE LINK</b></span>
+							<span class="txt-4-white"><b><?php echo $action === 'restore' ? 'RESTORE LINK' : 'DELETE LINK'; ?></b></span>
 						</td>
 					</tr>
+<?php if ($action === 'restore'): ?>
+					<tr>
+						<td class="bg-whitesmoke" style="padding:16px;">
+							<span class="txt-2-black">
+								Are you sure you want to restore <b><?php echo htmlspecialchars($link['links_name']); ?></b>?
+							</span>
+							<br><br>
+							<center>
+								<form method="post" action="link_delete.php" style="display:inline;">
+									<input type="hidden" name="id" value="<?php echo (int) $link['id']; ?>">
+									<input type="hidden" name="action" value="restore">
+									<input type="hidden" name="confirm_restore" value="1">
+									<input type="submit" value="Confirm Restore" class="bg-green" style="color:#ffffff; font-weight:bold; padding:4px 20px;">
+								</form>
+								<a href="links.php" class="bg-gray" style="padding:4px 20px; font-weight:bold; text-decoration:none;">Cancel</a>
+							</center>
+						</td>
+					</tr>
+<?php else: ?>
 					<tr>
 						<td class="bg-whitesmoke" style="padding:16px;">
 							<span class="txt-2-black">
@@ -89,6 +108,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm_delete'])) {
 							</center>
 						</td>
 					</tr>
+<?php endif; ?>
 				</table>
 			</td></tr>
 		</table>
