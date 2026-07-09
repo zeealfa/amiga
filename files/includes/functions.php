@@ -112,30 +112,35 @@ function find_similar_link_urls($myConnection, $url, $exclude_id = null)
     return $matches;
 }
 
-// Returns active categories as a nested array:
-// [cat_main_id => ['title' => string, 'subs' => [cat_sub_id => sub_title, ...]], ...]
-// Ordered by cat_main_title, then cat_sub_title within each group.
+// Returns active categories as an arbitrary-depth nested tree:
+// [ ['id' => int, 'title' => string, 'title_short' => string, 'children' => [...]], ... ]
+// Root categories (parent_id IS NULL) are the top-level array entries, each
+// recursively nesting its own children in sort_order.
 function get_category_tree($myConnection)
 {
-    $tree = [];
-
     $result = mysqli_query(
         $myConnection,
-        "SELECT cat_main_id, cat_main_title FROM t_cat_main WHERE cat_main_active = 1 ORDER BY cat_main_title ASC"
+        "SELECT id, parent_id, title, title_short FROM t_categories WHERE active = 1 ORDER BY parent_id, sort_order"
     );
+
+    $by_parent = [];
     while ($row = mysqli_fetch_assoc($result)) {
-        $tree[$row['cat_main_id']] = ['title' => $row['cat_main_title'], 'subs' => []];
+        $key = $row['parent_id'] === null ? 0 : (int) $row['parent_id'];
+        $by_parent[$key][] = $row;
     }
 
-    $result = mysqli_query(
-        $myConnection,
-        "SELECT cat_sub_id, cat_sub_ref_main_id, cat_sub_title FROM t_cat_sub WHERE cat_sub_active = 1 ORDER BY cat_sub_title ASC"
-    );
-    while ($row = mysqli_fetch_assoc($result)) {
-        if (isset($tree[$row['cat_sub_ref_main_id']])) {
-            $tree[$row['cat_sub_ref_main_id']]['subs'][$row['cat_sub_id']] = $row['cat_sub_title'];
+    $build = function ($parent_key) use (&$build, $by_parent) {
+        $nodes = [];
+        foreach ($by_parent[$parent_key] ?? [] as $row) {
+            $nodes[] = [
+                'id' => (int) $row['id'],
+                'title' => $row['title'],
+                'title_short' => $row['title_short'],
+                'children' => $build((int) $row['id']),
+            ];
         }
-    }
+        return $nodes;
+    };
 
-    return $tree;
+    return $build(0);
 }
