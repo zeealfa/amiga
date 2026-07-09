@@ -173,7 +173,11 @@ $base_qs = 'search=' . urlencode($search) . '&status=' . urlencode($status)
 									<?php
 									function render_cat_filter_options($nodes, $depth, $cat_id) {
 										foreach ($nodes as $node) {
-											echo '<option value="' . $node['id'] . '" ' . ($cat_id === $node['id'] ? 'selected' : '') . '>'
+											$is_root = $depth === 0;
+											echo '<option value="' . $node['id'] . '" '
+												. ($cat_id === $node['id'] ? 'selected ' : '')
+												. ($is_root ? 'disabled style="font-weight:bold;font-style:italic;"' : '')
+												. '>'
 												. str_repeat('&mdash;&nbsp;', $depth) . htmlspecialchars($node['title']) . '</option>';
 											if (!empty($node['children'])) {
 												render_cat_filter_options($node['children'], $depth + 1, $cat_id);
