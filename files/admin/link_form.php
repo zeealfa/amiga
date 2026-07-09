@@ -127,7 +127,9 @@ function requestUrlStatus(url, seq, statusEl) {
     }
 
     if (window.fetch) {
-        fetch('link_url_check.php?url=' + encodeURIComponent(url))
+        fetch('link_url_check.php?url=' + encodeURIComponent(url), {
+            headers: { 'X-Requested-With': 'XMLHttpRequest' }
+        })
             .then(function (response) { return response.json(); })
             .then(function (data) { applyResult(data.status); })
             .catch(function () { applyResult('down'); });
@@ -136,6 +138,7 @@ function requestUrlStatus(url, seq, statusEl) {
 
     var xhr = new XMLHttpRequest();
     xhr.open('GET', 'link_url_check.php?url=' + encodeURIComponent(url), true);
+    xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
     xhr.onreadystatechange = function () {
         if (xhr.readyState === 4) {
             if (xhr.status === 200) {
