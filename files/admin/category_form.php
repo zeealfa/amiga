@@ -81,6 +81,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($is_edit && $values['parent_id'] === $id) {
         $errors[] = 'A category cannot be its own parent.';
     }
+    if ($is_edit && $values['parent_id'] !== null && empty($errors)) {
+        $descendant_rows = fetch_all_categories_for_dropdown($myConnection);
+        $by_parent = [];
+        foreach ($descendant_rows as $row) {
+            $key = $row['parent_id'] === null ? 0 : (int) $row['parent_id'];
+            $by_parent[$key][] = $row;
+        }
+        $descendants = [];
+        $mark = function ($node_id) use (&$mark, &$descendants, $by_parent) {
+            foreach ($by_parent[$node_id] ?? [] as $child) {
+                $descendants[(int) $child['id']] = true;
+                $mark((int) $child['id']);
+            }
+        };
+        $mark($id);
+        if (isset($descendants[$values['parent_id']])) {
+            $errors[] = 'A category cannot be moved under one of its own descendants.';
+        }
+    }
 
     if (empty($errors)) {
         if ($values['parent_id'] !== null) {
