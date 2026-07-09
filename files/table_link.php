@@ -188,24 +188,7 @@
 												<TD  class="bg-lightgray" width=15%>&nbsp;
 													<span class="txt-2">
 													<?php
-														echo "<a target=\"_blank\" href=$ao".$line2['links_url'].">archive.org</a> {temp}";
-													?>
-												</TD>
-												<!----------results category numbers (row 4: !C-2h) --------->
-												<TD  class="bg-lightgray">&nbsp;
-													<span class="txt-1"> 
-													<b> cat #: </b>
-													<?php 
-														echo $line2['links_cat_1'];echo '  ';
-														echo $line2['links_cat_2'];echo '  ';
-														echo $line2['links_cat_3'];echo '  ';
-														echo $line2['links_cat_4'];echo '  ';
-														echo $line2['links_cat_5'];echo '  ';
-														echo $line2['links_cat_6'];echo '  ';
-														echo $line2['links_cat_7'];echo '  ';
-														echo $line2['links_cat_8'];echo '  ';
-														echo $line2['links_cat_9'];echo '  ';
-														echo $line2['links_cat_10'];echo '  ';
+														echo "<a target=\"_blank\" href=$ao".$line2['links_url'].">archive.org</a>";
 													?>
 												</TD>
 												<!----------results id #### (row 4: !C-2i) --------->
