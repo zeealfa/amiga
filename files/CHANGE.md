@@ -260,3 +260,16 @@ attempt was stopped rather than left to sit. The files were then uploaded
 by hand instead, which completed without the same issue, and every file
 was re-checked afterward to make sure nothing was left out or only
 partly uploaded because of the earlier interruption.
+
+---
+
+## 2026-07-09 (link quick-actions)
+
+Added one-click buttons on the admin "Manage Links" screen: an admin can
+now mark a link dead (or clear that mark) and mark a link verified (or
+clear that mark) directly from the list, without opening the full
+edit-and-preview form. A new "Archive.org" link next to each entry opens
+that link's Wayback Machine history in a new tab. A confirmation message
+now also appears at the top of the list after deleting, restoring, or
+using either new button — previously the page silently dropped that
+confirmation after deleting or restoring a link.
