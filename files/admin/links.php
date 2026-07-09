@@ -243,7 +243,7 @@ $show_quick_actions = false;
 ?>
 								<tr<?php echo $link['links_deleted_at'] === null ? ' data-link-id="' . (int) $link['id'] . '"' : ''; ?>>
 									<td><span class="txt-2-black"><?php echo htmlspecialchars($link['links_name']); ?></span></td>
-									<td><span class="txt-1"><?php echo htmlspecialchars($link['links_url']); ?></span><?php if ($link['links_deleted_at'] === null): ?><span class="txt-1" data-url-status></span><?php endif; ?></td>
+									<td><span class="txt-1"><a href="<?php echo htmlspecialchars($link['links_url']); ?>" target="_blank" rel="noopener noreferrer"><?php echo htmlspecialchars($link['links_url']); ?></a></span><?php if ($link['links_deleted_at'] === null): ?><span class="txt-1" data-url-status></span><?php endif; ?></td>
 									<td><span class="txt-1"><?php echo $cat_label; ?></span></td>
 									<td><span class="txt-1"><?php echo htmlspecialchars(implode(', ', $status_parts)); ?></span></td>
 									<td><span class="txt-1">

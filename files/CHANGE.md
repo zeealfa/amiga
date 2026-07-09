@@ -293,3 +293,12 @@ link dead is still a separate, deliberate action using the existing
 Changed "Check All" to fire every link's check at the same time instead
 of checking them four at a time, so results for a full page of links
 come back faster.
+
+---
+
+## 2026-07-09 (clickable links)
+
+On the admin "Manage Links" screen, a link's web address is now
+clickable and opens the actual site in a new browser tab, instead of
+just being plain text an admin had to copy and paste elsewhere to
+visit.
