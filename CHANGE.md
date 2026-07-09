@@ -199,3 +199,28 @@ which has been cleared out.
 
 The old two-table category storage is left in place, untouched, to be
 cleaned up later — nothing currently uses it anymore.
+
+---
+
+## 2026-07-09 (link categories rebuild)
+
+Replaced the site's old "5 fixed category slots per link" storage with a
+proper flexible system, so a link's category tags are stored as a real
+list instead of being crammed into five always-there-even-if-empty
+columns. Nothing changes for how admins use the category picker when
+adding or editing a link — same up-to-5 limit, same checkbox list — this
+was purely a behind-the-scenes storage improvement.
+
+One real improvement did come out of it: category pages now show links
+filed under any of that category's sub-categories too, not just links
+filed under the exact category being viewed. Previously, visiting a
+parent category and expecting to see everything "under" it would miss
+links that were only tagged with one of its children.
+
+Also removed a small piece of leftover debug text that was quietly
+showing raw internal category numbers next to every link on category
+pages — visitors were never meant to see that.
+
+The old five-slot columns are left in place, untouched, to be cleaned up
+later alongside the other deferred cleanup items — nothing currently uses
+them anymore.
