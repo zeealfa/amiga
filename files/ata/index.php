@@ -13,7 +13,7 @@
   </tr>
   <tr>
     <td width=30%>News</td>
-    <td><a target="_blank" href="a_news.php">View - Edit - Delete - (Add)</a></td>
+    <td><a target="_blank" href="../admin/news.php">Manage News (moved to admin)</a></td>
   </tr>
   <tr>
     <td>Links</td>
