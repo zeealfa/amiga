@@ -61,6 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm_save'])) {
         );
         mysqli_stmt_execute($stmt);
         mysqli_stmt_close($stmt);
+        $link_id = (int) $data['id'];
         $flash = 'Link updated';
     } else {
         $stmt = mysqli_prepare(
@@ -79,8 +80,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm_save'])) {
             $data['links_date_added'], $data['links_active'], $data['links_dead'], $data['links_verified'], $data['links_recommended']
         );
         mysqli_stmt_execute($stmt);
+        $link_id = mysqli_insert_id($myConnection);
         mysqli_stmt_close($stmt);
         $flash = 'Link added';
+    }
+
+    $stmt = mysqli_prepare($myConnection, "DELETE FROM t_link_categories WHERE link_id = ?");
+    mysqli_stmt_bind_param($stmt, 'i', $link_id);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_close($stmt);
+
+    if (!empty($data['links_cats'])) {
+        $stmt = mysqli_prepare($myConnection, "INSERT INTO t_link_categories (link_id, category_id) VALUES (?, ?)");
+        foreach ($data['links_cats'] as $category_id) {
+            mysqli_stmt_bind_param($stmt, 'ii', $link_id, $category_id);
+            mysqli_stmt_execute($stmt);
+        }
+        mysqli_stmt_close($stmt);
     }
 
     unset($_SESSION['link_preview_data']);
