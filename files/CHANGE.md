@@ -237,3 +237,26 @@ new or changed address. This is just a quick visual hint for the admin
 while filling out the form — it doesn't change or save anything on its
 own; the "Dead" checkbox still has to be set and saved manually as
 before.
+
+---
+
+## 2026-07-09 (test site deploy)
+
+Put the recent batch of work — link management, the new nested category
+system, the category-to-link storage rebuild, and the link web address
+checker — onto the test working site (testamigasource.com), so it can be
+tried out somewhere real before going to the actual public site. The
+matching database changes were applied first through the test site's own
+database tool, then every updated file was uploaded. Two old files that
+nothing uses anymore (leftover pieces of the old two-level category
+system) were removed from the test site to match. Every uploaded file was
+then checked directly against the copy kept here to confirm the upload
+matches exactly, with nothing missing or corrupted in transit.
+
+One hiccup along the way: an earlier attempt to upload everything in one
+automated batch appeared to freeze partway through (one file in
+particular showed no sign of finishing after a long wait), so that
+attempt was stopped rather than left to sit. The files were then uploaded
+by hand instead, which completed without the same issue, and every file
+was re-checked afterward to make sure nothing was left out or only
+partly uploaded because of the earlier interruption.
