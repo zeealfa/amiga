@@ -332,7 +332,7 @@ document.addEventListener('DOMContentLoaded', function () {
         var rows = document.querySelectorAll('tr[data-link-id]');
         var queue = [];
         rows.forEach(function (row) {
-            var urlCell = row.querySelector('td:nth-child(2) span.txt-1');
+            var urlCell = row.querySelector('td:nth-child(2) span.txt-1:not([data-url-status])');
             var statusEl = row.querySelector('[data-url-status]');
             if (urlCell && statusEl) {
                 queue.push({ url: urlCell.textContent, statusEl: statusEl });
@@ -360,9 +360,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (status === 'up') {
                     item.statusEl.textContent = String.fromCharCode(0x2713);
                     item.statusEl.style.color = '#008000';
-                } else {
+                } else if (status === 'down') {
                     item.statusEl.textContent = String.fromCharCode(0x2717);
                     item.statusEl.style.color = '#c70000';
+                } else {
+                    item.statusEl.textContent = '';
                 }
                 remaining -= 1;
                 if (remaining === 0) {
