@@ -44,12 +44,8 @@ if ($status === 'active') {
 }
 
 if ($cat_id !== null) {
-    $where[] = '(links_cat_1 = ? OR links_cat_2 = ? OR links_cat_3 = ? OR links_cat_4 = ? OR links_cat_5 = ?)';
-    $types .= 'iiiii';
-    $params[] = $cat_id;
-    $params[] = $cat_id;
-    $params[] = $cat_id;
-    $params[] = $cat_id;
+    $where[] = 'id IN (SELECT link_id FROM t_link_categories WHERE category_id = ?)';
+    $types .= 'i';
     $params[] = $cat_id;
 }
 
@@ -96,6 +92,22 @@ function find_cat_title($nodes, $target_id)
         }
     }
     return null;
+}
+
+// Batch-fetch every displayed link's category ids in one query, keyed by
+// link_id, to avoid an N+1 query per row in the table below.
+$link_cat_ids = [];
+if (!empty($links)) {
+    $link_ids = array_map(fn($l) => (int) $l['id'], $links);
+    $placeholders = implode(',', array_fill(0, count($link_ids), '?'));
+    $cats_stmt = mysqli_prepare($myConnection, "SELECT link_id, category_id FROM t_link_categories WHERE link_id IN ($placeholders) ORDER BY category_id");
+    mysqli_stmt_bind_param($cats_stmt, str_repeat('i', count($link_ids)), ...$link_ids);
+    mysqli_stmt_execute($cats_stmt);
+    $cats_result = mysqli_stmt_get_result($cats_stmt);
+    while ($cat_row = mysqli_fetch_assoc($cats_result)) {
+        $link_cat_ids[(int) $cat_row['link_id']][] = (int) $cat_row['category_id'];
+    }
+    mysqli_stmt_close($cats_stmt);
 }
 
 $url_prefix = 'search=' . urlencode($search) . '&status=' . urlencode($status)
@@ -194,10 +206,10 @@ $base_qs = 'search=' . urlencode($search) . '&status=' . urlencode($status)
 <?php endif; ?>
 <?php foreach ($links as $link): ?>
 <?php
-    $cat_ids = array_filter([$link['links_cat_1'], $link['links_cat_2'], $link['links_cat_3'], $link['links_cat_4'], $link['links_cat_5']]);
+    $cat_ids = $link_cat_ids[(int) $link['id']] ?? [];
     $cat_label = '&mdash;';
     if (!empty($cat_ids)) {
-        $first_title = find_cat_title($category_tree, (int) reset($cat_ids));
+        $first_title = find_cat_title($category_tree, $cat_ids[0]);
         if ($first_title !== null) {
             $cat_label = htmlspecialchars($first_title) . (count($cat_ids) > 1 ? ' +' . (count($cat_ids) - 1) . ' more' : '');
         }
