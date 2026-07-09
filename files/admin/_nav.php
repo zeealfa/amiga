@@ -5,7 +5,7 @@
 	<tr><td class="bg-white"><span class="txt-2">&raquo; Users</span></td></tr>
 	<tr><td class="bg-white"><span class="txt-2">&raquo; News</span></td></tr>
 	<tr><td class="bg-white"><span class="txt-2">&raquo; <a href="links.php">Links</a></span></td></tr>
-	<tr><td class="bg-white"><span class="txt-2">&raquo; Categories</span></td></tr>
+	<tr><td class="bg-white"><span class="txt-2">&raquo; <a href="categories.php">Categories</a></span></td></tr>
 	<tr><td class="bg-white"><span class="txt-2">&raquo; <a href="profile.php">My Profile</a></span></td></tr>
 <?php else: ?>
 	<tr><td class="bg-white"><span class="txt-2">&raquo; My Submissions</span></td></tr>
