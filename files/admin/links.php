@@ -157,9 +157,9 @@ $base_qs = 'search=' . urlencode($search) . '&status=' . urlencode($status)
 					<tr>
 						<td class="bg-whitesmoke" style="padding:12px;">
 							<form method="get" action="links.php">
-								<span class="txt-2-black">
-								Search: <input type="text" name="search" value="<?php echo htmlspecialchars($search); ?>" style="width:180px;">
-								Status:
+								<table cellpadding="0" cellspacing="0" class="txt-2-black"><tr>
+								<td style="white-space:nowrap; padding-right:10px;">Search: <input type="text" name="search" value="<?php echo htmlspecialchars($search); ?>" style="width:180px;"></td>
+								<td style="white-space:nowrap; padding-right:10px;">Status:
 								<select name="status">
 									<option value="all" <?php echo $status === 'all' ? 'selected' : ''; ?>>All</option>
 									<option value="active" <?php echo $status === 'active' ? 'selected' : ''; ?>>Active</option>
@@ -167,7 +167,8 @@ $base_qs = 'search=' . urlencode($search) . '&status=' . urlencode($status)
 									<option value="verified" <?php echo $status === 'verified' ? 'selected' : ''; ?>>Verified</option>
 									<option value="recommended" <?php echo $status === 'recommended' ? 'selected' : ''; ?>>Recommended</option>
 								</select>
-								Category:
+								</td>
+								<td style="white-space:nowrap; padding-right:10px;">Category:
 								<select name="cat_id">
 									<option value="">All</option>
 									<?php
@@ -187,10 +188,11 @@ $base_qs = 'search=' . urlencode($search) . '&status=' . urlencode($status)
 									render_cat_filter_options($category_tree, 0, $cat_id);
 									?>
 								</select>
-								<label><input type="checkbox" name="show_deleted" value="1" <?php echo $show_deleted ? 'checked' : ''; ?>> Show deleted</label>
-								<input type="submit" value="Apply" class="bg-slateblue" style="color:#ffffff; font-weight:bold;">
-								<a href="link_form.php" class="bg-green" style="color:#ffffff; font-weight:bold; padding:4px 10px; text-decoration:none;">+ Add Link</a>
-								</span>
+								</td>
+								<td style="white-space:nowrap; padding-right:10px;"><label><input type="checkbox" name="show_deleted" value="1" <?php echo $show_deleted ? 'checked' : ''; ?>> Show deleted</label></td>
+								<td style="white-space:nowrap; padding-right:10px;"><input type="submit" value="Apply" class="bg-slateblue" style="color:#ffffff; font-weight:bold;"></td>
+								<td style="white-space:nowrap;"><a href="link_form.php" class="bg-green" style="color:#ffffff; font-weight:bold; padding:4px 10px; text-decoration:none;">+ Add Link</a></td>
+								</tr></table>
 							</form>
 						</td>
 					</tr>

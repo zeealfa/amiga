@@ -236,28 +236,28 @@ document.addEventListener('DOMContentLoaded', function () {
 <?php endif; ?>
 								<table cellpadding="4" cellspacing="0" width="100%">
 									<tr>
-										<td align="right" width="20%"><b>Name:</b></td>
+										<td align="right" width="1%" style="white-space:nowrap;"><b>Name:</b></td>
 										<td><input type="text" name="links_name" value="<?php echo htmlspecialchars($values['links_name']); ?>" style="width:100%;"></td>
 									</tr>
 									<tr>
-										<td align="right"><b>URL:</b></td>
+										<td align="right" width="1%" style="white-space:nowrap;"><b>URL:</b></td>
 										<td><input type="text" id="links_url" name="links_url" value="<?php echo htmlspecialchars($values['links_url']); ?>" style="width:80%;"> <span id="url_status"></span></td>
 									</tr>
 									<tr>
-										<td align="right"><b>Author:</b></td>
+										<td align="right" width="1%" style="white-space:nowrap;"><b>Author:</b></td>
 										<td><input type="text" name="links_author" value="<?php echo htmlspecialchars($values['links_author']); ?>" style="width:100%;"></td>
 									</tr>
 									<tr>
-										<td align="right"><b>Email:</b></td>
+										<td align="right" width="1%" style="white-space:nowrap;"><b>Email:</b></td>
 										<td><input type="text" name="links_email" value="<?php echo htmlspecialchars($values['links_email']); ?>" style="width:100%;"></td>
 									</tr>
 									<tr>
-										<td align="right" valign="top"><b>Description:</b></td>
+										<td align="right" valign="top" width="1%" style="white-space:nowrap;"><b>Description:</b></td>
 										<td><textarea name="links_desc" rows="4" style="width:100%;"><?php echo htmlspecialchars($values['links_desc']); ?></textarea></td>
 									</tr>
 									<tr>
-										<td align="right" valign="top"><b>Categories (up to 5):</b></td>
-										<td>
+										<td align="right" valign="top" width="1%" style="white-space:nowrap;"><b>Categories (up to 5):</b></td>
+										<td class="txt-1">
 <?php
 function render_cat_checkboxes($nodes, $depth, $selected) {
     foreach ($nodes as $node) {
@@ -282,11 +282,11 @@ render_cat_checkboxes($category_tree, 0, $values['links_cats']);
 										</td>
 									</tr>
 									<tr>
-										<td align="right"><b>Date Added:</b></td>
+										<td align="right" width="1%" style="white-space:nowrap;"><b>Date Added:</b></td>
 										<td><input type="date" name="links_date_added" value="<?php echo htmlspecialchars($values['links_date_added']); ?>"></td>
 									</tr>
 									<tr>
-										<td align="right"><b>Status:</b></td>
+										<td align="right" width="1%" style="white-space:nowrap;"><b>Status:</b></td>
 										<td>
 											<label><input type="checkbox" name="links_active" <?php echo $values['links_active'] ? 'checked' : ''; ?>> Active</label>
 											<label><input type="checkbox" name="links_dead" <?php echo $values['links_dead'] ? 'checked' : ''; ?>> Dead</label>
