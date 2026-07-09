@@ -218,11 +218,10 @@ $show_quick_actions = false;
 									<td><span class="txt-2-black"><b>URL</b></span></td>
 									<td><span class="txt-2-black"><b>Category</b></span></td>
 									<td><span class="txt-2-black"><b>Status</b></span></td>
-									<td><span class="txt-2-black"><b><?php echo sort_link('links_date_added', 'Added', $sort, $dir, $base_qs); ?></b></span></td>
 									<td><span class="txt-2-black"><b>Actions</b></span></td>
 								</tr>
 <?php if (empty($links)): ?>
-								<tr><td colspan="6"><span class="txt-2-black">No links found.</span></td></tr>
+								<tr><td colspan="5"><span class="txt-2-black">No links found.</span></td></tr>
 <?php endif; ?>
 <?php foreach ($links as $link): ?>
 <?php
@@ -246,7 +245,6 @@ $show_quick_actions = false;
 									<td><span class="txt-1"><?php echo htmlspecialchars($link['links_url']); ?></span></td>
 									<td><span class="txt-1"><?php echo $cat_label; ?></span></td>
 									<td><span class="txt-1"><?php echo htmlspecialchars(implode(', ', $status_parts)); ?></span></td>
-									<td><span class="txt-1"><?php echo htmlspecialchars($link['links_date_added']); ?></span></td>
 									<td><span class="txt-1">
 <?php if ($link['links_deleted_at'] !== null): ?>
 										<a href="link_delete.php?id=<?php echo (int) $link['id']; ?>&action=restore">Restore</a>
