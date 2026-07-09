@@ -285,3 +285,11 @@ web address as the results come in. This is a live, on-demand look only
 — it doesn't change any link's saved dead/verified status; marking a
 link dead is still a separate, deliberate action using the existing
 "Mark Dead" button.
+
+---
+
+## 2026-07-09 (check all speed)
+
+Changed "Check All" to fire every link's check at the same time instead
+of checking them four at a time, so results for a full page of links
+come back faster.
