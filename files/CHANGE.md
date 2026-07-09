@@ -273,3 +273,15 @@ that link's Wayback Machine history in a new tab. A confirmation message
 now also appears at the top of the list after deleting, restoring, or
 using either new button — previously the page silently dropped that
 confirmation after deleting or restoring a link.
+
+---
+
+## 2026-07-09 (links check all)
+
+Added a "Check All" button to the admin "Manage Links" screen. Clicking
+it checks every link on the current page to see if it's still reachable
+right now, showing a green checkmark or a red cross next to each link's
+web address as the results come in. This is a live, on-demand look only
+— it doesn't change any link's saved dead/verified status; marking a
+link dead is still a separate, deliberate action using the existing
+"Mark Dead" button.
