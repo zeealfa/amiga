@@ -74,9 +74,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $values['links_author'] = $row['links_author'];
     $values['links_email'] = $row['links_email'];
     $values['links_desc'] = $row['links_desc'];
-    $values['links_cats'] = array_values(array_filter([
-        $row['links_cat_1'], $row['links_cat_2'], $row['links_cat_3'], $row['links_cat_4'], $row['links_cat_5'],
-    ]));
+    $cats_stmt = mysqli_prepare($myConnection, "SELECT category_id FROM t_link_categories WHERE link_id = ? ORDER BY category_id");
+    mysqli_stmt_bind_param($cats_stmt, 'i', $id);
+    mysqli_stmt_execute($cats_stmt);
+    $cats_result = mysqli_stmt_get_result($cats_stmt);
+    $values['links_cats'] = [];
+    while ($cat_row = mysqli_fetch_assoc($cats_result)) {
+        $values['links_cats'][] = (int) $cat_row['category_id'];
+    }
+    mysqli_stmt_close($cats_stmt);
     $values['links_date_added'] = $row['links_date_added'];
     $values['links_active'] = (bool) $row['links_active'];
     $values['links_dead'] = (bool) $row['links_dead'];
