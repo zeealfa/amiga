@@ -316,3 +316,13 @@ code by hand; preview exactly how a post will look on the homepage
 before saving; publish or unpublish a post with one click; and delete
 a post (recoverable later via "Show Deleted") instead of losing it
 for good.
+
+---
+
+## 2026-07-09 (news admin — live deploy)
+
+Put the new news editor onto the actual working site. The database
+change (adding the ability to recover a deleted news post) was applied
+to the live database, and the new admin pages were uploaded alongside
+it. The old, broken, unlocked news editor was also removed from the
+live site.
