@@ -17,9 +17,10 @@ Full design: `docs/superpowers/specs/2026-07-09-category-hierarchy-design.md`. T
 ## Facts this plan relies on (verified against the local DB and codebase before writing this plan)
 
 - `t_cat_main`: 17 rows. Columns in use: `cat_main_id` (business PK, referenced by `t_cat_sub.cat_sub_ref_main_id`), `cat_main_title`, `cat_main_active`. (There is also a legacy `id` tinyint column, unrelated/unused by any query — not migrated.)
-- `t_cat_sub`: 49 rows. Columns in use: `id` (surrogate PK — diverges from `cat_sub_id` for exactly one row, `id=42`/`cat_sub_id=41`, "INTERVIEWS" — this is the pre-existing bug the spec fixes by construction), `cat_sub_id` (business ID, referenced by `t_links.links_cat_1..5`), `cat_sub_ref_main_id` (FK to `t_cat_main.cat_main_id`), `cat_sub_title`, `cat_sub_desc`, `cat_sub_title_short`, `cat_sub_active`.
+- `t_cat_sub`: 49 rows. Columns in use: `id` (surrogate PK), `cat_sub_id` (business ID, referenced by `t_links.links_cat_1..5`), `cat_sub_ref_main_id` (FK to `t_cat_main.cat_main_id`), `cat_sub_title`, `cat_sub_desc`, `cat_sub_title_short`, `cat_sub_active`.
 - **New finding (not in the original spec), user-approved via option 1:** two sub-category rows have a `cat_sub_ref_main_id` that matches no `cat_main_id` at all — `cat_sub_id=43` ("Companies", ref `2`) and `cat_sub_id=44` ("Directories & Links", ref `0`). Because `get_category_tree()`'s current code silently drops any sub-row whose parent isn't found, these two categories are invisible today in both the public sidebar and admin — but 40 links currently hold one of these IDs in `links_cat_1..5`. Per your decision, the migration promotes both to root-level (top-level) categories rather than dropping them or guessing a parent.
-- `links_cat_1..5` junk values (spec-confirmed): value `1` appears on 25 links (never a valid `cat_sub_id`, `MIN(cat_sub_id)=2` — cleared to `0`). Value `42` appears on 43 links (matches `t_cat_sub.id=42` not `cat_sub_id`, the INTERVIEWS bug — remapped to `41`). `links_cat_6..10` confirmed 100% unused (`0` in every row) — not touched.
+- **Second new finding, discovered mid-migration, user-approved via option 3:** `cat_sub_id` is not actually unique — `id=41` ("AROS/MORPH/AMITHLON/ETC...", ref `7`) and `id=42` ("INTERVIEWS", ref `6`) both have `cat_sub_id=41`. Content review of all 12 links tagged `41` and all 43 links tagged `42` showed neither group is meaningfully interview content — both are AROS/MORPH/AMITHLON/ETC content. Resolution: `id=41` keeps `cat_sub_id` 41 as its new `t_categories.id`; `id=42` "INTERVIEWS" gets a fresh id (`1017`) and is preserved as an empty category (no links point to it after the Step E remap below).
+- `links_cat_1..5` junk values (spec-confirmed): value `1` appears on 25 links (never a valid `cat_sub_id`, `MIN(cat_sub_id)=2` — cleared to `0`). Value `42` appears on 43 links — confirmed by content review (not the id/cat_sub_id divergence theory originally assumed) to be AROS/MORPH/AMITHLON/ETC content — remapped to `41`. `links_cat_6..10` confirmed 100% unused (`0` in every row) — not touched.
 - No duplicate `cat_main_title` values (verified via `GROUP BY ... HAVING COUNT(*)>1` — zero rows) — safe to use title as the join key when mapping old main-category rows to their new `t_categories.id` during migration, since main-category IDs cannot be reused directly (`cat_main_id` and `cat_sub_id` value ranges overlap — e.g. both `5` and `9` exist as both a `cat_main_id` and a `cat_sub_id` — so new root rows must get fresh auto-increment IDs, not their old `cat_main_id`).
 - **Correction to the spec's Section B:** the spec names the new consolidated sidebar file `sidebar_categories.php` — but that filename is already in use by an existing wrapper file (`files/sidebar_categories.php`, which renders the "Categories" sidebar box header/QUICK LINKS markup and does `include ("sidebar_categories_sub_01.php")` at the end). This plan instead creates `files/sidebar_categories_tree.php` as the new consolidated recursive renderer, and changes the existing wrapper's one `include` line to point at it. `files/sidebar_categories.php` itself is otherwise unchanged.
 - `files/admin/_nav.php:8` has the dead `Categories` label to wire up.
@@ -79,6 +80,12 @@ CREATE TABLE t_categories (
     CONSTRAINT fk_t_categories_parent FOREIGN KEY (parent_id) REFERENCES t_categories(id)
 );
 
+-- Reserve a high starting id for root categories so their fresh
+-- auto-increment ids cannot collide with any preserved cat_sub_id (max 53).
+-- Without this, root categories would get ids 1..17, which overlap with
+-- cat_sub_id values in that same range (confirmed by a failed dry run).
+ALTER TABLE t_categories AUTO_INCREMENT = 1000;
+
 -- Step A: former main categories become root rows with fresh auto-increment
 -- ids (old cat_main_id values overlap with cat_sub_id values, so they can't
 -- be reused directly).
@@ -90,6 +97,19 @@ FROM t_cat_main;
 
 -- Step B: former sub categories with a valid parent keep cat_sub_id as
 -- their new id (this is what makes links_cat_1..5 need no remapping).
+--
+-- Exception: t_cat_sub.cat_sub_id is not actually unique -- id=41
+-- "AROS/MORPH/AMITHLON/ETC..." and id=42 "INTERVIEWS" both have
+-- cat_sub_id=41 (confirmed live: `SELECT cat_sub_id, id FROM t_cat_sub
+-- WHERE id IN (41,42)` returns cat_sub_id=41 for both). Content review of
+-- every link tagged 41 (12 links: general software/emulator sites) and
+-- every link tagged 42 (43 links: overwhelmingly MorphOS/Pegasos/Amithlon
+-- content, only one incidentally titled "Interview...") showed neither
+-- group is meaningfully interview content -- "INTERVIEWS" was never
+-- actually used for its labeled purpose. So id=41 keeps cat_sub_id 41
+-- (excluded from this bulk insert, handled below), and id=42 "INTERVIEWS"
+-- is excluded here and inserted separately with a fresh id, since reusing
+-- cat_sub_id 41 for it would collide with id=41's row.
 INSERT INTO t_categories (id, parent_id, title, title_short, description, sort_order, active)
 SELECT s.cat_sub_id, m.id, s.cat_sub_title, s.cat_sub_title_short, s.cat_sub_desc,
        ROW_NUMBER() OVER (PARTITION BY s.cat_sub_ref_main_id ORDER BY s.cat_sub_title_short ASC) - 1,
@@ -97,7 +117,23 @@ SELECT s.cat_sub_id, m.id, s.cat_sub_title, s.cat_sub_title_short, s.cat_sub_des
 FROM t_cat_sub s
 JOIN t_cat_main old_m ON old_m.cat_main_id = s.cat_sub_ref_main_id
 JOIN t_categories m ON m.title = old_m.cat_main_title AND m.parent_id IS NULL
-WHERE s.cat_sub_ref_main_id NOT IN (0, 2);
+WHERE s.cat_sub_ref_main_id NOT IN (0, 2)
+  AND s.id <> 42;
+
+-- Step B2: "INTERVIEWS" (t_cat_sub.id=42), excluded above because its
+-- cat_sub_id (41) collides with "AROS/MORPH/AMITHLON/ETC..." (id=41).
+-- Gets a fresh id (1017 -- next free id after the 17 root categories
+-- reserved at 1000..1016) instead of the colliding cat_sub_id. No links
+-- reference it after Step E remaps all links_cat_x=42 to 41 below, so it
+-- is preserved as an empty category rather than dropped.
+INSERT INTO t_categories (id, parent_id, title, title_short, description, sort_order, active)
+SELECT 1017, m.id, s.cat_sub_title, s.cat_sub_title_short, s.cat_sub_desc,
+       (SELECT COALESCE(MAX(sort_order), -1) + 1 FROM t_categories WHERE parent_id = m.id),
+       s.cat_sub_active
+FROM t_cat_sub s
+JOIN t_cat_main old_m ON old_m.cat_main_id = s.cat_sub_ref_main_id
+JOIN t_categories m ON m.title = old_m.cat_main_title AND m.parent_id IS NULL
+WHERE s.id = 42;
 
 -- Step C: the two orphaned sub categories (cat_sub_id 43 "Companies", ref 2;
 -- cat_sub_id 44 "Directories & Links", ref 0 -- neither ref matches any
@@ -119,8 +155,10 @@ UPDATE t_links SET links_cat_3 = 0 WHERE links_cat_3 = 1;
 UPDATE t_links SET links_cat_4 = 0 WHERE links_cat_4 = 1;
 UPDATE t_links SET links_cat_5 = 0 WHERE links_cat_5 = 1;
 
--- Step E: remap value 42 (the old t_cat_sub.id/cat_sub_id confusion bug) to
--- the correct cat_sub_id 41 (INTERVIEWS).
+-- Step E: remap value 42 to 41. Content review (see Step B comment) showed
+-- all 43 links tagged 42 are AROS/MORPH/AMITHLON/ETC content (id 41), not
+-- interview content, so this lands them on the correct category rather
+-- than the now-empty "INTERVIEWS" (id 1017).
 UPDATE t_links SET links_cat_1 = 41 WHERE links_cat_1 = 42;
 UPDATE t_links SET links_cat_2 = 41 WHERE links_cat_2 = 42;
 UPDATE t_links SET links_cat_3 = 41 WHERE links_cat_3 = 42;
@@ -151,16 +189,16 @@ DROP TABLE t_categories;
 - [ ] **Step 4: Verify row counts and the key ID-preservation facts**
 
 ```bash
-"/d/xampp/mysql/bin/mysql.exe" -u admin -pMasukaja12 asdb -e "SELECT COUNT(*) AS total FROM t_categories; SELECT COUNT(*) AS roots FROM t_categories WHERE parent_id IS NULL; SELECT id, title FROM t_categories WHERE id = 41; SELECT id, title, parent_id FROM t_categories WHERE id IN (43, 44);"
+"/d/xampp/mysql/bin/mysql.exe" -u admin -pMasukaja12 asdb -e "SELECT COUNT(*) AS total FROM t_categories; SELECT COUNT(*) AS roots FROM t_categories WHERE parent_id IS NULL; SELECT id, title FROM t_categories WHERE id IN (41, 1017); SELECT id, title, parent_id FROM t_categories WHERE id IN (43, 44);"
 ```
-Expected: `total = 68` (17 main + 49 sub, since former mains all become roots and all 49 subs are preserved by id), `roots = 19` (17 former mains + 2 promoted orphans), `id=41` is "INTERVIEWS", `id=43`/`id=44` both show `parent_id = NULL`.
+Expected: `total = 66` (17 main + 49 sub, since former mains all become roots and all 49 subs are preserved, one of them — "INTERVIEWS" — under a reassigned id due to the `cat_sub_id` collision), `roots = 19` (17 former mains + 2 promoted orphans), `id=41` is "AROS/MORPH/AMITHLON/ETC...", `id=1017` is "INTERVIEWS", `id=43`/`id=44` both show `parent_id = NULL`.
 
 - [ ] **Step 5: Verify the junk-value fixes**
 
 ```bash
 "/d/xampp/mysql/bin/mysql.exe" -u admin -pMasukaja12 asdb -e "SELECT COUNT(*) AS still_has_1 FROM t_links WHERE links_cat_1=1 OR links_cat_2=1 OR links_cat_3=1 OR links_cat_4=1 OR links_cat_5=1; SELECT COUNT(*) AS still_has_42 FROM t_links WHERE links_cat_1=42 OR links_cat_2=42 OR links_cat_3=42 OR links_cat_4=42 OR links_cat_5=42; SELECT COUNT(*) AS has_41 FROM t_links WHERE links_cat_1=41 OR links_cat_2=41 OR links_cat_3=41 OR links_cat_4=41 OR links_cat_5=41;"
 ```
-Expected: `still_has_1 = 0`, `still_has_42 = 0`, `has_41 >= 43` (43 remapped, plus any that already legitimately had 41).
+Expected: `still_has_1 = 0`, `still_has_42 = 0`, `has_41 = 55` (12 originally tagged 41 + 43 remapped from 42).
 
 - [ ] **Step 6: Apply the down-migration and verify it fully reverses the table creation**
 
@@ -176,7 +214,7 @@ Expected: no rows returned (table gone).
 "/d/xampp/mysql/bin/mysql.exe" -u admin -pMasukaja12 asdb < db/migrations/0004_category_hierarchy_up.sql
 "/d/xampp/mysql/bin/mysql.exe" -u admin -pMasukaja12 asdb -e "SELECT COUNT(*) AS total FROM t_categories;"
 ```
-Expected: `total = 68` (same as Step 4).
+Expected: `total = 66` (same as Step 4).
 
 - [ ] **Step 8: Commit**
 
