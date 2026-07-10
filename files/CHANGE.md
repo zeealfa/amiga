@@ -326,3 +326,24 @@ change (adding the ability to recover a deleted news post) was applied
 to the live database, and the new admin pages were uploaded alongside
 it. The old, broken, unlocked news editor was also removed from the
 live site.
+
+---
+
+## 2026-07-10 (user accounts & roles)
+
+Gave admins a screen for managing who can log into the admin area,
+closing out the last item from the original admin-area project plan.
+Admins can now add a new account (choosing a username, email, role,
+and starting password), edit an existing account's details, and
+deactivate or reactivate an account with one click — a deactivated
+account can no longer log in, but nothing about it is deleted, so it
+can be turned back on later.
+
+Anyone logging in with a password an admin just set (whether it's a
+brand-new account or a password reset on an existing one) is now
+required to choose their own password immediately after logging in,
+before they can see anything else in the admin area.
+
+Admins can also manually clear a "locked out" state (from five wrong
+password attempts in a row) straight from this same screen, instead
+of needing to wait out the 15-minute lock.
