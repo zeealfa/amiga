@@ -103,6 +103,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['approve'])) {
         exit;
     }
 
+    $stmt = mysqli_prepare(
+        $myConnection,
+        "UPDATE t_submissions SET status = 'approved', reviewed_by = ?, reviewed_at = NOW() WHERE id = ? AND status = 'pending'"
+    );
+    mysqli_stmt_bind_param($stmt, 'ii', $_SESSION['user_id'], $id);
+    mysqli_stmt_execute($stmt);
+    $affected = mysqli_affected_rows($myConnection);
+    mysqli_stmt_close($stmt);
+
+    if ($affected === 0) {
+        $_SESSION['flash_message'] = 'This submission has already been reviewed.';
+        header('Location: submissions.php');
+        exit;
+    }
+
     if ($submission['type'] === 'link') {
         $cat_ids = array_values(array_filter(array_map('intval', explode(',', (string) $submission['category_ids']))));
         $cats = array_pad($cat_ids, 5, 0);
@@ -181,14 +196,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['approve'])) {
             mysqli_stmt_close($stmt);
         }
     }
-
-    $stmt = mysqli_prepare(
-        $myConnection,
-        "UPDATE t_submissions SET status = 'approved', reviewed_by = ?, reviewed_at = NOW() WHERE id = ? AND status = 'pending'"
-    );
-    mysqli_stmt_bind_param($stmt, 'ii', $_SESSION['user_id'], $id);
-    mysqli_stmt_execute($stmt);
-    mysqli_stmt_close($stmt);
 
     $_SESSION['flash_message'] = 'Submission approved.';
     header('Location: submissions.php');
