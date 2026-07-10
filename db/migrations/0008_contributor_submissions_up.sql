@@ -1,4 +1,13 @@
 -- 0008_contributor_submissions_up.sql
+-- Contributor Submissions: UP
+-- NOT purely additive: MODIFYs t_users.status enum (adds 'pending') in
+-- addition to creating t_submissions and adding submitted_by columns.
+
+-- t_links/t_news use a plain KEY instead of a FOREIGN KEY for
+-- submitted_by: both tables are MyISAM, which cannot be the target of
+-- an enforced InnoDB-style foreign key (errno 150). Referential
+-- integrity to t_users is enforced in application code only, same as
+-- the existing t_link_categories/t_links relationship.
 CREATE TABLE t_submissions (
   id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
   type ENUM('link','news') NOT NULL,
@@ -27,11 +36,11 @@ CREATE TABLE t_submissions (
 
 ALTER TABLE t_links
   ADD COLUMN submitted_by INT UNSIGNED NULL AFTER links_recommended,
-  ADD CONSTRAINT fk_links_submitted_by FOREIGN KEY (submitted_by) REFERENCES t_users(id);
+  ADD INDEX idx_links_submitted_by (submitted_by);
 
 ALTER TABLE t_news
   ADD COLUMN submitted_by INT UNSIGNED NULL AFTER news_deleted_at,
-  ADD CONSTRAINT fk_news_submitted_by FOREIGN KEY (submitted_by) REFERENCES t_users(id);
+  ADD INDEX idx_news_submitted_by (submitted_by);
 
 ALTER TABLE t_users
   MODIFY COLUMN status ENUM('active','removed','pending') NOT NULL DEFAULT 'active';
