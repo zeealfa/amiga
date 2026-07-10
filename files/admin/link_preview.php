@@ -137,7 +137,7 @@ $line2 = [
 <?php include_once __DIR__ . '/../legacy_colors.php'; ?>
 <style><?php include __DIR__ . '/../style.css'; ?></style>
 </head>
-<body class="bg-lightgray">
+<body class="bg-lightgray" bgcolor="<?php echo bg_hex('lightgray'); ?>">
 
 <?php require __DIR__ . '/_header.php'; ?>
 
@@ -146,23 +146,23 @@ $line2 = [
 <center>
 <table width="80%" align="center" cellpadding="0" cellspacing="0">
 <tr>
-	<td width="18%" valign="top" class="bg-gray">
+	<td width="18%" valign="top" class="bg-gray" bgcolor="<?php echo bg_hex('gray'); ?>">
 		<?php require __DIR__ . '/_nav.php'; ?>
 	</td>
 	<td width="3%"></td>
 	<td width="79%" valign="top">
-		<table width="100%" cellpadding="1" cellspacing="0" class="bg-slateblue">
+		<table width="100%" cellpadding="1" cellspacing="0" class="bg-slateblue" bgcolor="<?php echo bg_hex('slateblue'); ?>">
 			<tr><td>
-				<table width="100%" cellpadding="1" cellspacing="1" class="bg-white">
+				<table width="100%" cellpadding="1" cellspacing="1" class="bg-white" bgcolor="<?php echo bg_hex('white'); ?>">
 					<tr>
-						<td align="center" class="bg-red">
-							<span class="txt-4-white"><b>PREVIEW LINK</b></span>
+						<td align="center" class="bg-red" bgcolor="<?php echo bg_hex('red'); ?>">
+							<font class="txt-4-white" face="Verdana, sans-serif" size="4" color="<?php echo txt_hex('white'); ?>"><b>PREVIEW LINK</b></font>
 						</td>
 					</tr>
 <?php if (!empty($duplicates)): ?>
 					<tr>
-						<td class="bg-orange" style="padding:8px;">
-							<span class="txt-2-black">
+						<td class="bg-orange" bgcolor="<?php echo bg_hex('orange'); ?>" style="padding:8px;">
+							<font class="txt-2-black" face="Verdana, sans-serif" size="2" color="<?php echo txt_hex('black'); ?>">
 								<b>Possible duplicate URL found:</b>
 								<ul>
 <?php foreach ($duplicates as $dup): ?>
@@ -170,12 +170,12 @@ $line2 = [
 <?php endforeach; ?>
 								</ul>
 								You can still save this link if it is not actually a duplicate.
-							</span>
+							</font>
 						</td>
 					</tr>
 <?php endif; ?>
 					<tr>
-						<td class="bg-whitesmoke" style="padding:12px;">
+						<td class="bg-whitesmoke" bgcolor="<?php echo bg_hex('whitesmoke'); ?>" style="padding:12px;">
 							<?php include __DIR__ . '/../table_link.php'; ?>
 						</td>
 					</tr>
