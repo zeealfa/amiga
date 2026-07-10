@@ -2,7 +2,7 @@
 	<tr><td class="bg-slateblue"><span class="txt-3-white"><b><?php echo $_SESSION['role'] === 'admin' ? 'ADMIN MENU' : 'MY MENU'; ?></b></span></td></tr>
 	<tr><td class="bg-white"><span class="txt-2"><b>&raquo; Dashboard</b></span></td></tr>
 <?php if ($_SESSION['role'] === 'admin'): ?>
-	<tr><td class="bg-white"><span class="txt-2">&raquo; Users</span></td></tr>
+	<tr><td class="bg-white"><span class="txt-2">&raquo; <a href="users.php">Users</a></span></td></tr>
 	<tr><td class="bg-white"><span class="txt-2">&raquo; <a href="news.php">News</a></span></td></tr>
 	<tr><td class="bg-white"><span class="txt-2">&raquo; <a href="links.php">Links</a></span></td></tr>
 	<tr><td class="bg-white"><span class="txt-2">&raquo; <a href="categories.php">Categories</a></span></td></tr>
