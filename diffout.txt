@@ -1,0 +1,275 @@
+diff --git a/db/migrations/0005_link_categories_down.sql b/db/migrations/0005_link_categories_down.sql
+new file mode 100644
+index 0000000..f5c0395
+--- /dev/null
++++ b/db/migrations/0005_link_categories_down.sql
+@@ -0,0 +1,5 @@
++-- Link Categories Join Table: DOWN
++-- Drops t_link_categories. links_cat_1..5 on t_links were never modified
++-- by the up-migration, so no data restoration is needed there.
++
++DROP TABLE t_link_categories;
+diff --git a/db/migrations/0005_link_categories_up.sql b/db/migrations/0005_link_categories_up.sql
+new file mode 100644
+index 0000000..119ef79
+--- /dev/null
++++ b/db/migrations/0005_link_categories_up.sql
+@@ -0,0 +1,36 @@
++-- Link Categories Join Table: UP
++-- Replaces the fixed links_cat_1..5 columns on t_links with a real
++-- many-to-many join table. links_cat_1..10 are left in place, untouched,
++-- unused (deferred cleanup, same pattern as t_cat_main/t_cat_sub after
++-- the category-hierarchy migration).
++
++-- No FOREIGN KEY constraints: t_links is MyISAM, which cannot be the
++-- target of an InnoDB foreign key (errno 150). Matches the existing
++-- schema's style anyway -- links_cat_1..5 never had FK enforcement
++-- either. Referential integrity to t_links/t_categories is enforced in
++-- application code only.
++CREATE TABLE t_link_categories (
++    link_id INT NOT NULL,
++    category_id INT UNSIGNED NOT NULL,
++    PRIMARY KEY (link_id, category_id)
++);
++
++-- Backfill from links_cat_1..5 (links_cat_6..10 are confirmed always 0,
++-- per the category-hierarchy migration's findings -- nothing to backfill
++-- from those). INSERT IGNORE makes this idempotent against any duplicate
++-- category assignment across the five columns for the same link (the
++-- composite primary key would otherwise error on a collision).
++INSERT IGNORE INTO t_link_categories (link_id, category_id)
++SELECT id, links_cat_1 FROM t_links WHERE links_cat_1 <> 0;
++
++INSERT IGNORE INTO t_link_categories (link_id, category_id)
++SELECT id, links_cat_2 FROM t_links WHERE links_cat_2 <> 0;
++
++INSERT IGNORE INTO t_link_categories (link_id, category_id)
++SELECT id, links_cat_3 FROM t_links WHERE links_cat_3 <> 0;
++
++INSERT IGNORE INTO t_link_categories (link_id, category_id)
++SELECT id, links_cat_4 FROM t_links WHERE links_cat_4 <> 0;
++
++INSERT IGNORE INTO t_link_categories (link_id, category_id)
++SELECT id, links_cat_5 FROM t_links WHERE links_cat_5 <> 0;
+diff --git a/files/admin/link_form.php b/files/admin/link_form.php
+index a3d7532..3e46a3c 100644
+--- a/files/admin/link_form.php
++++ b/files/admin/link_form.php
+@@ -74,9 +74,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+     $values['links_author'] = $row['links_author'];
+     $values['links_email'] = $row['links_email'];
+     $values['links_desc'] = $row['links_desc'];
+-    $values['links_cats'] = array_values(array_filter([
+-        $row['links_cat_1'], $row['links_cat_2'], $row['links_cat_3'], $row['links_cat_4'], $row['links_cat_5'],
+-    ]));
++    $cats_stmt = mysqli_prepare($myConnection, "SELECT category_id FROM t_link_categories WHERE link_id = ? ORDER BY category_id");
++    mysqli_stmt_bind_param($cats_stmt, 'i', $id);
++    mysqli_stmt_execute($cats_stmt);
++    $cats_result = mysqli_stmt_get_result($cats_stmt);
++    $values['links_cats'] = [];
++    while ($cat_row = mysqli_fetch_assoc($cats_result)) {
++        $values['links_cats'][] = (int) $cat_row['category_id'];
++    }
++    mysqli_stmt_close($cats_stmt);
+     $values['links_date_added'] = $row['links_date_added'];
+     $values['links_active'] = (bool) $row['links_active'];
+     $values['links_dead'] = (bool) $row['links_dead'];
+diff --git a/files/admin/link_preview.php b/files/admin/link_preview.php
+index c20afd8..f17971e 100644
+--- a/files/admin/link_preview.php
++++ b/files/admin/link_preview.php
+@@ -61,6 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm_save'])) {
+         );
+         mysqli_stmt_execute($stmt);
+         mysqli_stmt_close($stmt);
++        $link_id = (int) $data['id'];
+         $flash = 'Link updated';
+     } else {
+         $stmt = mysqli_prepare(
+@@ -79,10 +80,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm_save'])) {
+             $data['links_date_added'], $data['links_active'], $data['links_dead'], $data['links_verified'], $data['links_recommended']
+         );
+         mysqli_stmt_execute($stmt);
++        $link_id = mysqli_insert_id($myConnection);
+         mysqli_stmt_close($stmt);
+         $flash = 'Link added';
+     }
+ 
++    $stmt = mysqli_prepare($myConnection, "DELETE FROM t_link_categories WHERE link_id = ?");
++    mysqli_stmt_bind_param($stmt, 'i', $link_id);
++    mysqli_stmt_execute($stmt);
++    mysqli_stmt_close($stmt);
++
++    if (!empty($data['links_cats'])) {
++        $stmt = mysqli_prepare($myConnection, "INSERT INTO t_link_categories (link_id, category_id) VALUES (?, ?)");
++        foreach ($data['links_cats'] as $category_id) {
++            mysqli_stmt_bind_param($stmt, 'ii', $link_id, $category_id);
++            mysqli_stmt_execute($stmt);
++        }
++        mysqli_stmt_close($stmt);
++    }
++
+     unset($_SESSION['link_preview_data']);
+     $_SESSION['flash_message'] = $flash;
+     header('Location: links.php');
+diff --git a/files/admin/links.php b/files/admin/links.php
+index eb88fee..8f95fac 100644
+--- a/files/admin/links.php
++++ b/files/admin/links.php
+@@ -44,12 +44,8 @@ if ($status === 'active') {
+ }
+ 
+ if ($cat_id !== null) {
+-    $where[] = '(links_cat_1 = ? OR links_cat_2 = ? OR links_cat_3 = ? OR links_cat_4 = ? OR links_cat_5 = ?)';
+-    $types .= 'iiiii';
+-    $params[] = $cat_id;
+-    $params[] = $cat_id;
+-    $params[] = $cat_id;
+-    $params[] = $cat_id;
++    $where[] = 'id IN (SELECT link_id FROM t_link_categories WHERE category_id = ?)';
++    $types .= 'i';
+     $params[] = $cat_id;
+ }
+ 
+@@ -98,6 +94,22 @@ function find_cat_title($nodes, $target_id)
+     return null;
+ }
+ 
++// Batch-fetch every displayed link's category ids in one query, keyed by
++// link_id, to avoid an N+1 query per row in the table below.
++$link_cat_ids = [];
++if (!empty($links)) {
++    $link_ids = array_map(fn($l) => (int) $l['id'], $links);
++    $placeholders = implode(',', array_fill(0, count($link_ids), '?'));
++    $cats_stmt = mysqli_prepare($myConnection, "SELECT link_id, category_id FROM t_link_categories WHERE link_id IN ($placeholders) ORDER BY category_id");
++    mysqli_stmt_bind_param($cats_stmt, str_repeat('i', count($link_ids)), ...$link_ids);
++    mysqli_stmt_execute($cats_stmt);
++    $cats_result = mysqli_stmt_get_result($cats_stmt);
++    while ($cat_row = mysqli_fetch_assoc($cats_result)) {
++        $link_cat_ids[(int) $cat_row['link_id']][] = (int) $cat_row['category_id'];
++    }
++    mysqli_stmt_close($cats_stmt);
++}
++
+ $url_prefix = 'search=' . urlencode($search) . '&status=' . urlencode($status)
+     . '&cat_id=' . urlencode((string) $cat_id) . '&show_deleted=' . ($show_deleted ? '1' : '0')
+     . '&sort=' . urlencode($sort) . '&dir=' . urlencode($dir) . '&';
+@@ -194,10 +206,10 @@ $base_qs = 'search=' . urlencode($search) . '&status=' . urlencode($status)
+ <?php endif; ?>
+ <?php foreach ($links as $link): ?>
+ <?php
+-    $cat_ids = array_filter([$link['links_cat_1'], $link['links_cat_2'], $link['links_cat_3'], $link['links_cat_4'], $link['links_cat_5']]);
++    $cat_ids = $link_cat_ids[(int) $link['id']] ?? [];
+     $cat_label = '&mdash;';
+     if (!empty($cat_ids)) {
+-        $first_title = find_cat_title($category_tree, (int) reset($cat_ids));
++        $first_title = find_cat_title($category_tree, $cat_ids[0]);
+         if ($first_title !== null) {
+             $cat_label = htmlspecialchars($first_title) . (count($cat_ids) > 1 ? ' +' . (count($cat_ids) - 1) . ' more' : '');
+         }
+diff --git a/files/includes/functions.php b/files/includes/functions.php
+index 88517b3..7119e2e 100644
+--- a/files/includes/functions.php
++++ b/files/includes/functions.php
+@@ -144,3 +144,31 @@ function get_category_tree($myConnection)
+ 
+     return $build(0);
+ }
++
++// Returns a flat array of ints: $cat_id itself plus every descendant
++// category id, regardless of the active flag (a link tagged with an
++// inactive category should still be findable if reached directly, same
++// as content_categories.php not filtering the requested cat_id by
++// active). Used to roll up a category page's link listing to include
++// links tagged with any child/grandchild/etc. category.
++function get_category_descendant_ids($myConnection, $cat_id)
++{
++    $result = mysqli_query($myConnection, "SELECT id, parent_id FROM t_categories");
++
++    $by_parent = [];
++    while ($row = mysqli_fetch_assoc($result)) {
++        $key = $row['parent_id'] === null ? 0 : (int) $row['parent_id'];
++        $by_parent[$key][] = (int) $row['id'];
++    }
++
++    $ids = [(int) $cat_id];
++    $collect = function ($parent_id) use (&$collect, &$ids, $by_parent) {
++        foreach ($by_parent[$parent_id] ?? [] as $child_id) {
++            $ids[] = $child_id;
++            $collect($child_id);
++        }
++    };
++    $collect((int) $cat_id);
++
++    return $ids;
++}
+diff --git a/files/table_link.php b/files/table_link.php
+index dff63cb..d766477 100644
+--- a/files/table_link.php
++++ b/files/table_link.php
+@@ -188,24 +188,7 @@
+ 												<TD  class="bg-lightgray" width=15%>&nbsp;
+ 													<span class="txt-2">
+ 													<?php
+-														echo "<a target=\"_blank\" href=$ao".$line2['links_url'].">archive.org</a> {temp}";
+-													?>
+-												</TD>
+-												<!----------results category numbers (row 4: !C-2h) --------->
+-												<TD  class="bg-lightgray">&nbsp;
+-													<span class="txt-1"> 
+-													<b> cat #: </b>
+-													<?php 
+-														echo $line2['links_cat_1'];echo '  ';
+-														echo $line2['links_cat_2'];echo '  ';
+-														echo $line2['links_cat_3'];echo '  ';
+-														echo $line2['links_cat_4'];echo '  ';
+-														echo $line2['links_cat_5'];echo '  ';
+-														echo $line2['links_cat_6'];echo '  ';
+-														echo $line2['links_cat_7'];echo '  ';
+-														echo $line2['links_cat_8'];echo '  ';
+-														echo $line2['links_cat_9'];echo '  ';
+-														echo $line2['links_cat_10'];echo '  ';
++														echo "<a target=\"_blank\" href=$ao".$line2['links_url'].">archive.org</a>";
+ 													?>
+ 												</TD>
+ 												<!----------results id #### (row 4: !C-2i) --------->
+diff --git a/files/table_result_cat.php b/files/table_result_cat.php
+index 0cb7c45..b905a4c 100644
+--- a/files/table_result_cat.php
++++ b/files/table_result_cat.php
+@@ -25,15 +25,19 @@ $adjacents = "2";
+ 
+ <!-------- Calculate total pages for pagination ------------>
+ <?php
+-$stmt_count = mysqli_prepare($myConnection, "SELECT COUNT(*) As total_records FROM t_links where (links_dead=0 or links_dead=1 and links_archived_url<>'') and (links_cat_1=? or links_cat_2=? or links_cat_3=? or links_cat_4=? or links_cat_5=?)");
+-mysqli_stmt_bind_param($stmt_count, "iiiii", $cat_id, $cat_id, $cat_id, $cat_id, $cat_id);
++require_once __DIR__ . '/includes/functions.php';
++$descendant_ids = get_category_descendant_ids($myConnection, $cat_id);
++$id_placeholders = implode(',', array_fill(0, count($descendant_ids), '?'));
++$id_types = str_repeat('i', count($descendant_ids));
++
++$stmt_count = mysqli_prepare($myConnection, "SELECT COUNT(DISTINCT l.id) As total_records FROM t_links l JOIN t_link_categories lc ON lc.link_id = l.id WHERE (l.links_dead=0 or (l.links_dead=1 and l.links_archived_url<>'')) and lc.category_id IN ($id_placeholders)");
++mysqli_stmt_bind_param($stmt_count, $id_types, ...$descendant_ids);
+ mysqli_stmt_execute($stmt_count);
+ $result_count = mysqli_stmt_get_result($stmt_count);
+ $total_records = mysqli_fetch_array($result_count);
+ $total_records = $total_records['total_records'];
+ $total_no_of_pages = ceil($total_records / $total_records_per_page);
+ $second_last = $total_no_of_pages - 1; // total pages minus 1
+-require_once __DIR__ . '/includes/functions.php';
+ $pagination_html = render_pagination_menu($page_no, $total_no_of_pages, $second_last, $adjacents, "cat_id=$cat_id&");
+ ?>
+ 
+@@ -52,8 +56,10 @@ Page <?php echo $page_no." of ".$total_no_of_pages; ?>
+ 
+ <!-------- Show defined number of results ------------>
+ <?php
+-$stmt = mysqli_prepare($myConnection, "SELECT * FROM t_links where (links_dead=0 or links_dead=1 and links_archived_url<>'') and (links_cat_1=? or links_cat_2=? or links_cat_3=? or links_cat_4=? or links_cat_5=?) ORDER BY links_name ASC LIMIT ?, ?");
+-mysqli_stmt_bind_param($stmt, "iiiiiii", $cat_id, $cat_id, $cat_id, $cat_id, $cat_id, $offset, $total_records_per_page);
++$list_types = $id_types . 'ii';
++$list_params = array_merge($descendant_ids, [$offset, $total_records_per_page]);
++$stmt = mysqli_prepare($myConnection, "SELECT DISTINCT l.* FROM t_links l JOIN t_link_categories lc ON lc.link_id = l.id WHERE (l.links_dead=0 or (l.links_dead=1 and l.links_archived_url<>'')) and lc.category_id IN ($id_placeholders) ORDER BY l.links_name ASC LIMIT ?, ?");
++mysqli_stmt_bind_param($stmt, $list_types, ...$list_params);
+ mysqli_stmt_execute($stmt);
+ $result = mysqli_stmt_get_result($stmt);
+ while($line2 = mysqli_fetch_array($result)){
