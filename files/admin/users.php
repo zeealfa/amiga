@@ -18,7 +18,7 @@ unset($_SESSION['flash_message']);
 <html>
 <head>
 <title>AmigaSource.com - Manage Users</title>
-<?php include __DIR__ . '/../legacy_colors.php'; ?>
+<?php include_once __DIR__ . '/../legacy_colors.php'; ?>
 <style><?php include __DIR__ . '/../style.css'; ?></style>
 </head>
 <body class="bg-lightgray">
