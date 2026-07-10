@@ -9,28 +9,28 @@
 
 <center><br> 
 
-<table cellpadding="1" cellspacing="0" width="70%"  class="bg-slateblue">
+<table cellpadding="1" cellspacing="0" width="70%"  class="bg-slateblue" bgcolor="<?php echo bg_hex('slateblue'); ?>">
 	<tr>
 		<td>
-			<table width="100%" cellpadding="1"  cellspacing="1" class="bg-white">
+			<table width="100%" cellpadding="1"  cellspacing="1" class="bg-white" bgcolor="<?php echo bg_hex('white'); ?>">
 				<tr>
 					<td>
 
 						<table width="100%"  cellspacing="0" cellpadding="15">
 							<tr>
-								<td align="center" valign="top" class="bg-red">
-									<span class="txt-6-white">
+								<td align="center" valign="top" class="bg-red" bgcolor="<?php echo bg_hex('red'); ?>">
+									<font class="txt-6-white" face="Verdana, sans-serif" size="6" color="<?php echo txt_hex('white'); ?>">
 										<b>LATEST NEWS</b><br>
-									<span class="txt-5-white">
+									<font class="txt-5-white" face="Verdana, sans-serif" size="5" color="<?php echo txt_hex('white'); ?>">
 										<b>Celebrating our 23rd year</b><br>
-									</span></span>
+									</font></font>
 								</td>
 							</tr>
 						</table>
 
 						<table width="100%"  cellspacing="0" cellpadding="0">
 							<tr>
-								<td align="left" valign="top" class="bg-white">
+								<td align="left" valign="top" class="bg-white" bgcolor="<?php echo bg_hex('white'); ?>">
 								</td>
 							</tr>
 						</table>
@@ -45,14 +45,14 @@
 </center><br>
 
 <center>
-<table width="30%" cellpadding="1" cellspacing="0" width="70%"  class="bg-slateblue">
+<table width="30%" cellpadding="1" cellspacing="0" width="70%"  class="bg-slateblue" bgcolor="<?php echo bg_hex('slateblue'); ?>">
 	<tr>
 		<td>
-			<table cellpadding="1"  cellspacing="1" class="bg-white">
+			<table cellpadding="1"  cellspacing="1" class="bg-white" bgcolor="<?php echo bg_hex('white'); ?>">
 				<center>
-				<span class="txt-3-black">
+				<font class="txt-3-black" face="Verdana, sans-serif" size="3" color="<?php echo txt_hex('black'); ?>">
 				<b>TEMP LINK COUNT</b><br>
-				<span class="txt-2-black">
+				<font class="txt-2-black" face="Verdana, sans-serif" size="2" color="<?php echo txt_hex('black'); ?>">
 				<?php
 				$result_count = mysqli_query(
 				$myConnection,
@@ -81,7 +81,7 @@
 				$total_new = $total_new['total_new'];
 				echo "new links:".$total_new."<br>";
 				?>
-				</span></span>
+				</font></font>
 				</center>
 			</table>
 		</td>
@@ -128,10 +128,10 @@ $pagination_html = render_pagination_menu($page_no, $total_no_of_pages, $second_
 <!-------- Pagination menu top ------------>
 <center>
 <p>
-<span class="txt-2">
+<font class="txt-2" face="Verdana, sans-serif" size="2">
 Page <?php echo $page_no." of ".$total_no_of_pages; ?>
 <?php echo $pagination_html; ?>
-</span>
+</font>
 </p>
 </br>
 </center>
@@ -168,10 +168,10 @@ Page <?php echo $page_no." of ".$total_no_of_pages; ?>
 <!-------- Pagination bottom top ------------>
 <center>
 <p>
-<span class="txt-2">
+<font class="txt-2" face="Verdana, sans-serif" size="2">
 Page <?php echo $page_no." of ".$total_no_of_pages; ?>
 <?php echo $pagination_html; ?>
-</span>
+</font>
 </p>
 </br></br>
 </center>
