@@ -112,16 +112,16 @@
 															if ($line2['links_date_verified']>'2021-12-21') { 
 														?>	
 															<span class="txt-2"><b>Verified:</b>
-															<span class="txt-5">
-														<?php 	} else { 
+															<span class="txt-2">
+														<?php 	} else {
 														?>
 															<span class="txt-2"><b>Verified:</b>
-														<?php 
+														<?php
 														}
 														?>
-														<?php echo $line2['links_date_verified']; ?>
-														<span class="txt-2">							
-														</TD>		
+														<?php echo date('M d, Y', strtotime($line2['links_date_verified'])); ?>
+														<span class="txt-2">
+														</TD>
 													<?php
 														} else {
 													?>	
@@ -145,16 +145,16 @@
 																if ($line2['links_date_verified']>'2021-12-21') { 
 															?>	
 																<span class="txt-2"><b>Verified:</b>
-																<span class="txt-5">
-															<?php 	} else { 
+																<span class="txt-2">
+															<?php 	} else {
 															?>
 																<span class="txt-2"><b>Verified:</b>
-															<?php 
+															<?php
 															}
 															?>
-															<?php echo $line2['links_date_verified']; ?>
-															<span class="txt-2">	
-															</TD>		
+															<?php echo date('M d, Y', strtotime($line2['links_date_verified'])); ?>
+															<span class="txt-2">
+															</TD>
 														<?php	
 														}
 														?>
@@ -193,9 +193,12 @@
 												</TD>
 												<!----------results id #### (row 4: !C-2i) --------->
 												<TD  class="bg-lightgray">&nbsp;
-													<span class="txt-2"> 
+													<span class="txt-2">
 													<b> id: </b>
 													<?php echo $line2['id'];?>
+													<?php if (isset($_SESSION['user_id'])): ?>
+														&nbsp;<a href="admin/link_form.php?id=<?php echo (int) $line2['id']; ?>" target="_blank">Edit</a>
+													<?php endif; ?>
 												</TD>
 											</TR>
 										</table>

@@ -1,1 +1,20 @@
-<?php	$_SESSION["content_type"]='search';?>	<table align=center cellpadding=2 cellspacing=0 border=0 width=100%>	<td class="bg-white" align=center colspan=3>		<span class="txt-4-black">			<?php 				$search_r=$_POST['search']; 				$search_f=$search_r; 				include ("login_db.php");				include ("page_builder.php");			?>	</span></td></table><?php echo "<title>AmigaSource.com Search - ".$search_r."</title>"; ?><br>
+<?php
+	if(!isset($_SESSION)){
+		session_start();
+	}
+	$_SESSION["content_type"]='search';
+?>
+<table align=center cellpadding=2 cellspacing=0 border=0 width=100%>
+	<td class="bg-white" align=center colspan=3>
+		<span class="txt-4-black">
+			<?php
+				$search_r=$_POST['search'];
+				$search_f=$search_r;
+				include ("login_db.php");
+				include ("page_builder.php");
+			?>
+		</span>
+	</td>
+</table>
+<?php echo "<title>AmigaSource.com Search - ".$search_r."</title>"; ?>
+<br>
