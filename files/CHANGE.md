@@ -347,3 +347,12 @@ before they can see anything else in the admin area.
 Admins can also manually clear a "locked out" state (from five wrong
 password attempts in a row) straight from this same screen, instead
 of needing to wait out the 15-minute lock.
+
+---
+
+## 2026-07-10 (user accounts & roles — live deploy)
+
+Put the new user management screen onto the actual working site. The
+database change (adding the forced-password-change flag) was applied
+to the live database, and the new admin pages were uploaded alongside
+it.
