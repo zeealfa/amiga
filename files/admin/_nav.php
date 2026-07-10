@@ -1,14 +1,14 @@
 <table width="100%" cellpadding="8" cellspacing="0">
-	<tr><td class="bg-slateblue"><span class="txt-3-white"><b><?php echo $_SESSION['role'] === 'admin' ? 'ADMIN MENU' : 'MY MENU'; ?></b></span></td></tr>
-	<tr><td class="bg-white"><span class="txt-2"><b>&raquo; Dashboard</b></span></td></tr>
+	<tr><td class="bg-slateblue" bgcolor="<?php echo bg_hex('slateblue'); ?>"><font class="txt-3-white" face="Verdana, sans-serif" size="3" color="<?php echo txt_hex('white'); ?>"><b><?php echo $_SESSION['role'] === 'admin' ? 'ADMIN MENU' : 'MY MENU'; ?></b></font></td></tr>
+	<tr><td class="bg-white" bgcolor="<?php echo bg_hex('white'); ?>"><font class="txt-2" face="Verdana, sans-serif" size="2"><b>&raquo; Dashboard</b></font></td></tr>
 <?php if ($_SESSION['role'] === 'admin'): ?>
-	<tr><td class="bg-white"><span class="txt-2">&raquo; <a href="users.php">Users</a></span></td></tr>
-	<tr><td class="bg-white"><span class="txt-2">&raquo; <a href="news.php">News</a></span></td></tr>
-	<tr><td class="bg-white"><span class="txt-2">&raquo; <a href="links.php">Links</a></span></td></tr>
-	<tr><td class="bg-white"><span class="txt-2">&raquo; <a href="categories.php">Categories</a></span></td></tr>
-	<tr><td class="bg-white"><span class="txt-2">&raquo; <a href="profile.php">My Profile</a></span></td></tr>
+	<tr><td class="bg-white" bgcolor="<?php echo bg_hex('white'); ?>"><font class="txt-2" face="Verdana, sans-serif" size="2">&raquo; <a href="users.php">Users</a></font></td></tr>
+	<tr><td class="bg-white" bgcolor="<?php echo bg_hex('white'); ?>"><font class="txt-2" face="Verdana, sans-serif" size="2">&raquo; <a href="news.php">News</a></font></td></tr>
+	<tr><td class="bg-white" bgcolor="<?php echo bg_hex('white'); ?>"><font class="txt-2" face="Verdana, sans-serif" size="2">&raquo; <a href="links.php">Links</a></font></td></tr>
+	<tr><td class="bg-white" bgcolor="<?php echo bg_hex('white'); ?>"><font class="txt-2" face="Verdana, sans-serif" size="2">&raquo; <a href="categories.php">Categories</a></font></td></tr>
+	<tr><td class="bg-white" bgcolor="<?php echo bg_hex('white'); ?>"><font class="txt-2" face="Verdana, sans-serif" size="2">&raquo; <a href="profile.php">My Profile</a></font></td></tr>
 <?php else: ?>
-	<tr><td class="bg-white"><span class="txt-2">&raquo; My Submissions</span></td></tr>
-	<tr><td class="bg-white"><span class="txt-2">&raquo; <a href="profile.php">My Profile</a></span></td></tr>
+	<tr><td class="bg-white" bgcolor="<?php echo bg_hex('white'); ?>"><font class="txt-2" face="Verdana, sans-serif" size="2">&raquo; My Submissions</font></td></tr>
+	<tr><td class="bg-white" bgcolor="<?php echo bg_hex('white'); ?>"><font class="txt-2" face="Verdana, sans-serif" size="2">&raquo; <a href="profile.php">My Profile</a></font></td></tr>
 <?php endif; ?>
 </table>
