@@ -21,7 +21,7 @@ unset($_SESSION['flash_message']);
 function submission_title($submission)
 {
     if ($submission['type'] === 'link') {
-        return $submission['links_name'];
+        return htmlspecialchars($submission['links_name']);
     }
     return htmlspecialchars($submission['news_date']) . ' &mdash; ' . htmlspecialchars(mb_substr(strip_tags($submission['news_story']), 0, 60)) . '&hellip;';
 }
