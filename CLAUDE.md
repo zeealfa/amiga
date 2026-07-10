@@ -16,6 +16,11 @@ There is no build system, package manager, or test suite. This is intentional �
 - **Vanilla PHP + MySQL (mysqli) + HTML only.** No frameworks, no Composer, no npm, no JS libraries, no build step.
 - **Single-page-app style delivery**: pages are assembled via PHP `include`, not routed through a front controller.
 - Keep new work consistent with this "old school" style — do not introduce modern tooling as part of any phase without an explicit go-ahead, since the roadmap documents commit to this constraint.
+- **AmigaOS/IBrowse compatibility is a hard requirement, not a nice-to-have.** The client's real target browser is IBrowse (run via AmiKit XE/WinUAE on real Amiga hardware or emulation) — see `screenshots/` and project memory for confirmed reports of this. Every change to `files/` must actively favor what IBrowse can render, not just what modern desktop browsers accept:
+  - No CSS beyond the most basic (no flexbox/grid, no `position:absolute` for layout, no gradients/shadows/`@font-face`, no web fonts) — use table-based layout with inline `bgcolor`/`<font face/color/size>` attributes, matching `legacy_colors.php`'s `bg_hex()`/`txt_hex()` helper pattern.
+  - No reliance on JavaScript for anything user-facing on the public site (`files/` outside `admin/`) — IBrowse has no JS engine. JS is acceptable only for admin-only tooling that has no public-facing equivalent requirement.
+  - Prefer valid, well-nested HTML (tables, `<td>`, `<tr>`) even where lenient old parsers would tolerate malformed markup — modern-browser rendering bugs (e.g. HTML5 foster-parenting of misplaced tags) can mask or diverge from how IBrowse actually renders the same markup, so don't assume "renders fine in Chrome" means "renders fine in IBrowse."
+  - When verifying a public-site rendering fix, treat modern-browser testing (headless Chrome, etc.) as necessary but **not sufficient** — call out explicitly that IBrowse itself hasn't been verified unless it actually has been (see project memory on Amiga browser testing setup for the AmiKit XE + WinUAE local repro path).
 
 ## Architecture of `files/` (public site)
 
