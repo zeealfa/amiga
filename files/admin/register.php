@@ -62,9 +62,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             "INSERT INTO t_users (username, email, password_hash, role, status) VALUES (?, ?, ?, 'user', 'pending')"
         );
         mysqli_stmt_bind_param($stmt, 'sss', $values['username'], $values['email'], $hash);
-        mysqli_stmt_execute($stmt);
+        $success = mysqli_stmt_execute($stmt);
         mysqli_stmt_close($stmt);
-        $registered = true;
+        if ($success) {
+            $registered = true;
+        } else {
+            $errors[] = 'Registration failed, please try again.';
+        }
     }
 }
 ?>
