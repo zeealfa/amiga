@@ -134,6 +134,7 @@ $line2 = [
 <html>
 <head>
 <title>AmigaSource.com - Preview Link</title>
+<?php include __DIR__ . '/../legacy_colors.php'; ?>
 <style><?php include __DIR__ . '/../style.css'; ?></style>
 </head>
 <body class="bg-lightgray">

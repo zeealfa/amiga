@@ -75,6 +75,7 @@ $row = [
 <html>
 <head>
 <title>AmigaSource.com - Preview News Post</title>
+<?php include __DIR__ . '/../legacy_colors.php'; ?>
 <style><?php include __DIR__ . '/../style.css'; ?></style>
 </head>
 <body class="bg-lightgray">

@@ -1,4 +1,5 @@
 
+<?php include __DIR__ . '/legacy_colors.php'; ?>
 <style><?php include __DIR__ . '/style.css'; ?></style>
 <table width="80%" align="center" cellpadding="0">
  	<tr>
