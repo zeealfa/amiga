@@ -8,7 +8,7 @@ require_once __DIR__ . '/_auth.php';
 <html>
 <head>
 <title>AmigaSource.com - Dashboard</title>
-<link rel="stylesheet" href="../style.css">
+<style><?php include __DIR__ . '/../style.css'; ?></style>
 </head>
 <body class="bg-lightgray">
 

@@ -75,7 +75,7 @@ $row = [
 <html>
 <head>
 <title>AmigaSource.com - Preview News Post</title>
-<link rel="stylesheet" href="../style.css">
+<style><?php include __DIR__ . '/../style.css'; ?></style>
 </head>
 <body class="bg-lightgray">
 

@@ -18,7 +18,7 @@ unset($_SESSION['flash_message']);
 <html>
 <head>
 <title>AmigaSource.com - Manage Users</title>
-<link rel="stylesheet" href="../style.css">
+<style><?php include __DIR__ . '/../style.css'; ?></style>
 </head>
 <body class="bg-lightgray">
 

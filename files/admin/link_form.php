@@ -96,7 +96,7 @@ $category_tree = get_category_tree($myConnection);
 <html>
 <head>
 <title>AmigaSource.com - <?php echo $is_edit ? 'Edit Link' : 'Add Link'; ?></title>
-<link rel="stylesheet" href="../style.css">
+<style><?php include __DIR__ . '/../style.css'; ?></style>
 <script>
 function enforceCategoryLimit() {
     var boxes = document.querySelectorAll('input[name="links_cats[]"]');

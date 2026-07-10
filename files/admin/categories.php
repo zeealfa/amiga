@@ -91,7 +91,7 @@ $tree = build_admin_tree(fetch_categories_flat($myConnection));
 <html>
 <head>
 <title>AmigaSource.com - Manage Categories</title>
-<link rel="stylesheet" href="../style.css">
+<style><?php include __DIR__ . '/../style.css'; ?></style>
 </head>
 <body class="bg-lightgray">
 

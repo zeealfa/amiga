@@ -71,7 +71,7 @@ function news_story_excerpt($html)
 <html>
 <head>
 <title>AmigaSource.com - Manage News</title>
-<link rel="stylesheet" href="../style.css">
+<style><?php include __DIR__ . '/../style.css'; ?></style>
 </head>
 <body class="bg-lightgray">
 

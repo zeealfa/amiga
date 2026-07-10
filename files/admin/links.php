@@ -137,7 +137,7 @@ $show_quick_actions = false;
 <html>
 <head>
 <title>AmigaSource.com - Manage Links</title>
-<link rel="stylesheet" href="../style.css">
+<style><?php include __DIR__ . '/../style.css'; ?></style>
 </head>
 <body class="bg-lightgray">
 

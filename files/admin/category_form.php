@@ -167,7 +167,7 @@ $dropdown_options = build_dropdown_options(fetch_all_categories_for_dropdown($my
 <html>
 <head>
 <title>AmigaSource.com - <?php echo $is_edit ? 'Edit Category' : 'Add Category'; ?></title>
-<link rel="stylesheet" href="../style.css">
+<style><?php include __DIR__ . '/../style.css'; ?></style>
 </head>
 <body class="bg-lightgray">
 
