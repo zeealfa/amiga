@@ -51,12 +51,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $action, $target_id, $_SESSION['user_id'],
             $values['news_date'], $values['news_story']
         );
-        mysqli_stmt_execute($stmt);
+        $success = mysqli_stmt_execute($stmt);
         mysqli_stmt_close($stmt);
 
-        $_SESSION['flash_message'] = $is_edit ? 'News edit submitted for review.' : 'News post submitted for review.';
-        header('Location: my_submissions.php');
-        exit;
+        if ($success) {
+            $_SESSION['flash_message'] = $is_edit ? 'News edit submitted for review.' : 'News post submitted for review.';
+            header('Location: my_submissions.php');
+            exit;
+        }
+
+        $errors[] = 'Submission failed, please try again.';
     }
 } elseif ($is_edit) {
     $stmt = mysqli_prepare($myConnection, "SELECT * FROM t_news WHERE id = ? AND submitted_by = ? AND news_deleted_at IS NULL");

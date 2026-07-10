@@ -70,12 +70,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $values['links_name'], $values['links_url'], $values['links_author'], $values['links_email'], $values['links_desc'],
             $category_ids
         );
-        mysqli_stmt_execute($stmt);
+        $success = mysqli_stmt_execute($stmt);
         mysqli_stmt_close($stmt);
 
-        $_SESSION['flash_message'] = $is_edit ? 'Link edit submitted for review.' : 'Link submitted for review.';
-        header('Location: my_submissions.php');
-        exit;
+        if ($success) {
+            $_SESSION['flash_message'] = $is_edit ? 'Link edit submitted for review.' : 'Link submitted for review.';
+            header('Location: my_submissions.php');
+            exit;
+        }
+
+        $errors[] = 'Submission failed, please try again.';
     }
 } elseif ($is_edit) {
     $stmt = mysqli_prepare($myConnection, "SELECT * FROM t_links WHERE id = ? AND submitted_by = ? AND links_deleted_at IS NULL");
