@@ -3,6 +3,12 @@ if (!isset($_SESSION)) {
     session_start();
 }
 require_once __DIR__ . '/_auth.php';
+
+$pending_count = 0;
+if ($_SESSION['role'] === 'admin') {
+    $result = mysqli_query($myConnection, "SELECT COUNT(*) AS c FROM t_submissions WHERE status = 'pending'");
+    $pending_count = (int) mysqli_fetch_assoc($result)['c'];
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -36,6 +42,12 @@ require_once __DIR__ . '/_auth.php';
 					<tr>
 						<td class="bg-whitesmoke" bgcolor="<?php echo bg_hex('whitesmoke'); ?>" style="padding:12px;">
 							<font class="txt-2-black" face="Verdana, sans-serif" size="2" color="<?php echo txt_hex('black'); ?>">You are logged in. Full dashboard content ships in Phase 03b.</font>
+<?php if ($_SESSION['role'] === 'admin'): ?>
+							<br><br>
+							<font class="txt-2-black" face="Verdana, sans-serif" size="2" color="<?php echo txt_hex('black'); ?>">
+								<a href="submissions.php"><b><?php echo $pending_count; ?> pending submission<?php echo $pending_count === 1 ? '' : 's'; ?></b></a>
+							</font>
+<?php endif; ?>
 						</td>
 					</tr>
 				</table>
