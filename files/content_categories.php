@@ -1,8 +1,14 @@
 <table width=100% align=center cellpadding=0 > 	
 	<tr>
 		<td> 
-			<?php	
-			$cat_id = intval($_GET['cat_id']);
+			<?php
+			if (isset($_GET['cat_id'])) {
+				$cat_id = intval($_GET['cat_id']);
+			} else {
+				$first_cat_result = mysqli_query($myConnection, "SELECT id FROM t_categories ORDER BY id ASC LIMIT 1");
+				$first_cat_row = mysqli_fetch_assoc($first_cat_result);
+				$cat_id = $first_cat_row ? intval($first_cat_row['id']) : 0;
+			}
 			$stmt = mysqli_prepare($myConnection, "SELECT * FROM t_categories where id=?");
 			mysqli_stmt_bind_param($stmt, "i", $cat_id);
 			mysqli_stmt_execute($stmt);
