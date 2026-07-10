@@ -8,10 +8,10 @@
 				</a>		
 			</tr>
 			<tr>
-				<td align="left" class="bg-orange" bgcolor="<?php echo bg_hex('orange'); ?>" cellpadding="16">
+				<td align="left" class="bg-lightgray" bgcolor="<?php echo bg_hex('lightgray'); ?>" cellpadding="16">
 					<font class="txt-5" face="Verdana, sans-serif" size="5"><b>Since 2001...  Your BEST source for Amiga information... Again &nbsp; </b></font>
 				</td>
-				<td align="right" class="bg-orange" bgcolor="<?php echo bg_hex('orange'); ?>" cellpadding="4">
+				<td align="right" class="bg-lightgray" bgcolor="<?php echo bg_hex('lightgray'); ?>" cellpadding="4">
 					<font class="txt-3" face="Verdana, sans-serif" size="3">
 <?php if (isset($_SESSION['user_id'])): ?>
 						<b><?php echo htmlspecialchars(strtoupper($_SESSION['username'])); ?> &nbsp;|&nbsp; <a href="admin/dashboard.php">Dashboard</a> &nbsp;|&nbsp; <a href="admin/logout.php">Logout</a></b>

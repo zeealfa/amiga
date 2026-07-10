@@ -96,7 +96,12 @@ document.addEventListener('DOMContentLoaded', function () {
 				<table width="100%" cellpadding="1" cellspacing="1" class="bg-white" bgcolor="<?php echo bg_hex('white'); ?>">
 					<tr>
 						<td align="center" class="bg-red" bgcolor="<?php echo bg_hex('red'); ?>">
-							<font class="txt-4-white" face="Verdana, sans-serif" size="4" color="<?php echo txt_hex('white'); ?>"><b><?php echo $is_edit ? 'EDIT NEWS POST' : 'ADD NEWS POST'; ?></b></font>
+							<table width="100%" cellpadding="0" cellspacing="0">
+								<tr>
+									<td align="center"><font class="txt-4-white" face="Verdana, sans-serif" size="4" color="<?php echo txt_hex('white'); ?>"><b><?php echo $is_edit ? 'EDIT NEWS POST' : 'ADD NEWS POST'; ?></b></font></td>
+									<td align="right" width="1%" style="white-space:nowrap;"><font class="txt-2-white" face="Verdana, sans-serif" size="2" color="<?php echo txt_hex('white'); ?>"><a href="news.php" onclick="history.back(); return false;" style="color:<?php echo txt_hex('white'); ?>;">&laquo; Back to List</a></font></td>
+								</tr>
+							</table>
 						</td>
 					</tr>
 					<tr>

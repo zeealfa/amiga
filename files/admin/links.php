@@ -217,13 +217,14 @@ $show_quick_actions = false;
 							<table width="100%" cellpadding="4" cellspacing="0">
 								<tr class="bg-gray" bgcolor="<?php echo bg_hex('gray'); ?>">
 									<td><font class="txt-2-black" face="Verdana, sans-serif" size="2" color="<?php echo txt_hex('black'); ?>"><b><?php echo sort_link('links_name', 'Name', $sort, $dir, $base_qs); ?></b></font></td>
-									<td><font class="txt-2-black" face="Verdana, sans-serif" size="2" color="<?php echo txt_hex('black'); ?>"><b>URL</b></font></td>
+									<td style="width:22%;"><font class="txt-2-black" face="Verdana, sans-serif" size="2" color="<?php echo txt_hex('black'); ?>"><b>URL</b></font></td>
+									<td><font class="txt-2-black" face="Verdana, sans-serif" size="2" color="<?php echo txt_hex('black'); ?>"><b><?php echo sort_link('links_date_added', 'Added', $sort, $dir, $base_qs); ?></b></font></td>
 									<td><font class="txt-2-black" face="Verdana, sans-serif" size="2" color="<?php echo txt_hex('black'); ?>"><b>Category</b></font></td>
 									<td><font class="txt-2-black" face="Verdana, sans-serif" size="2" color="<?php echo txt_hex('black'); ?>"><b>Status</b></font></td>
 									<td><font class="txt-2-black" face="Verdana, sans-serif" size="2" color="<?php echo txt_hex('black'); ?>"><b>Actions</b></font></td>
 								</tr>
 <?php if (empty($links)): ?>
-								<tr><td colspan="5"><font class="txt-2-black" face="Verdana, sans-serif" size="2" color="<?php echo txt_hex('black'); ?>">No links found.</font></td></tr>
+								<tr><td colspan="6"><font class="txt-2-black" face="Verdana, sans-serif" size="2" color="<?php echo txt_hex('black'); ?>">No links found.</font></td></tr>
 <?php endif; ?>
 <?php foreach ($links as $link): ?>
 <?php
@@ -244,7 +245,8 @@ $show_quick_actions = false;
 ?>
 								<tr<?php echo $link['links_deleted_at'] === null ? ' data-link-id="' . (int) $link['id'] . '"' : ''; ?>>
 									<td><font class="txt-2-black" face="Verdana, sans-serif" size="2" color="<?php echo txt_hex('black'); ?>"><?php echo htmlspecialchars($link['links_name']); ?></font></td>
-									<td><font class="txt-1" face="Verdana, sans-serif" size="1"><a href="<?php echo htmlspecialchars($link['links_url']); ?>" target="_blank" rel="noopener noreferrer"><?php echo htmlspecialchars($link['links_url']); ?></a></font><?php if ($link['links_deleted_at'] === null): ?><font class="txt-1" face="Verdana, sans-serif" size="1" data-url-status></font><?php endif; ?></td>
+									<td style="word-break:break-all;"><font class="txt-1" face="Verdana, sans-serif" size="1"><a href="<?php echo htmlspecialchars($link['links_url']); ?>" target="_blank" rel="noopener noreferrer"><?php echo htmlspecialchars($link['links_url']); ?></a></font><?php if ($link['links_deleted_at'] === null): ?><font class="txt-1" face="Verdana, sans-serif" size="1" data-url-status></font><?php endif; ?></td>
+									<td><font class="txt-1" face="Verdana, sans-serif" size="1"><?php echo $link['links_date_added'] ? htmlspecialchars(date('M d, Y', strtotime($link['links_date_added']))) : '&mdash;'; ?></font></td>
 									<td><font class="txt-1" face="Verdana, sans-serif" size="1"><?php echo $cat_label; ?></font></td>
 									<td><font class="txt-1" face="Verdana, sans-serif" size="1"><?php echo htmlspecialchars(implode(', ', $status_parts)); ?></font></td>
 									<td><font class="txt-1" face="Verdana, sans-serif" size="1">

@@ -1,15 +1,9 @@
 
 <table class="bg-white" bgcolor="<?php echo bg_hex('white'); ?>" width="100%" align="center" cellpadding="0" cellspacing="0">
  	<tr>
-		<td width="70%" align="center">
-				<table class="bg-white" bgcolor="<?php echo bg_hex('white'); ?>" width="100%" align="center" cellpadding="6">
-					<tr>
-						<!----width of sidebar---->
-						<td width="21%" valign="top" class="bg-gray" bgcolor="<?php echo bg_hex('gray'); ?>">
-								<?php include 'mod_sidebar_chooser.php'; ?>
-						</td>
-					</tr>
-				</table>
+		<!----width of sidebar---->
+		<td width="17%" valign="top" class="bg-lightgray" bgcolor="<?php echo bg_hex('lightgray'); ?>">
+				<?php include 'mod_sidebar_chooser.php'; ?>
 		</td>
 		<td valign="top" align="center" class="bg-white" bgcolor="<?php echo bg_hex('white'); ?>">
 				<!----width of main content---->

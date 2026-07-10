@@ -196,7 +196,7 @@
 													<font class="txt-2" face="Verdana, sans-serif" size="2">
 													<b> id: </b>
 													<?php echo $line2['id'];?>
-													<?php if (isset($_SESSION['user_id'])): ?>
+													<?php if (isset($_SESSION['user_id']) && $_SESSION['role'] === 'admin'): ?>
 														&nbsp;<a href="admin/link_form.php?id=<?php echo (int) $line2['id']; ?>" target="_blank">Edit</a>
 													<?php endif; ?>
 												</TD>
