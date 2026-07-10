@@ -411,7 +411,8 @@
   <div class="meta">
     Client: amigasource.com &nbsp;|&nbsp;
     Stack: PHP + MySQL + HTML + single CSS (no frameworks) &nbsp;|&nbsp;
-    Drafted: June 2026
+    Target browser: IBrowse 3.0 (AmigaOS) &nbsp;|&nbsp;
+    Drafted: June 2026, updated July 2026
   </div>
 </header>
 
@@ -423,17 +424,20 @@
   <div class="box">
     <p>The site has a working public front-end (browse + basic search) and a third-party admin (Maestro) that the client dislikes — it "works but has a different feel than the rest of the site." The goal is to <strong>replace Maestro with a lean, custom-built admin portal</strong> that matches the site's look and feel, supports multiple contributors, and progressively adds user-facing features without disrupting the clean single-page experience visitors already have.</p>
     <p>All code must stay in <strong>single-file PHP pages</strong>, one shared CSS file, and vanilla PHP/MySQL — no Composer, no npm, no build tools, no frameworks. Modular, readable, maintainable. Old-school done properly.</p>
+    <p><strong>Hard constraint confirmed July 2026:</strong> the client's real target browser is <strong>IBrowse 3.0</strong> on AmigaOS (via AmiKit XE/WinUAE), not a modern desktop browser. IBrowse 3.0 has <strong>zero CSS support</strong> (per its own vendor FAQ: "no CSS yet, and only limited DOM support") and an old-but-real JavaScript engine (JS 1.6 / ECMA-262 rev3, ~2006-era) that predates <code>fetch()</code>, <code>JSON.parse</code>, and <code>querySelectorAll</code>. In practice this means the "single CSS file" and any public-facing JavaScript are cosmetic/no-ops for this client — actual rendering on their browser depends entirely on inline <code>bgcolor</code>/<code>&lt;font&gt;</code>/table-attribute markup. Every public-facing page and phase in this plan must be built and verified against that reality, not just against Chrome/Firefox.</p>
     <p>Because this is someone else's codebase, a full audit phase is added before any changes. The order of phases is fixed: <em>understand → stabilize → build</em>. Do not skip Phase 00.</p>
   </div>
   <div class="tags">
     <span class="tag php">PHP 7.4+</span>
     <span class="tag mysql">MySQL / MariaDB</span>
-    <span class="tag html">HTML5</span>
-    <span class="tag css">Single CSS File</span>
+    <span class="tag html">HTML 4.01 / XHTML 1.0</span>
+    <span class="tag css">Single CSS File (modern browsers only)</span>
     <span class="tag no">No Framework</span>
     <span class="tag no">No Composer</span>
     <span class="tag no">No npm / Build Step</span>
     <span class="tag no">No JavaScript Libraries</span>
+    <span class="tag no">No CSS Reliance (IBrowse 3.0 has none)</span>
+    <span class="tag no">No Public-Facing JS (IBrowse JS 1.6 only, admin-only exception)</span>
   </div>
 </section>
 
