@@ -78,7 +78,7 @@ $row = [
 <?php include_once __DIR__ . '/../legacy_colors.php'; ?>
 <style><?php include __DIR__ . '/../style.css'; ?></style>
 </head>
-<body class="bg-lightgray">
+<body class="bg-lightgray" bgcolor="<?php echo bg_hex('lightgray'); ?>">
 
 <?php require __DIR__ . '/_header.php'; ?>
 
@@ -87,21 +87,21 @@ $row = [
 <center>
 <table width="80%" align="center" cellpadding="0" cellspacing="0">
 <tr>
-	<td width="18%" valign="top" class="bg-gray">
+	<td width="18%" valign="top" class="bg-gray" bgcolor="<?php echo bg_hex('gray'); ?>">
 		<?php require __DIR__ . '/_nav.php'; ?>
 	</td>
 	<td width="3%"></td>
 	<td width="79%" valign="top">
-		<table width="100%" cellpadding="1" cellspacing="0" class="bg-slateblue">
+		<table width="100%" cellpadding="1" cellspacing="0" class="bg-slateblue" bgcolor="<?php echo bg_hex('slateblue'); ?>">
 			<tr><td>
-				<table width="100%" cellpadding="1" cellspacing="1" class="bg-white">
+				<table width="100%" cellpadding="1" cellspacing="1" class="bg-white" bgcolor="<?php echo bg_hex('white'); ?>">
 					<tr>
-						<td align="center" class="bg-red">
-							<span class="txt-4-white"><b>PREVIEW NEWS POST</b></span>
+						<td align="center" class="bg-red" bgcolor="<?php echo bg_hex('red'); ?>">
+							<font class="txt-4-white" face="Verdana, sans-serif" size="4" color="<?php echo txt_hex('white'); ?>"><b>PREVIEW NEWS POST</b></font>
 						</td>
 					</tr>
 					<tr>
-						<td class="bg-whitesmoke" style="padding:12px;">
+						<td class="bg-whitesmoke" bgcolor="<?php echo bg_hex('whitesmoke'); ?>" style="padding:12px;">
 							<?php include __DIR__ . '/../table_content_news_sub.php'; ?>
 						</td>
 					</tr>
