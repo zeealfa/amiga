@@ -140,7 +140,7 @@ $show_quick_actions = false;
 <?php include_once __DIR__ . '/../legacy_colors.php'; ?>
 <style><?php include __DIR__ . '/../style.css'; ?></style>
 </head>
-<body class="bg-lightgray">
+<body class="bg-lightgray" bgcolor="<?php echo bg_hex('lightgray'); ?>">
 
 <?php require __DIR__ . '/_header.php'; ?>
 
@@ -149,28 +149,28 @@ $show_quick_actions = false;
 <center>
 <table width="90%" align="center" cellpadding="0" cellspacing="0">
 <tr>
-	<td width="18%" valign="top" class="bg-gray">
+	<td width="18%" valign="top" class="bg-gray" bgcolor="<?php echo bg_hex('gray'); ?>">
 		<?php require __DIR__ . '/_nav.php'; ?>
 	</td>
 	<td width="3%"></td>
 	<td width="79%" valign="top">
-		<table width="100%" cellpadding="1" cellspacing="0" class="bg-slateblue">
+		<table width="100%" cellpadding="1" cellspacing="0" class="bg-slateblue" bgcolor="<?php echo bg_hex('slateblue'); ?>">
 			<tr><td>
-				<table width="100%" cellpadding="1" cellspacing="1" class="bg-white">
+				<table width="100%" cellpadding="1" cellspacing="1" class="bg-white" bgcolor="<?php echo bg_hex('white'); ?>">
 					<tr>
-						<td align="center" class="bg-red">
-							<span class="txt-4-white"><b>MANAGE LINKS</b></span>
+						<td align="center" class="bg-red" bgcolor="<?php echo bg_hex('red'); ?>">
+							<font class="txt-4-white" face="Verdana, sans-serif" size="4" color="<?php echo txt_hex('white'); ?>"><b>MANAGE LINKS</b></font>
 						</td>
 					</tr>
 <?php if ($flash): ?>
 					<tr>
-						<td class="bg-orange" style="padding:8px;">
-							<span class="txt-2-black"><?php echo htmlspecialchars($flash); ?></span>
+						<td class="bg-orange" bgcolor="<?php echo bg_hex('orange'); ?>" style="padding:8px;">
+							<font class="txt-2-black" face="Verdana, sans-serif" size="2" color="<?php echo txt_hex('black'); ?>"><?php echo htmlspecialchars($flash); ?></font>
 						</td>
 					</tr>
 <?php endif; ?>
 					<tr>
-						<td class="bg-whitesmoke" style="padding:12px;">
+						<td class="bg-whitesmoke" bgcolor="<?php echo bg_hex('whitesmoke'); ?>" style="padding:12px;">
 							<form method="get" action="links.php">
 								<table cellpadding="0" cellspacing="0" class="txt-2-black"><tr>
 								<td style="white-space:nowrap; padding-right:10px;">Search: <input type="text" name="search" value="<?php echo htmlspecialchars($search); ?>" style="width:180px;"></td>
@@ -213,17 +213,17 @@ $show_quick_actions = false;
 						</td>
 					</tr>
 					<tr>
-						<td class="bg-white" style="padding:8px;">
+						<td class="bg-white" bgcolor="<?php echo bg_hex('white'); ?>" style="padding:8px;">
 							<table width="100%" cellpadding="4" cellspacing="0">
-								<tr class="bg-gray">
-									<td><span class="txt-2-black"><b><?php echo sort_link('links_name', 'Name', $sort, $dir, $base_qs); ?></b></span></td>
-									<td><span class="txt-2-black"><b>URL</b></span></td>
-									<td><span class="txt-2-black"><b>Category</b></span></td>
-									<td><span class="txt-2-black"><b>Status</b></span></td>
-									<td><span class="txt-2-black"><b>Actions</b></span></td>
+								<tr class="bg-gray" bgcolor="<?php echo bg_hex('gray'); ?>">
+									<td><font class="txt-2-black" face="Verdana, sans-serif" size="2" color="<?php echo txt_hex('black'); ?>"><b><?php echo sort_link('links_name', 'Name', $sort, $dir, $base_qs); ?></b></font></td>
+									<td><font class="txt-2-black" face="Verdana, sans-serif" size="2" color="<?php echo txt_hex('black'); ?>"><b>URL</b></font></td>
+									<td><font class="txt-2-black" face="Verdana, sans-serif" size="2" color="<?php echo txt_hex('black'); ?>"><b>Category</b></font></td>
+									<td><font class="txt-2-black" face="Verdana, sans-serif" size="2" color="<?php echo txt_hex('black'); ?>"><b>Status</b></font></td>
+									<td><font class="txt-2-black" face="Verdana, sans-serif" size="2" color="<?php echo txt_hex('black'); ?>"><b>Actions</b></font></td>
 								</tr>
 <?php if (empty($links)): ?>
-								<tr><td colspan="5"><span class="txt-2-black">No links found.</span></td></tr>
+								<tr><td colspan="5"><font class="txt-2-black" face="Verdana, sans-serif" size="2" color="<?php echo txt_hex('black'); ?>">No links found.</font></td></tr>
 <?php endif; ?>
 <?php foreach ($links as $link): ?>
 <?php
@@ -243,11 +243,11 @@ $show_quick_actions = false;
     if ($link['links_deleted_at'] !== null) { $status_parts[] = 'DELETED'; }
 ?>
 								<tr<?php echo $link['links_deleted_at'] === null ? ' data-link-id="' . (int) $link['id'] . '"' : ''; ?>>
-									<td><span class="txt-2-black"><?php echo htmlspecialchars($link['links_name']); ?></span></td>
-									<td><span class="txt-1"><a href="<?php echo htmlspecialchars($link['links_url']); ?>" target="_blank" rel="noopener noreferrer"><?php echo htmlspecialchars($link['links_url']); ?></a></span><?php if ($link['links_deleted_at'] === null): ?><span class="txt-1" data-url-status></span><?php endif; ?></td>
-									<td><span class="txt-1"><?php echo $cat_label; ?></span></td>
-									<td><span class="txt-1"><?php echo htmlspecialchars(implode(', ', $status_parts)); ?></span></td>
-									<td><span class="txt-1">
+									<td><font class="txt-2-black" face="Verdana, sans-serif" size="2" color="<?php echo txt_hex('black'); ?>"><?php echo htmlspecialchars($link['links_name']); ?></font></td>
+									<td><font class="txt-1" face="Verdana, sans-serif" size="1"><a href="<?php echo htmlspecialchars($link['links_url']); ?>" target="_blank" rel="noopener noreferrer"><?php echo htmlspecialchars($link['links_url']); ?></a></font><?php if ($link['links_deleted_at'] === null): ?><font class="txt-1" face="Verdana, sans-serif" size="1" data-url-status></font><?php endif; ?></td>
+									<td><font class="txt-1" face="Verdana, sans-serif" size="1"><?php echo $cat_label; ?></font></td>
+									<td><font class="txt-1" face="Verdana, sans-serif" size="1"><?php echo htmlspecialchars(implode(', ', $status_parts)); ?></font></td>
+									<td><font class="txt-1" face="Verdana, sans-serif" size="1">
 <?php if ($link['links_deleted_at'] !== null): ?>
 										<a href="link_delete.php?id=<?php echo (int) $link['id']; ?>&action=restore">Restore</a>
 <?php else: ?>
@@ -270,15 +270,15 @@ $show_quick_actions = false;
 										<a href="https://web.archive.org/web/*/<?php echo urlencode($link['links_url']); ?>" target="_blank">Archive.org</a>
 <?php endif; ?>
 <?php endif; ?>
-									</span></td>
+									</font></td>
 								</tr>
 <?php endforeach; ?>
 							</table>
 						</td>
 					</tr>
 					<tr>
-						<td class="bg-whitesmoke" align="center" style="padding:8px;">
-							<span class="txt-2-black">Page <?php echo $page_no . ' of ' . $total_no_of_pages; ?><?php echo $pagination_html; ?></span>
+						<td class="bg-whitesmoke" bgcolor="<?php echo bg_hex('whitesmoke'); ?>" align="center" style="padding:8px;">
+							<font class="txt-2-black" face="Verdana, sans-serif" size="2" color="<?php echo txt_hex('black'); ?>">Page <?php echo $page_no . ' of ' . $total_no_of_pages; ?><?php echo $pagination_html; ?></font>
 						</td>
 					</tr>
 				</table>
