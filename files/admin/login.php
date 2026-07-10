@@ -31,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <?php include_once __DIR__ . '/../legacy_colors.php'; ?>
 <style><?php include __DIR__ . '/../style.css'; ?></style>
 </head>
-<body class="bg-lightgray">
+<body class="bg-lightgray" bgcolor="<?php echo bg_hex('lightgray'); ?>">
 
 <table width="100%">
 	<tr>
@@ -42,10 +42,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 				</a>
 			</tr>
 			<tr>
-				<td align="right" class="bg-orange" cellpadding="16" cellspacing="8">
-					<span class="txt-5">
+				<td align="right" class="bg-orange" bgcolor="<?php echo bg_hex('orange'); ?>" cellpadding="16" cellspacing="8">
+					<font class="txt-5" face="Verdana, sans-serif" size="5">
 						<marquee><b>Since 2001...  Your BEST source for Amiga information... Again &nbsp; </b></marquee><br>
-					</span>
+					</font>
 				</td>
 			</tr>
 		</td>
@@ -55,25 +55,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <br><br>
 
 <center>
-<table cellpadding="1" cellspacing="0" width="360" class="bg-slateblue">
+<table cellpadding="1" cellspacing="0" width="360" class="bg-slateblue" bgcolor="<?php echo bg_hex('slateblue'); ?>">
 	<tr>
 		<td>
-			<table width="100%" cellpadding="1" cellspacing="1" class="bg-white">
+			<table width="100%" cellpadding="1" cellspacing="1" class="bg-white" bgcolor="<?php echo bg_hex('white'); ?>">
 				<tr>
 					<td>
 
 						<table width="100%" cellspacing="0" cellpadding="12">
 							<tr>
-								<td align="center" valign="top" class="bg-red">
-									<span class="txt-5-white"><b>LOGIN</b></span>
+								<td align="center" valign="top" class="bg-red" bgcolor="<?php echo bg_hex('red'); ?>">
+									<font class="txt-5-white" face="Verdana, sans-serif" size="5" color="<?php echo txt_hex('white'); ?>"><b>LOGIN</b></font>
 								</td>
 							</tr>
 						</table>
 
 						<table width="100%" cellspacing="0" cellpadding="16">
 							<tr>
-								<td class="bg-white">
-									<span class="txt-2-black">
+								<td class="bg-white" bgcolor="<?php echo bg_hex('white'); ?>">
+									<font class="txt-2-black" face="Verdana, sans-serif" size="2" color="<?php echo txt_hex('black'); ?>">
 
 <?php if ($error): ?>
 										<p class="txt-2-black" style="color:#c70000;"><b><?php echo htmlspecialchars($error); ?></b></p>
@@ -98,18 +98,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 										</table>
 										</form>
 
-									</span>
+									</font>
 								</td>
 							</tr>
 						</table>
 
 						<table width="100%" cellspacing="0" cellpadding="8">
 							<tr>
-								<td align="center" class="bg-whitesmoke">
-									<span class="txt-1">
+								<td align="center" class="bg-whitesmoke" bgcolor="<?php echo bg_hex('whitesmoke'); ?>">
+									<font class="txt-1" face="Verdana, sans-serif" size="1">
 										One login for everyone — admins and users sign in here.<br>
 										What you see next depends on your account's role.
-									</span>
+									</font>
 								</td>
 							</tr>
 						</table>
