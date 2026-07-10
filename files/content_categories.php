@@ -19,38 +19,38 @@
 			?>
 			<br>
 			
-			<table align=center cellpadding="1" cellspacing="0" width="50%" class="bg-slateblue">
+			<table align=center cellpadding="1" cellspacing="0" width="50%" class="bg-slateblue" bgcolor="<?php echo bg_hex('slateblue'); ?>">
 				<tr>
 				<td>
 
-					<table width="100%" cellpadding="1"  cellspacing="0" class="bg-white">
+					<table width="100%" cellpadding="1"  cellspacing="0" class="bg-white" bgcolor="<?php echo bg_hex('white'); ?>">
 						<tr>
 							<td>
 
 								<table width="100%"  cellspacing="0" cellpadding="12">
 									<tr>
-										<td align="center" valign="top" class="bg-red">
-											<span class="txt-6-white">
+										<td align="center" valign="top" class="bg-red" bgcolor="<?php echo bg_hex('red'); ?>">
+											<font class="txt-6-white" face="Verdana, sans-serif" size="6" color="<?php echo txt_hex('white'); ?>">
 												<b>
 													<?php
 														echo $ph;
 													?>
 												</b>
-											</span>
+											</font>
 										</td>
 									</tr>
 								</table>
 
 								<table width="100%"  cellspacing="0" cellpadding="4">
 									<tr>
-										<td align="left" valign="top" class="bg-whitesmoke">
-											<span class="txt-4-black">
+										<td align="left" valign="top" class="bg-whitesmoke" bgcolor="<?php echo bg_hex('whitesmoke'); ?>">
+											<font class="txt-4-black" face="Verdana, sans-serif" size="4" color="<?php echo txt_hex('black'); ?>">
 												<center>
 													<?php
 														echo $pd;
 													?>
 												</center>
-											</span>
+											</font>
 										</td>
 									</tr>
 								</table>
@@ -72,7 +72,7 @@
 				include ("table_result_cat.php");
 			?>
 
-			<span class="txt-3">
+			<font class="txt-3" face="Verdana, sans-serif" size="3">
 			<b>
 			<center>
 
@@ -81,7 +81,7 @@
 			?>
 			</center>
 			</b>
-			</span>
+			</font>
 		</td>
 	</tr>
 </table>		
