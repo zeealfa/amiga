@@ -1,27 +1,27 @@
-<table cellpadding="0" cellspacing="1" width="100%"  class="bg-slateblue">
+<table cellpadding="0" cellspacing="1" width="100%"  class="bg-slateblue" bgcolor="<?php echo bg_hex('slateblue'); ?>">
 	<tr>
 		<td>
-			<table width="100%" cellpadding="1"  cellspacing="0" class="bg-white">
+			<table width="100%" cellpadding="1"  cellspacing="0" class="bg-white" bgcolor="<?php echo bg_hex('white'); ?>">
 				<tr>
 					<td>
 						<table width="100%" cellspacing="1" cellpadding="3">
 							<tr>
-								<td align="left" valign="top" class="bg-green">
-									<span class="txt-4-white">
+								<td align="left" valign="top" class="bg-green" bgcolor="<?php echo bg_hex('green'); ?>">
+									<font class="txt-4-white" face="Verdana, sans-serif" size="4" color="<?php echo txt_hex('white'); ?>">
 										<b>Top 10+8</b>
-									</span>
+									</font>
 								</td>
 							</tr>
 						</table>
 
 						<table width="100%" cellspacing="0" cellpadding="7">
 							<tr>
-								<td align="left" valign="top" class="bg-white">
-									<span class="txt-2">
+								<td align="left" valign="top" class="bg-white" bgcolor="<?php echo bg_hex('white'); ?>">
+									<font class="txt-2" face="Verdana, sans-serif" size="2">
 										<?php
 											include 'sidebar_top10_sub.php';
 										?>
-									</span>
+									</font>
 								</td>
 							</tr>
 						</table>
