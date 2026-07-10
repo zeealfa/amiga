@@ -1,7 +1,7 @@
 
 <?php include_once __DIR__ . '/legacy_colors.php'; ?>
 <style><?php include __DIR__ . '/style.css'; ?></style>
-<table width="80%" align="center" cellpadding="0">
+<table width="98%" align="center" cellpadding="0">
  	<tr>
 		<td> 
 				<table width="100%" align="center" cellpadding="0">

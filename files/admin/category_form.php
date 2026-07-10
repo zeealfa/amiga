@@ -177,7 +177,7 @@ $dropdown_options = build_dropdown_options(fetch_all_categories_for_dropdown($my
 <br>
 
 <center>
-<table width="70%" align="center" cellpadding="0" cellspacing="0">
+<table width="98%" align="center" cellpadding="0" cellspacing="0">
 <tr>
 	<td width="20%" valign="top" class="bg-gray" bgcolor="<?php echo bg_hex('gray'); ?>">
 		<?php require __DIR__ . '/_nav.php'; ?>

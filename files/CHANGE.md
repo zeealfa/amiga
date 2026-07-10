@@ -396,3 +396,19 @@ propose an edit to one of their own existing entries, from their own
 submits goes live automatically — every submission sits in a review
 queue until an admin approves or rejects it, and rejected submissions
 show the contributor the admin's reason.
+
+---
+
+## 2026-07-11 (search warning fix & page appearance match)
+
+Fixed two harmless but visible warning messages that could appear on
+the search page when it was opened without an actual search term.
+They no longer show up.
+
+Also brought the site's appearance closer to how the real public site
+looks: restored the wider page layout, added proper spacing between
+the sidebar and the main content area, and corrected the padding
+inside the sidebar boxes (Calendar, Categories, Crowd Funding,
+Service & Repair, Shops and Vendors, Tabor Links, Top 10) so their
+colored borders and spacing match the real site exactly instead of
+looking flat. The admin area's own pages were widened to match.

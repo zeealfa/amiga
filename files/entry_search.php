@@ -9,7 +9,7 @@
 	<td class="bg-white" bgcolor="<?php echo bg_hex('white'); ?>" align=center colspan=3>
 		<font class="txt-4-black" face="Verdana, sans-serif" size="4" color="<?php echo txt_hex('black'); ?>">
 			<?php
-				$search_r=$_POST['search'];
+				$search_r=$_POST['search'] ?? '';
 				$search_f=$search_r;
 				include ("login_db.php");
 				include ("page_builder.php");

@@ -24,7 +24,7 @@ if ($_SESSION['role'] === 'admin') {
 <br>
 
 <center>
-<table width="70%" align="center" cellpadding="0" cellspacing="0">
+<table width="98%" align="center" cellpadding="0" cellspacing="0">
 <tr>
 	<td width="22%" valign="top" class="bg-gray" bgcolor="<?php echo bg_hex('gray'); ?>">
 		<?php require __DIR__ . '/_nav.php'; ?>

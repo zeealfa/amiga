@@ -85,7 +85,7 @@ $row = [
 <br>
 
 <center>
-<table width="80%" align="center" cellpadding="0" cellspacing="0">
+<table width="98%" align="center" cellpadding="0" cellspacing="0">
 <tr>
 	<td width="18%" valign="top" class="bg-gray" bgcolor="<?php echo bg_hex('gray'); ?>">
 		<?php require __DIR__ . '/_nav.php'; ?>
