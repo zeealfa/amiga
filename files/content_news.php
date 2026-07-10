@@ -176,3 +176,5 @@ Page <?php echo $page_no." of ".$total_no_of_pages; ?>
 </br></br>
 </center>
 
+</table>
+

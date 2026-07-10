@@ -9,6 +9,8 @@
 						<td width="21%" valign="top" class="bg-gray">
 								<?php include 'mod_sidebar_chooser.php'; ?>
 						</td>
+					</tr>
+				</table>
 		</center>
 		<center>
 			<td valign="top" class="bg-white">
