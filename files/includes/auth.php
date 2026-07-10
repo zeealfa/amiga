@@ -12,7 +12,7 @@ function attempt_login($myConnection, $identifier, $password)
 
     $stmt = mysqli_prepare(
         $myConnection,
-        "SELECT id, username, password_hash, role, failed_login_attempts, locked_until
+        "SELECT id, username, password_hash, role, failed_login_attempts, locked_until, must_change_password
          FROM t_users
          WHERE (username = ? OR email = ?) AND status = 'active'"
     );
@@ -68,6 +68,7 @@ function attempt_login($myConnection, $identifier, $password)
     $_SESSION['user_id'] = $user['id'];
     $_SESSION['role'] = $user['role'];
     $_SESSION['username'] = $user['username'];
+    $_SESSION['must_change_password'] = (bool) $user['must_change_password'];
 
     return ['success' => true, 'error' => null];
 }
