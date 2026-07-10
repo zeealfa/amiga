@@ -1,8 +1,7 @@
 
 <table class="bg-white" bgcolor="<?php echo bg_hex('white'); ?>" width="100%" align="center" cellpadding="0" cellspacing="0">
  	<tr>
-		<center>
-			<td width="70%">
+		<td width="70%" align="center">
 				<table class="bg-white" bgcolor="<?php echo bg_hex('white'); ?>" width="100%" align="center" cellpadding="6">
 					<tr>
 						<!----width of sidebar---->
@@ -11,21 +10,20 @@
 						</td>
 					</tr>
 				</table>
-		</center>
-		<center>
-			<td valign="top" class="bg-white" bgcolor="<?php echo bg_hex('white'); ?>">
+		</td>
+		<td valign="top" align="center" class="bg-white" bgcolor="<?php echo bg_hex('white'); ?>">
 				<!----width of main content---->
 				<table class="bg-white" bgcolor="<?php echo bg_hex('white'); ?>" width="80%" align="center" cellpadding="0">
 					<tr>
 						<td>
-								<?php if ($_SESSION["content_type"]=='news'){ include 'content_news.php'; } 
-										else if($_SESSION["content_type"]=='categories'){ include 'content_categories.php'; } 
-										else if($_SESSION["content_type"]=='search'){ include 'content_search.php'; } 
+								<?php if ($_SESSION["content_type"]=='news'){ include 'content_news.php'; }
+										else if($_SESSION["content_type"]=='categories'){ include 'content_categories.php'; }
+										else if($_SESSION["content_type"]=='search'){ include 'content_search.php'; }
 
 								?>
 						</td>
 					</tr>
-				</table>		
-		</center>		
+				</table>
+		</td>
 	</tr>
 </table>
