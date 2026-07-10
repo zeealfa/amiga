@@ -412,3 +412,19 @@ inside the sidebar boxes (Calendar, Categories, Crowd Funding,
 Service & Repair, Shops and Vendors, Tabor Links, Top 10) so their
 colored borders and spacing match the real site exactly instead of
 looking flat. The admin area's own pages were widened to match.
+
+---
+
+## 2026-07-11 (login page cleanup & dashboard metrics)
+
+Simplified the admin login page so it only shows one short line about
+registering an account, instead of three lines that repeated the same
+idea.
+
+Finished the admin dashboard, which previously just said "you are
+logged in" with no real information. It now shows a set of at-a-glance
+numbers: admins see site-wide totals (active links, active news posts,
+active categories, active users, dead links, and pending submissions
+awaiting review), while regular contributors see their own totals
+(their links, their news posts, and how many of their submissions are
+pending, approved, or rejected).
