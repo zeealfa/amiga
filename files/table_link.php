@@ -91,7 +91,7 @@
 													if ($line2['links_archived_url']<>'') { 
 												?>
 														<TD width=40% class="bg-lightgray" bgcolor="<?php echo bg_hex('lightgray'); ?>">&nbsp;
-														<font class="txt-2" face="Verdana, sans-serif" size="2"><b> Author:</>
+														<font class="txt-2" face="Verdana, sans-serif" size="2"><b> Author:</b>
 														<a href="<?php echo $line2['links_email'];?>">
 															<?php
 																$str=$line2['links_author'];
@@ -127,7 +127,7 @@
 													?>	
 													<!----- AUTHOR ----->	
 													<TD width=70% class="bg-lightgray" bgcolor="<?php echo bg_hex('lightgray'); ?>">&nbsp;
-														<font class="txt-2" face="Verdana, sans-serif" size="2"><b> Author:</>
+														<font class="txt-2" face="Verdana, sans-serif" size="2"><b> Author:</b>
 														<a href="<?php echo $line2['links_email'];?>">
 															<?php
 																$str=$line2['links_author'];

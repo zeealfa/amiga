@@ -133,7 +133,7 @@ Page <?php echo $page_no." of ".$total_no_of_pages; ?>
 <?php echo $pagination_html; ?>
 </font>
 </p>
-</br>
+<br>
 </center>
 
 
@@ -173,8 +173,10 @@ Page <?php echo $page_no." of ".$total_no_of_pages; ?>
 <?php echo $pagination_html; ?>
 </font>
 </p>
-</br></br>
+<br><br>
 </center>
 
+		</td>
+	</tr>
 </table>
 

@@ -370,3 +370,15 @@ those older browsers now see the same colors, backgrounds, and text
 sizing as everyone else instead of a plain, unstyled page. Two pages
 that had a structural layout problem, which would have made this fix
 incomplete, were also corrected along the way.
+
+---
+
+## 2026-07-10 (news page layout fix & link editor cleanup)
+
+Fixed a layout mistake on the "Latest News" page where part of the
+page's table structure was never properly closed, which could cause
+the page to display incorrectly in older browsers. Also cleaned up a
+small formatting mistake on the site's link search results (a bold
+label wasn't closed correctly) and added a "Back to List" link to the
+admin link editing screen, matching the one already on the news
+editing screen.
