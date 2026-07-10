@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <?php include_once __DIR__ . '/../legacy_colors.php'; ?>
 <style><?php include __DIR__ . '/../style.css'; ?></style>
 </head>
-<body class="bg-lightgray">
+<body class="bg-lightgray" bgcolor="<?php echo bg_hex('lightgray'); ?>">
 
 <?php require __DIR__ . '/_header.php'; ?>
 
@@ -36,22 +36,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <center>
 <table width="70%" align="center" cellpadding="0" cellspacing="0">
 <tr>
-	<td width="22%" valign="top" class="bg-gray">
+	<td width="22%" valign="top" class="bg-gray" bgcolor="<?php echo bg_hex('gray'); ?>">
 		<?php require __DIR__ . '/_nav.php'; ?>
 	</td>
 	<td width="3%"></td>
 	<td width="75%" valign="top">
-		<table width="100%" cellpadding="1" cellspacing="0" class="bg-slateblue">
+		<table width="100%" cellpadding="1" cellspacing="0" class="bg-slateblue" bgcolor="<?php echo bg_hex('slateblue'); ?>">
 			<tr><td>
-				<table width="100%" cellpadding="1" cellspacing="1" class="bg-white">
+				<table width="100%" cellpadding="1" cellspacing="1" class="bg-white" bgcolor="<?php echo bg_hex('white'); ?>">
 					<tr>
-						<td align="center" class="bg-red">
-							<span class="txt-4-white"><b>MY PROFILE</b></span>
+						<td align="center" class="bg-red" bgcolor="<?php echo bg_hex('red'); ?>">
+							<font class="txt-4-white" face="Verdana, sans-serif" size="4" color="<?php echo txt_hex('white'); ?>"><b>MY PROFILE</b></font>
 						</td>
 					</tr>
 					<tr>
-						<td class="bg-white" style="padding:12px;">
-							<span class="txt-2-black">
+						<td class="bg-white" bgcolor="<?php echo bg_hex('white'); ?>" style="padding:12px;">
+							<font class="txt-2-black" face="Verdana, sans-serif" size="2" color="<?php echo txt_hex('black'); ?>">
 
 <?php if ($success): ?>
 								<p class="txt-2-black" style="color:#229c22;"><b>Password updated.</b></p>
@@ -83,7 +83,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 								</table>
 								</form>
 
-							</span>
+							</font>
 						</td>
 					</tr>
 				</table>
