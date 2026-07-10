@@ -172,3 +172,28 @@ function get_category_descendant_ids($myConnection, $cat_id)
 
     return $ids;
 }
+
+// Renders a nested <ul>-free checkbox tree (indentation via &nbsp;) for
+// picking up to 5 categories on the link add/edit forms. Root categories
+// are rendered as bold/italic non-interactive headings; only descendants
+// get a checkbox. Shared by files/admin/link_form.php and
+// files/admin/link_submit.php.
+function render_cat_checkboxes($nodes, $depth, $selected)
+{
+    foreach ($nodes as $node) {
+        $is_root = $depth === 0;
+        if ($is_root) {
+            echo str_repeat('&nbsp;&nbsp;&nbsp;&nbsp;', $depth)
+                . '<span style="font-weight:bold;font-style:italic;">'
+                . htmlspecialchars($node['title']) . '</span><br>';
+        } else {
+            echo str_repeat('&nbsp;&nbsp;&nbsp;&nbsp;', $depth)
+                . '<label><input type="checkbox" name="links_cats[]" value="' . $node['id'] . '" '
+                . (in_array($node['id'], $selected, true) ? 'checked' : '') . '> '
+                . htmlspecialchars($node['title']) . '</label><br>';
+        }
+        if (!empty($node['children'])) {
+            render_cat_checkboxes($node['children'], $depth + 1, $selected);
+        }
+    }
+}

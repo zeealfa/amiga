@@ -265,24 +265,6 @@ document.addEventListener('DOMContentLoaded', function () {
 										<td align="right" valign="top" width="1%" style="white-space:nowrap;"><b>Categories (up to 5):</b></td>
 										<td class="txt-1">
 <?php
-function render_cat_checkboxes($nodes, $depth, $selected) {
-    foreach ($nodes as $node) {
-        $is_root = $depth === 0;
-        if ($is_root) {
-            echo str_repeat('&nbsp;&nbsp;&nbsp;&nbsp;', $depth)
-                . '<span style="font-weight:bold;font-style:italic;">'
-                . htmlspecialchars($node['title']) . '</span><br>';
-        } else {
-            echo str_repeat('&nbsp;&nbsp;&nbsp;&nbsp;', $depth)
-                . '<label><input type="checkbox" name="links_cats[]" value="' . $node['id'] . '" '
-                . (in_array($node['id'], $selected, true) ? 'checked' : '') . '> '
-                . htmlspecialchars($node['title']) . '</label><br>';
-        }
-        if (!empty($node['children'])) {
-            render_cat_checkboxes($node['children'], $depth + 1, $selected);
-        }
-    }
-}
 render_cat_checkboxes($category_tree, 0, $values['links_cats']);
 ?>
 										</td>
