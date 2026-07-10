@@ -74,11 +74,19 @@ unset($_SESSION['flash_message']);
 									<td><font class="txt-1" face="Verdana, sans-serif" size="1"><?php echo htmlspecialchars(ucfirst($user['status'])); ?><?php if ($is_locked): ?> &mdash; Locked until <?php echo htmlspecialchars($user['locked_until']); ?><?php endif; ?></font></td>
 									<td><font class="txt-1" face="Verdana, sans-serif" size="1">
 										<a href="user_form.php?id=<?php echo (int) $user['id']; ?>">Edit</a> |
+<?php if ($user['status'] === 'pending'): ?>
+										<form method="post" action="user_quick_action.php" style="display:inline;">
+											<input type="hidden" name="id" value="<?php echo (int) $user['id']; ?>">
+											<input type="hidden" name="action" value="approve">
+											<input type="submit" value="Approve" class="txt-1">
+										</form>
+<?php else: ?>
 										<form method="post" action="user_quick_action.php" style="display:inline;">
 											<input type="hidden" name="id" value="<?php echo (int) $user['id']; ?>">
 											<input type="hidden" name="action" value="toggle_status">
 											<input type="submit" value="<?php echo $user['status'] === 'active' ? 'Deactivate' : 'Reactivate'; ?>" class="txt-1">
 										</form>
+<?php endif; ?>
 <?php if ($is_locked): ?>
 										|
 										<form method="post" action="user_quick_action.php" style="display:inline;">

@@ -3,7 +3,7 @@ if (!isset($_SESSION)) {
     session_start();
 }
 require_once __DIR__ . '/_auth.php';
-require_admin();
+require_login();
 require_once __DIR__ . '/../includes/functions.php';
 
 $id = isset($_GET['id']) ? intval($_GET['id']) : (isset($_POST['id']) && $_POST['id'] !== '' ? intval($_POST['id']) : null);
@@ -17,11 +17,6 @@ $values = [
     'links_email' => '',
     'links_desc' => '',
     'links_cats' => [],
-    'links_date_added' => date('Y-m-d'),
-    'links_active' => true,
-    'links_dead' => false,
-    'links_verified' => false,
-    'links_recommended' => false,
 ];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -31,11 +26,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $values['links_email'] = trim($_POST['links_email'] ?? '');
     $values['links_desc'] = strip_tags(trim($_POST['links_desc'] ?? ''));
     $values['links_cats'] = array_map('intval', $_POST['links_cats'] ?? []);
-    $values['links_date_added'] = trim($_POST['links_date_added'] ?? date('Y-m-d'));
-    $values['links_active'] = isset($_POST['links_active']);
-    $values['links_dead'] = isset($_POST['links_dead']);
-    $values['links_verified'] = isset($_POST['links_verified']);
-    $values['links_recommended'] = isset($_POST['links_recommended']);
+
+    if ($is_edit) {
+        $check_stmt = mysqli_prepare($myConnection, "SELECT id FROM t_links WHERE id = ? AND submitted_by = ? AND links_deleted_at IS NULL");
+        mysqli_stmt_bind_param($check_stmt, 'ii', $id, $_SESSION['user_id']);
+        mysqli_stmt_execute($check_stmt);
+        if (!mysqli_fetch_assoc(mysqli_stmt_get_result($check_stmt))) {
+            header('Location: my_links.php');
+            exit;
+        }
+        mysqli_stmt_close($check_stmt);
+    }
 
     if ($values['links_name'] === '') {
         $errors[] = 'Name is required.';
@@ -53,19 +54,42 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if (empty($errors)) {
-        $_SESSION['link_preview_data'] = array_merge($values, ['id' => $id]);
-        header('Location: link_preview.php');
-        exit;
+        $category_ids = implode(',', array_unique($values['links_cats']));
+        $target_id = $is_edit ? $id : null;
+        $action = $is_edit ? 'edit' : 'new';
+
+        $stmt = mysqli_prepare(
+            $myConnection,
+            "INSERT INTO t_submissions (type, action, target_id, submitted_by, links_name, links_url, links_author, links_email, links_desc, category_ids, status)
+             VALUES ('link', ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending')"
+        );
+        mysqli_stmt_bind_param(
+            $stmt,
+            'siissssss',
+            $action, $target_id, $_SESSION['user_id'],
+            $values['links_name'], $values['links_url'], $values['links_author'], $values['links_email'], $values['links_desc'],
+            $category_ids
+        );
+        $success = mysqli_stmt_execute($stmt);
+        mysqli_stmt_close($stmt);
+
+        if ($success) {
+            $_SESSION['flash_message'] = $is_edit ? 'Link edit submitted for review.' : 'Link submitted for review.';
+            header('Location: my_submissions.php');
+            exit;
+        }
+
+        $errors[] = 'Submission failed, please try again.';
     }
 } elseif ($is_edit) {
-    $stmt = mysqli_prepare($myConnection, "SELECT * FROM t_links WHERE id = ? AND links_deleted_at IS NULL");
-    mysqli_stmt_bind_param($stmt, 'i', $id);
+    $stmt = mysqli_prepare($myConnection, "SELECT * FROM t_links WHERE id = ? AND submitted_by = ? AND links_deleted_at IS NULL");
+    mysqli_stmt_bind_param($stmt, 'ii', $id, $_SESSION['user_id']);
     mysqli_stmt_execute($stmt);
     $row = mysqli_fetch_assoc(mysqli_stmt_get_result($stmt));
     mysqli_stmt_close($stmt);
 
     if (!$row) {
-        header('Location: links.php');
+        header('Location: my_links.php');
         exit;
     }
 
@@ -78,16 +102,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     mysqli_stmt_bind_param($cats_stmt, 'i', $id);
     mysqli_stmt_execute($cats_stmt);
     $cats_result = mysqli_stmt_get_result($cats_stmt);
-    $values['links_cats'] = [];
     while ($cat_row = mysqli_fetch_assoc($cats_result)) {
         $values['links_cats'][] = (int) $cat_row['category_id'];
     }
     mysqli_stmt_close($cats_stmt);
-    $values['links_date_added'] = $row['links_date_added'];
-    $values['links_active'] = (bool) $row['links_active'];
-    $values['links_dead'] = (bool) $row['links_dead'];
-    $values['links_verified'] = (bool) $row['links_verified'];
-    $values['links_recommended'] = (bool) $row['links_recommended'];
 }
 
 $category_tree = get_category_tree($myConnection);
@@ -95,7 +113,7 @@ $category_tree = get_category_tree($myConnection);
 <!DOCTYPE html>
 <html>
 <head>
-<title>AmigaSource.com - <?php echo $is_edit ? 'Edit Link' : 'Add Link'; ?></title>
+<title>AmigaSource.com - <?php echo $is_edit ? 'Edit Link' : 'Submit Link'; ?></title>
 <?php include_once __DIR__ . '/../legacy_colors.php'; ?>
 <style><?php include __DIR__ . '/../style.css'; ?></style>
 <script>
@@ -108,92 +126,12 @@ function enforceCategoryLimit() {
         }
     });
 }
-var urlCheckSeq = 0;
-var lastCheckedUrl = null;
-
-function requestUrlStatus(url, seq, statusEl) {
-    function applyResult(status) {
-        if (seq !== urlCheckSeq) {
-            return;
-        }
-        if (status === 'up') {
-            statusEl.textContent = String.fromCharCode(0x2713);
-            statusEl.style.color = '#008000';
-        } else if (status === 'down') {
-            statusEl.textContent = String.fromCharCode(0x2717);
-            statusEl.style.color = '#c70000';
-        } else {
-            statusEl.textContent = '';
-        }
-    }
-
-    if (window.fetch) {
-        fetch('link_url_check.php?url=' + encodeURIComponent(url), {
-            headers: { 'X-Requested-With': 'XMLHttpRequest' }
-        })
-            .then(function (response) { return response.json(); })
-            .then(function (data) { applyResult(data.status); })
-            .catch(function () { applyResult('down'); });
-        return;
-    }
-
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', 'link_url_check.php?url=' + encodeURIComponent(url), true);
-    xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState === 4) {
-            if (xhr.status === 200) {
-                try {
-                    applyResult(JSON.parse(xhr.responseText).status);
-                } catch (e) {
-                    applyResult('down');
-                }
-            } else {
-                applyResult('down');
-            }
-        }
-    };
-    xhr.send();
-}
-
-function checkUrlStatus() {
-    var urlField = document.getElementById('links_url');
-    var statusEl = document.getElementById('url_status');
-    var value = urlField.value.replace(/^\s+|\s+$/g, '');
-
-    urlCheckSeq += 1;
-    var seq = urlCheckSeq;
-
-    lastCheckedUrl = value;
-
-    if (value === '') {
-        statusEl.textContent = '';
-        return;
-    }
-
-    statusEl.textContent = '...';
-    statusEl.style.color = '#666666';
-    requestUrlStatus(value, seq, statusEl);
-}
-
 document.addEventListener('DOMContentLoaded', function () {
     var boxes = document.querySelectorAll('input[name="links_cats[]"]');
     boxes.forEach(function (box) {
         box.addEventListener('change', enforceCategoryLimit);
     });
     enforceCategoryLimit();
-
-    var urlField = document.getElementById('links_url');
-    urlField.addEventListener('blur', function () {
-        var value = urlField.value.replace(/^\s+|\s+$/g, '');
-        if (value !== lastCheckedUrl) {
-            checkUrlStatus();
-        }
-    });
-
-    if (urlField.value.replace(/^\s+|\s+$/g, '') !== '') {
-        checkUrlStatus();
-    }
 });
 </script>
 </head>
@@ -218,8 +156,8 @@ document.addEventListener('DOMContentLoaded', function () {
 						<td align="center" class="bg-red" bgcolor="<?php echo bg_hex('red'); ?>">
 							<table width="100%" cellpadding="0" cellspacing="0">
 								<tr>
-									<td align="center"><font class="txt-4-white" face="Verdana, sans-serif" size="4" color="<?php echo txt_hex('white'); ?>"><b><?php echo $is_edit ? 'EDIT LINK' : 'ADD LINK'; ?></b></font></td>
-									<td align="right" width="1%" style="white-space:nowrap;"><font class="txt-2-white" face="Verdana, sans-serif" size="2" color="<?php echo txt_hex('white'); ?>"><a href="links.php" onclick="history.back(); return false;" style="color:<?php echo txt_hex('white'); ?>;">&laquo; Back to List</a></font></td>
+									<td align="center"><font class="txt-4-white" face="Verdana, sans-serif" size="4" color="<?php echo txt_hex('white'); ?>"><b><?php echo $is_edit ? 'EDIT LINK' : 'SUBMIT LINK'; ?></b></font></td>
+									<td align="right" width="1%" style="white-space:nowrap;"><font class="txt-2-white" face="Verdana, sans-serif" size="2" color="<?php echo txt_hex('white'); ?>"><a href="my_links.php" style="color:<?php echo txt_hex('white'); ?>;">&laquo; Back to My Links</a></font></td>
 								</tr>
 							</table>
 						</td>
@@ -236,7 +174,8 @@ document.addEventListener('DOMContentLoaded', function () {
 								</ul>
 							</div>
 <?php endif; ?>
-							<form method="post" action="link_form.php">
+							<p><font class="txt-1" face="Verdana, sans-serif" size="1">Submissions are reviewed by an admin before they go live.</font></p>
+							<form method="post" action="link_submit.php">
 <?php if ($is_edit): ?>
 								<input type="hidden" name="id" value="<?php echo (int) $id; ?>">
 <?php endif; ?>
@@ -247,7 +186,7 @@ document.addEventListener('DOMContentLoaded', function () {
 									</tr>
 									<tr>
 										<td align="right" width="1%" style="white-space:nowrap;"><b>URL:</b></td>
-										<td><input type="text" id="links_url" name="links_url" value="<?php echo htmlspecialchars($values['links_url']); ?>" style="width:80%;"> <span id="url_status"></span></td>
+										<td><input type="text" name="links_url" value="<?php echo htmlspecialchars($values['links_url']); ?>" style="width:80%;"></td>
 									</tr>
 									<tr>
 										<td align="right" width="1%" style="white-space:nowrap;"><b>Author:</b></td>
@@ -264,28 +203,13 @@ document.addEventListener('DOMContentLoaded', function () {
 									<tr>
 										<td align="right" valign="top" width="1%" style="white-space:nowrap;"><b>Categories (up to 5):</b></td>
 										<td class="txt-1">
-<?php
-render_cat_checkboxes($category_tree, 0, $values['links_cats']);
-?>
-										</td>
-									</tr>
-									<tr>
-										<td align="right" width="1%" style="white-space:nowrap;"><b>Date Added:</b></td>
-										<td><input type="date" name="links_date_added" value="<?php echo htmlspecialchars($values['links_date_added']); ?>"></td>
-									</tr>
-									<tr>
-										<td align="right" width="1%" style="white-space:nowrap;"><b>Status:</b></td>
-										<td>
-											<label><input type="checkbox" name="links_active" <?php echo $values['links_active'] ? 'checked' : ''; ?>> Active</label>
-											<label><input type="checkbox" name="links_dead" <?php echo $values['links_dead'] ? 'checked' : ''; ?>> Dead</label>
-											<label><input type="checkbox" name="links_verified" <?php echo $values['links_verified'] ? 'checked' : ''; ?>> Verified</label>
-											<label><input type="checkbox" name="links_recommended" <?php echo $values['links_recommended'] ? 'checked' : ''; ?>> Recommended</label>
+<?php render_cat_checkboxes($category_tree, 0, $values['links_cats']); ?>
 										</td>
 									</tr>
 									<tr>
 										<td colspan="2" align="center">
 											<br>
-											<input type="submit" value="Preview" class="bg-slateblue" style="color:#ffffff; font-weight:bold; padding:4px 20px;">
+											<input type="submit" value="Submit for Review" class="bg-slateblue" style="color:#ffffff; font-weight:bold; padding:4px 20px;">
 										</td>
 									</tr>
 								</table>

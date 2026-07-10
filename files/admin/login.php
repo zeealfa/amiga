@@ -108,7 +108,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 								<td align="center" class="bg-whitesmoke" bgcolor="<?php echo bg_hex('whitesmoke'); ?>">
 									<font class="txt-1" face="Verdana, sans-serif" size="1">
 										One login for everyone — admins and users sign in here.<br>
-										What you see next depends on your account's role.
+										What you see next depends on your account's role.<br>
+										Don't have an account? <a href="register.php">Register here</a>.
 									</font>
 								</td>
 							</tr>
