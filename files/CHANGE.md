@@ -356,3 +356,17 @@ Put the new user management screen onto the actual working site. The
 database change (adding the forced-password-change flag) was applied
 to the live database, and the new admin pages were uploaded alongside
 it.
+
+---
+
+## 2026-07-10 (older browser support)
+
+Updated the site's pages so they also display correctly in older,
+simpler web browsers like IBrowse on classic AmigaOS machines, which
+don't understand the modern styling the site normally relies on.
+Old-style color and font markup was added alongside the existing
+styling throughout the public site and the admin area, so visitors on
+those older browsers now see the same colors, backgrounds, and text
+sizing as everyone else instead of a plain, unstyled page. Two pages
+that had a structural layout problem, which would have made this fix
+incomplete, were also corrected along the way.
