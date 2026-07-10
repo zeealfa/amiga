@@ -382,3 +382,17 @@ small formatting mistake on the site's link search results (a bold
 label wasn't closed correctly) and added a "Back to List" link to the
 admin link editing screen, matching the one already on the news
 editing screen.
+
+---
+
+## 2026-07-10 (contributor accounts & submission review)
+
+Added the ability for people other than the site admin to contribute.
+Visitors can now register their own account from the login page; new
+accounts wait for an admin's approval before they can log in. Once
+approved, a contributor can submit new links or news posts, or
+propose an edit to one of their own existing entries, from their own
+"My Links" / "My News" / "My Submissions" pages. Nothing a contributor
+submits goes live automatically — every submission sits in a review
+queue until an admin approves or rejects it, and rejected submissions
+show the contributor the admin's reason.
