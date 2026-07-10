@@ -255,6 +255,29 @@
       margin-top: 3px;
     }
     .ms-lbl { line-height: 1.4; }
+    .ms.done { background: #E6F4EC; }
+    .ms.done .ms-box {
+      border-color: #1A5C32;
+      background: #1A5C32;
+      position: relative;
+    }
+    .ms.done .ms-box::after {
+      content: "\2713";
+      position: absolute;
+      top: -3px;
+      left: 1px;
+      font-size: 12px;
+      color: #FFFFFF;
+      font-weight: bold;
+    }
+    .ms.done .ms-lbl { color: #1A5C32; }
+    .ms-note {
+      display: block;
+      font-size: 0.78rem;
+      color: #886600;
+      font-style: italic;
+      margin-top: 2px;
+    }
 
     .ph-deps {
       margin-top: 14px;
@@ -511,16 +534,16 @@
         Not in the original roadmap but essential when stepping into someone else's code. Skip this and you will refactor the wrong things and break the right ones. It also shows the client that you understand before you act.
       </div>
       <div class="ms-grid">
-        <div class="ms"><div class="ms-box"></div><div class="ms-lbl">Read every PHP file top-to-bottom — no edits yet <span class="mt logic">LOGIC</span></div></div>
-        <div class="ms"><div class="ms-box"></div><div class="ms-lbl">Map all DB tables: columns, types, nullability, indexes <span class="mt db">DB</span></div></div>
-        <div class="ms"><div class="ms-box"></div><div class="ms-lbl">List all existing functions and what each one does <span class="mt logic">LOGIC</span></div></div>
-        <div class="ms"><div class="ms-box"></div><div class="ms-lbl">Draw the current file structure (what page does what) <span class="mt logic">LOGIC</span></div></div>
-        <div class="ms"><div class="ms-box"></div><div class="ms-lbl">Flag dead code, commented blocks, unused variables <span class="mt logic">LOGIC</span></div></div>
-        <div class="ms"><div class="ms-box"></div><div class="ms-lbl">Note every naming inconsistency — list them, fix in Phase 02 <span class="mt logic">LOGIC</span></div></div>
-        <div class="ms"><div class="ms-box"></div><div class="ms-lbl">Set up local dev environment mirroring production exactly <span class="mt qa">QA</span></div></div>
-        <div class="ms"><div class="ms-box"></div><div class="ms-lbl">Take a full DB dump before any changes are ever made <span class="mt db">DB</span></div></div>
-        <div class="ms"><div class="ms-box"></div><div class="ms-lbl">Draft naming convention agreement (confirm with client) <span class="mt logic">LOGIC</span></div></div>
-        <div class="ms"><div class="ms-box"></div><div class="ms-lbl">Draft target file structure: which files exist, what lives where <span class="mt logic">LOGIC</span></div></div>
+        <div class="ms done"><div class="ms-box"></div><div class="ms-lbl">Read every PHP file top-to-bottom — no edits yet <span class="mt logic">LOGIC</span></div></div>
+        <div class="ms done"><div class="ms-box"></div><div class="ms-lbl">Map all DB tables: columns, types, nullability, indexes <span class="mt db">DB</span></div></div>
+        <div class="ms done"><div class="ms-box"></div><div class="ms-lbl">List all existing functions and what each one does <span class="mt logic">LOGIC</span></div></div>
+        <div class="ms done"><div class="ms-box"></div><div class="ms-lbl">Draw the current file structure (what page does what) <span class="mt logic">LOGIC</span></div></div>
+        <div class="ms done"><div class="ms-box"></div><div class="ms-lbl">Flag dead code, commented blocks, unused variables <span class="mt logic">LOGIC</span></div></div>
+        <div class="ms done"><div class="ms-box"></div><div class="ms-lbl">Note every naming inconsistency — list them, fix in Phase 02 <span class="mt logic">LOGIC</span></div></div>
+        <div class="ms done"><div class="ms-box"></div><div class="ms-lbl">Set up local dev environment mirroring production exactly <span class="mt qa">QA</span></div></div>
+        <div class="ms done"><div class="ms-box"></div><div class="ms-lbl">Take a full DB dump before any changes are ever made <span class="mt db">DB</span></div></div>
+        <div class="ms done"><div class="ms-box"></div><div class="ms-lbl">Draft naming convention agreement (confirm with client) <span class="mt logic">LOGIC</span></div></div>
+        <div class="ms done"><div class="ms-box"></div><div class="ms-lbl">Draft target file structure: which files exist, what lives where <span class="mt logic">LOGIC</span></div></div>
       </div>
       <div class="ph-deps">⬩ Dependency: none &nbsp;·&nbsp; Must complete before all other phases</div>
     </div>
@@ -546,16 +569,16 @@
         Client did "the best I could" — some structure exists but likely has duplicate columns, inconsistent naming, and missing boolean flags. Every future feature is built on this. A bad schema is technical debt that compounds with every new page.
       </div>
       <div class="ms-grid">
-        <div class="ms"><div class="ms-box"></div><div class="ms-lbl">Full DB dump/backup before any schema changes <span class="mt db">DB</span></div></div>
-        <div class="ms"><div class="ms-box"></div><div class="ms-lbl">Audit for duplicate or redundant columns across tables <span class="mt db">DB</span></div></div>
-        <div class="ms"><div class="ms-box"></div><div class="ms-lbl">Rename all columns to consistent <code>snake_case</code> <span class="mt db">DB</span></div></div>
-        <div class="ms"><div class="ms-box"></div><div class="ms-lbl">Add <code>created_at</code> / <code>updated_at</code> timestamps where missing <span class="mt db">DB</span></div></div>
-        <div class="ms"><div class="ms-box"></div><div class="ms-lbl">Add <code>is_dead</code>, <code>is_verified</code> boolean flags to links table <span class="mt db">DB</span></div></div>
-        <div class="ms"><div class="ms-box"></div><div class="ms-lbl">Add <code>is_active</code> flag to categories table <span class="mt db">DB</span></div></div>
-        <div class="ms"><div class="ms-box"></div><div class="ms-lbl">Add <code>status</code> enum (pending / approved / rejected) for submissions <span class="mt db">DB</span></div></div>
-        <div class="ms"><div class="ms-box"></div><div class="ms-lbl">Add indexes on columns used in WHERE / ORDER BY clauses <span class="mt db">DB</span></div></div>
-        <div class="ms"><div class="ms-box"></div><div class="ms-lbl">Write reversible migration SQL for every change <span class="mt db">DB</span></div></div>
-        <div class="ms"><div class="ms-box"></div><div class="ms-lbl">Test: existing public pages still work after every schema change <span class="mt qa">QA</span></div></div>
+        <div class="ms done"><div class="ms-box"></div><div class="ms-lbl">Full DB dump/backup before any schema changes <span class="mt db">DB</span></div></div>
+        <div class="ms done"><div class="ms-box"></div><div class="ms-lbl">Audit for duplicate or redundant columns across tables <span class="mt db">DB</span></div></div>
+        <div class="ms done"><div class="ms-box"></div><div class="ms-lbl">Rename all columns to consistent <code>snake_case</code> <span class="mt db">DB</span></div></div>
+        <div class="ms done"><div class="ms-box"></div><div class="ms-lbl">Add <code>created_at</code> / <code>updated_at</code> timestamps where missing <span class="mt db">DB</span></div></div>
+        <div class="ms done"><div class="ms-box"></div><div class="ms-lbl">Add <code>is_dead</code>, <code>is_verified</code> boolean flags to links table <span class="mt db">DB</span></div></div>
+        <div class="ms done"><div class="ms-box"></div><div class="ms-lbl">Add <code>is_active</code> flag to categories table <span class="mt db">DB</span></div></div>
+        <div class="ms done"><div class="ms-box"></div><div class="ms-lbl">Add <code>status</code> enum (pending / approved / rejected) for submissions <span class="mt db">DB</span></div></div>
+        <div class="ms done"><div class="ms-box"></div><div class="ms-lbl">Add indexes on columns used in WHERE / ORDER BY clauses <span class="mt db">DB</span></div></div>
+        <div class="ms done"><div class="ms-box"></div><div class="ms-lbl">Write reversible migration SQL for every change <span class="mt db">DB</span></div></div>
+        <div class="ms done"><div class="ms-box"></div><div class="ms-lbl">Test: existing public pages still work after every schema change <span class="mt qa">QA</span></div></div>
       </div>
       <div class="ph-deps">⬩ Dependency: Phase 00 complete</div>
     </div>
@@ -581,16 +604,16 @@
         Client "attempted to clean up and keep it modular" but admits it's still a mess. This is where a fresh pair of eyes applies consistent standards systematically. Every day spent here saves three days in Phases 03–07. Do not rush it.
       </div>
       <div class="ms-grid">
-        <div class="ms"><div class="ms-box"></div><div class="ms-lbl">Create <code>includes/db.php</code> — one connection used everywhere <span class="mt logic">LOGIC</span></div></div>
-        <div class="ms"><div class="ms-box"></div><div class="ms-lbl">Create <code>includes/functions.php</code> — all shared helpers live here <span class="mt logic">LOGIC</span></div></div>
-        <div class="ms"><div class="ms-box"></div><div class="ms-lbl">Create <code>includes/config.php</code> — constants, site name, paths <span class="mt logic">LOGIC</span></div></div>
+        <div class="ms done"><div class="ms-box"></div><div class="ms-lbl">Create <code>includes/db.php</code> — one connection used everywhere <span class="mt logic">LOGIC</span></div></div>
+        <div class="ms done"><div class="ms-box"></div><div class="ms-lbl">Create <code>includes/functions.php</code> — all shared helpers live here <span class="mt logic">LOGIC</span></div></div>
+        <div class="ms done"><div class="ms-box"></div><div class="ms-lbl">Create <code>includes/config.php</code> — constants, site name, paths <span class="mt logic">LOGIC</span></div></div>
         <div class="ms"><div class="ms-box"></div><div class="ms-lbl">Separate HTML output from PHP logic on every existing page <span class="mt ui">UI</span></div></div>
         <div class="ms"><div class="ms-box"></div><div class="ms-lbl">Move all inline styles out to <code>style.css</code> <span class="mt ui">UI</span></div></div>
-        <div class="ms"><div class="ms-box"></div><div class="ms-lbl">Rename functions to verb-noun: <code>get_links_by_category()</code> <span class="mt logic">LOGIC</span></div></div>
-        <div class="ms"><div class="ms-box"></div><div class="ms-lbl">Replace magic strings / numbers with named constants <span class="mt logic">LOGIC</span></div></div>
-        <div class="ms"><div class="ms-box"></div><div class="ms-lbl">Replace every raw SQL query with PDO prepared statements <span class="mt logic">LOGIC</span></div></div>
-        <div class="ms"><div class="ms-box"></div><div class="ms-lbl">Strip all Maestro-specific code from the public-facing pages <span class="mt logic">LOGIC</span></div></div>
-        <div class="ms"><div class="ms-box"></div><div class="ms-lbl">Regression test: every public page works exactly as before <span class="mt qa">QA</span></div></div>
+        <div class="ms done"><div class="ms-box"></div><div class="ms-lbl">Rename functions to verb-noun: <code>get_links_by_category()</code> <span class="mt logic">LOGIC</span></div></div>
+        <div class="ms done"><div class="ms-box"></div><div class="ms-lbl">Replace magic strings / numbers with named constants <span class="mt logic">LOGIC</span></div></div>
+        <div class="ms done"><div class="ms-box"></div><div class="ms-lbl">Replace every raw SQL query with PDO prepared statements <span class="mt logic">LOGIC</span><span class="ms-note">Done via mysqli prepared statements instead of PDO — deliberate decision, same injection protection, matches the rest of the codebase's mysqli usage.</span></div></div>
+        <div class="ms done"><div class="ms-box"></div><div class="ms-lbl">Strip all Maestro-specific code from the public-facing pages <span class="mt logic">LOGIC</span></div></div>
+        <div class="ms done"><div class="ms-box"></div><div class="ms-lbl">Regression test: every public page works exactly as before <span class="mt qa">QA</span></div></div>
       </div>
       <div class="ph-deps">⬩ Dependency: Phase 01 complete</div>
     </div>
@@ -616,16 +639,16 @@
         The core deliverable. Client says Maestro "has a different feel than the rest of the site" and is "too much for what I need." The new admin must feel native, be minimal, and match the site's existing HTML/CSS aesthetic exactly.
       </div>
       <div class="ms-grid">
-        <div class="ms"><div class="ms-box"></div><div class="ms-lbl">Admin login page (<code>admin/login.php</code>) — simple form <span class="mt ui">UI</span></div></div>
-        <div class="ms"><div class="ms-box"></div><div class="ms-lbl">Admin session handler — checked at top of every admin page <span class="mt auth">AUTH</span></div></div>
-        <div class="ms"><div class="ms-box"></div><div class="ms-lbl">Admin shared layout: <code>_header.php</code>, <code>_nav.php</code>, <code>_footer.php</code> <span class="mt ui">UI</span></div></div>
-        <div class="ms"><div class="ms-box"></div><div class="ms-lbl">Admin dashboard: at-a-glance counts (links, pending, categories) <span class="mt ui">UI</span></div></div>
-        <div class="ms"><div class="ms-box"></div><div class="ms-lbl">Link entry form: add new link with live text preview <span class="mt ui">UI</span></div></div>
-        <div class="ms"><div class="ms-box"></div><div class="ms-lbl">Link edit form: pre-fill add form with existing row <span class="mt logic">LOGIC</span></div></div>
-        <div class="ms"><div class="ms-box"></div><div class="ms-lbl">Link quick-actions: mark dead / verified / open Archive.org <span class="mt logic">LOGIC</span></div></div>
-        <div class="ms"><div class="ms-box"></div><div class="ms-lbl">Link browse table: sortable columns, filter by status, paginated <span class="mt ui">UI</span></div></div>
-        <div class="ms"><div class="ms-box"></div><div class="ms-lbl">News entry form: add / edit / delete with preview <span class="mt ui">UI</span></div></div>
-        <div class="ms"><div class="ms-box"></div><div class="ms-lbl">Second contributor login: multi-admin credential table in DB <span class="mt auth">AUTH</span></div></div>
+        <div class="ms done"><div class="ms-box"></div><div class="ms-lbl">Admin login page (<code>admin/login.php</code>) — simple form <span class="mt ui">UI</span></div></div>
+        <div class="ms done"><div class="ms-box"></div><div class="ms-lbl">Admin session handler — checked at top of every admin page <span class="mt auth">AUTH</span></div></div>
+        <div class="ms done"><div class="ms-box"></div><div class="ms-lbl">Admin shared layout: <code>_header.php</code>, <code>_nav.php</code>, <code>_footer.php</code> <span class="mt ui">UI</span></div></div>
+        <div class="ms done"><div class="ms-box"></div><div class="ms-lbl">Admin dashboard: at-a-glance counts (links, pending, categories) <span class="mt ui">UI</span></div></div>
+        <div class="ms done"><div class="ms-box"></div><div class="ms-lbl">Link entry form: add new link with live text preview <span class="mt ui">UI</span><span class="ms-note">Preview exists but is submit &rarr; redirect &rarr; separate page (link_preview.php), not a true inline/live (no-reload) preview.</span></div></div>
+        <div class="ms done"><div class="ms-box"></div><div class="ms-lbl">Link edit form: pre-fill add form with existing row <span class="mt logic">LOGIC</span></div></div>
+        <div class="ms done"><div class="ms-box"></div><div class="ms-lbl">Link quick-actions: mark dead / verified / open Archive.org <span class="mt logic">LOGIC</span></div></div>
+        <div class="ms done"><div class="ms-box"></div><div class="ms-lbl">Link browse table: sortable columns, filter by status, paginated <span class="mt ui">UI</span></div></div>
+        <div class="ms done"><div class="ms-box"></div><div class="ms-lbl">News entry form: add / edit / delete with preview <span class="mt ui">UI</span></div></div>
+        <div class="ms done"><div class="ms-box"></div><div class="ms-lbl">Second contributor login: multi-admin credential table in DB <span class="mt auth">AUTH</span></div></div>
       </div>
       <div class="ph-deps">⬩ Dependency: Phase 02 complete</div>
     </div>
@@ -651,10 +674,10 @@
         Client currently edits tables through Maestro's admin homepage and says it is "still not exactly what I am looking for." This phase closes that gap with purpose-built management views — nothing more than what the site actually needs.
       </div>
       <div class="ms-grid">
-        <div class="ms"><div class="ms-box"></div><div class="ms-lbl">Categories manager: add / edit / delete / reorder <span class="mt logic">LOGIC</span></div></div>
+        <div class="ms done"><div class="ms-box"></div><div class="ms-lbl">Categories manager: add / edit / delete / reorder <span class="mt logic">LOGIC</span></div></div>
         <div class="ms"><div class="ms-box"></div><div class="ms-lbl">Tags / keywords manager (if applicable after audit) <span class="mt logic">LOGIC</span></div></div>
         <div class="ms"><div class="ms-box"></div><div class="ms-lbl">Bulk link actions: mark multiple as dead / verified at once <span class="mt logic">LOGIC</span></div></div>
-        <div class="ms"><div class="ms-box"></div><div class="ms-lbl">Admin contributor management: add / deactivate logins <span class="mt auth">AUTH</span></div></div>
+        <div class="ms done"><div class="ms-box"></div><div class="ms-lbl">Admin contributor management: add / deactivate logins <span class="mt auth">AUTH</span></div></div>
         <div class="ms"><div class="ms-box"></div><div class="ms-lbl">Site stats page: total links, categories, recent additions <span class="mt ui">UI</span></div></div>
         <div class="ms"><div class="ms-box"></div><div class="ms-lbl">Interview module: Q&amp;A entry, preview, publish / unpublish <span class="mt ui">UI</span></div></div>
         <div class="ms"><div class="ms-box"></div><div class="ms-lbl">Simple audit log: who added / edited / deleted and when <span class="mt db">DB</span></div></div>
