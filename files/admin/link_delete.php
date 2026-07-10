@@ -51,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm_delete'])) {
 <?php include_once __DIR__ . '/../legacy_colors.php'; ?>
 <style><?php include __DIR__ . '/../style.css'; ?></style>
 </head>
-<body class="bg-lightgray">
+<body class="bg-lightgray" bgcolor="<?php echo bg_hex('lightgray'); ?>">
 
 <?php require __DIR__ . '/_header.php'; ?>
 
@@ -60,25 +60,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm_delete'])) {
 <center>
 <table width="60%" align="center" cellpadding="0" cellspacing="0">
 <tr>
-	<td width="25%" valign="top" class="bg-gray">
+	<td width="25%" valign="top" class="bg-gray" bgcolor="<?php echo bg_hex('gray'); ?>">
 		<?php require __DIR__ . '/_nav.php'; ?>
 	</td>
 	<td width="3%"></td>
 	<td width="72%" valign="top">
-		<table width="100%" cellpadding="1" cellspacing="0" class="bg-slateblue">
+		<table width="100%" cellpadding="1" cellspacing="0" class="bg-slateblue" bgcolor="<?php echo bg_hex('slateblue'); ?>">
 			<tr><td>
-				<table width="100%" cellpadding="1" cellspacing="1" class="bg-white">
+				<table width="100%" cellpadding="1" cellspacing="1" class="bg-white" bgcolor="<?php echo bg_hex('white'); ?>">
 					<tr>
-						<td align="center" class="bg-red">
-							<span class="txt-4-white"><b><?php echo $action === 'restore' ? 'RESTORE LINK' : 'DELETE LINK'; ?></b></span>
+						<td align="center" class="bg-red" bgcolor="<?php echo bg_hex('red'); ?>">
+							<font class="txt-4-white" face="Verdana, sans-serif" size="4" color="<?php echo txt_hex('white'); ?>"><b><?php echo $action === 'restore' ? 'RESTORE LINK' : 'DELETE LINK'; ?></b></font>
 						</td>
 					</tr>
 <?php if ($action === 'restore'): ?>
 					<tr>
-						<td class="bg-whitesmoke" style="padding:16px;">
-							<span class="txt-2-black">
+						<td class="bg-whitesmoke" bgcolor="<?php echo bg_hex('whitesmoke'); ?>" style="padding:16px;">
+							<font class="txt-2-black" face="Verdana, sans-serif" size="2" color="<?php echo txt_hex('black'); ?>">
 								Are you sure you want to restore <b><?php echo htmlspecialchars($link['links_name']); ?></b>?
-							</span>
+							</font>
 							<br><br>
 							<center>
 								<form method="post" action="link_delete.php" style="display:inline;">
@@ -93,11 +93,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm_delete'])) {
 					</tr>
 <?php else: ?>
 					<tr>
-						<td class="bg-whitesmoke" style="padding:16px;">
-							<span class="txt-2-black">
+						<td class="bg-whitesmoke" bgcolor="<?php echo bg_hex('whitesmoke'); ?>" style="padding:16px;">
+							<font class="txt-2-black" face="Verdana, sans-serif" size="2" color="<?php echo txt_hex('black'); ?>">
 								Are you sure you want to delete <b><?php echo htmlspecialchars($link['links_name']); ?></b>?
 								This can be undone later via Show Deleted &rarr; Restore.
-							</span>
+							</font>
 							<br><br>
 							<center>
 								<form method="post" action="link_delete.php" style="display:inline;">
