@@ -2,8 +2,6 @@
 <?php
 
 	include 'sidebar_search.php';			// n/a
-	
-	include 'sidebar_add_link.php';			// n/a
 
 	include 'sidebar_calendar.php';			// dynamically generated
 

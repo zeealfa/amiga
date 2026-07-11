@@ -7,7 +7,7 @@ require_admin();
 require_once __DIR__ . '/../includes/functions.php';
 
 $entity_type = $_GET['entity_type'] ?? 'all';
-$allowed_entity_types = ['link', 'news', 'category'];
+$allowed_entity_types = ['link', 'news', 'category', 'calendar', 'crowdfunding'];
 if (!in_array($entity_type, $allowed_entity_types, true)) {
     $entity_type = 'all';
 }
@@ -111,6 +111,8 @@ $pagination_html = render_pagination_menu($page_no, $total_no_of_pages, $second_
 									<option value="link" <?php echo $entity_type === 'link' ? 'selected' : ''; ?>>Link</option>
 									<option value="news" <?php echo $entity_type === 'news' ? 'selected' : ''; ?>>News</option>
 									<option value="category" <?php echo $entity_type === 'category' ? 'selected' : ''; ?>>Category</option>
+									<option value="calendar" <?php echo $entity_type === 'calendar' ? 'selected' : ''; ?>>Calendar</option>
+									<option value="crowdfunding" <?php echo $entity_type === 'crowdfunding' ? 'selected' : ''; ?>>Crowdfunding</option>
 								</select>
 								</td>
 								<td style="white-space:nowrap; padding-right:10px;">Action:
