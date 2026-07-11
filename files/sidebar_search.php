@@ -23,7 +23,7 @@
 										<input type="text" name="search" size=25 maxlength=125>
 										<p>
 										<font class="txt-0-black" face="Verdana, sans-serif" size="0" color="<?php echo txt_hex('black'); ?>">
-											Advanced Search (coming soon)<br><br>
+											<a href="/entry_advanced_search.php">Advanced Search</a><br><br>
 										<input type="submit">
 									</font></form>	<br>
 
