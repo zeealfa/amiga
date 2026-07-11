@@ -210,6 +210,7 @@ $show_quick_actions = false;
 								</tr></table>
 							</form>
 							<button type="button" id="check_all_links_btn" class="txt-1">Check All</button>
+							<button type="button" id="verify_all_links_btn" class="txt-1" disabled>Verify All</button>
 						</td>
 					</tr>
 					<tr>
@@ -327,9 +328,12 @@ function checkAllRequestUrlStatus(url, applyResult) {
 
 document.addEventListener('DOMContentLoaded', function () {
     var btn = document.getElementById('check_all_links_btn');
+    var verifyBtn = document.getElementById('verify_all_links_btn');
     if (!btn) {
         return;
     }
+
+    var lastCheckResults = [];
 
     btn.addEventListener('click', function () {
         var rows = document.querySelectorAll('tr[data-link-id]');
@@ -338,7 +342,7 @@ document.addEventListener('DOMContentLoaded', function () {
             var urlCell = row.querySelector('td:nth-child(2) span.txt-1:not([data-url-status])');
             var statusEl = row.querySelector('[data-url-status]');
             if (urlCell && statusEl) {
-                queue.push({ url: urlCell.textContent, statusEl: statusEl });
+                queue.push({ id: row.getAttribute('data-link-id'), url: urlCell.textContent, statusEl: statusEl });
             }
         });
 
@@ -348,6 +352,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
         btn.disabled = true;
         btn.textContent = 'Checking...';
+        if (verifyBtn) {
+            verifyBtn.disabled = true;
+        }
+        lastCheckResults = [];
 
         var remaining = queue.length;
         var concurrency = queue.length;
@@ -369,10 +377,16 @@ document.addEventListener('DOMContentLoaded', function () {
                 } else {
                     item.statusEl.textContent = '';
                 }
+                if (status === 'up' || status === 'down') {
+                    lastCheckResults.push({ id: item.id, status: status });
+                }
                 remaining -= 1;
                 if (remaining === 0) {
                     btn.disabled = false;
                     btn.textContent = 'Check All';
+                    if (verifyBtn) {
+                        verifyBtn.disabled = lastCheckResults.length === 0;
+                    }
                 } else {
                     runNext();
                 }
@@ -383,6 +397,34 @@ document.addEventListener('DOMContentLoaded', function () {
             runNext();
         }
     });
+
+    if (verifyBtn) {
+        verifyBtn.addEventListener('click', function () {
+            if (lastCheckResults.length === 0 || !window.fetch) {
+                return;
+            }
+
+            verifyBtn.disabled = true;
+            verifyBtn.textContent = 'Verifying...';
+
+            fetch('link_bulk_verify.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                body: JSON.stringify({ results: lastCheckResults })
+            })
+                .then(function (response) { return response.json(); })
+                .then(function () {
+                    window.location.reload();
+                })
+                .catch(function () {
+                    verifyBtn.disabled = false;
+                    verifyBtn.textContent = 'Verify All';
+                });
+        });
+    }
 });
 </script>
 

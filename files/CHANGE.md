@@ -471,3 +471,19 @@ The "Submit Link" / "Edit Link" form now checks a submitted web
 address as soon as you click out of the URL field, showing a checkmark
 or a cross next to it — the same live link-checking already available
 to admins, now also working for regular contributors.
+
+---
+
+## 2026-07-11 (bulk verify links on the admin links page)
+
+The admin Links page's "Check All" button now feeds a new "Verify All"
+button. "Verify All" stays greyed out until a Check All run finishes,
+then clicking it saves the results permanently — links that checked
+"up" are marked Verified, links that checked "down" are marked Dead —
+instead of the checkmarks/crosses only being a temporary on-screen
+display like before.
+
+Note: "Verify All" only works in modern browsers (it needs built-in
+JSON support), unlike the rest of the admin link-checking tools, which
+also work in older browsers. This only affects the admin area — the
+public site is unaffected.
