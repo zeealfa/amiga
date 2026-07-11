@@ -272,6 +272,22 @@
       font-weight: bold;
     }
     .ms.done .ms-lbl { color: #1A5C32; }
+    .ms.na { background: #F5F5F5; }
+    .ms.na .ms-box {
+      border-color: #888888;
+      background: #888888;
+      position: relative;
+    }
+    .ms.na .ms-box::after {
+      content: "\2715";
+      position: absolute;
+      top: -3px;
+      left: 1px;
+      font-size: 12px;
+      color: #FFFFFF;
+      font-weight: bold;
+    }
+    .ms.na .ms-lbl { color: #888888; }
     .ms-note {
       display: block;
       font-size: 0.78rem;
@@ -609,7 +625,7 @@
         <div class="ms done"><div class="ms-box"></div><div class="ms-lbl">Create <code>includes/functions.php</code> — all shared helpers live here <span class="mt logic">LOGIC</span></div></div>
         <div class="ms done"><div class="ms-box"></div><div class="ms-lbl">Create <code>includes/config.php</code> — constants, site name, paths <span class="mt logic">LOGIC</span></div></div>
         <div class="ms"><div class="ms-box"></div><div class="ms-lbl">Separate HTML output from PHP logic on every existing page <span class="mt ui">UI</span></div></div>
-        <div class="ms"><div class="ms-box"></div><div class="ms-lbl">Move all inline styles out to <code>style.css</code> <span class="mt ui">UI</span></div></div>
+        <div class="ms na"><div class="ms-box"></div><div class="ms-lbl">Move all inline styles out to <code>style.css</code> <span class="mt ui">UI</span><span class="ms-note">N/A — rejected. IBrowse 3.0 has zero CSS support, so moving styling into style.css would break rendering for the client's actual target browser. Inline bgcolor/font attributes via legacy_colors.php stay as the permanent approach per the IBrowse hard rule.</span></div></div>
         <div class="ms done"><div class="ms-box"></div><div class="ms-lbl">Rename functions to verb-noun: <code>get_links_by_category()</code> <span class="mt logic">LOGIC</span></div></div>
         <div class="ms done"><div class="ms-box"></div><div class="ms-lbl">Replace magic strings / numbers with named constants <span class="mt logic">LOGIC</span></div></div>
         <div class="ms done"><div class="ms-box"></div><div class="ms-lbl">Replace every raw SQL query with PDO prepared statements <span class="mt logic">LOGIC</span><span class="ms-note">Done via mysqli prepared statements instead of PDO — deliberate decision, same injection protection, matches the rest of the codebase's mysqli usage.</span></div></div>
