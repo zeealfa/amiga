@@ -17,5 +17,5 @@
 		</font>
 	</td>
 </table>
-<?php echo "<title>AmigaSource.com Search - ".$search_r."</title>"; ?>
+<?php echo "<title>AmigaSource.com Search - ".htmlspecialchars($search_r)."</title>"; ?>
 <br>
