@@ -19,7 +19,7 @@
 For each task, immediately before and after editing, capture the live rendered page and diff it — this is the proof that output didn't change, per the project's evidence-before-assertion rule. No task is complete until its diff is empty.
 
 - Tasks 1–7 (all `sidebar_*_sub.php` files) render on **every** page via `mod_sidebar_chooser.php` → verify with `http://amiga.test/index.php`.
-- Task 8 (`content_categories.php`) → verify with `http://amiga.test/entry_categories.php?cat_id=1` (confirmed live: returns HTTP 200, 28705 bytes, real category content).
+- Task 8 (`content_categories.php`) → verify with `http://amiga.test/entry_categories.php?cat_id=2` (corrected during execution: `cat_id=1` does not exist in `t_categories`, whose lowest id is `2` — using `cat_id=1` surfaced a pre-existing bug in the original `do/while` code, not a refactor regression; see Task 8's commit message).
 - Task 9 (`content_news.php`) → verify with `http://amiga.test/index.php` (same URL as sidebar tasks, since news is the default content type — Task 9 must be done last so any diff is attributable only to `content_news.php`, not a leftover sidebar change).
 
 ---
