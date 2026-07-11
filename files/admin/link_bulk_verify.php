@@ -2,6 +2,8 @@
 if (!isset($_SESSION)) {
     session_start();
 }
+require_once __DIR__ . '/../includes/db.php';
+require_once __DIR__ . '/../includes/functions.php';
 
 header('Content-Type: application/json');
 
@@ -51,6 +53,15 @@ foreach ($results as $result) {
     mysqli_stmt_execute($stmt);
     if (mysqli_stmt_affected_rows($stmt) > 0) {
         $updated++;
+
+        $name_stmt = mysqli_prepare($myConnection, "SELECT links_name FROM t_links WHERE id = ?");
+        mysqli_stmt_bind_param($name_stmt, 'i', $id);
+        mysqli_stmt_execute($name_stmt);
+        $link_row = mysqli_fetch_assoc(mysqli_stmt_get_result($name_stmt));
+        mysqli_stmt_close($name_stmt);
+
+        $label = ($link_row['links_name'] ?? "Link #$id") . ($dead ? ' (verified: dead)' : ' (verified: live)');
+        log_audit($myConnection, 'link', $id, 'edit', $label, $_SESSION['user_id']);
     }
     mysqli_stmt_close($stmt);
 }
