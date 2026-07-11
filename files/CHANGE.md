@@ -522,4 +522,16 @@ Note: this needs its database table created on the live site before
 it will work there — it's only been set up on the local dev database
 so far.
 
+Bulk-verifying links (the "Verify All" button) now also gets recorded
+in the audit log, one entry per link checked.
+
+---
+
+## 2026-07-11 (fixed: Verify All button was completely broken)
+
+Found and fixed a bug that made the "Verify All" button fail every
+time it was used, ever since it was added — it was missing its
+connection to the database, so clicking it would error out instead
+of saving anything. This is now fixed and verified working.
+
 
