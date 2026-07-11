@@ -464,3 +464,41 @@ function probe_link_url_status($url, $nobody)
 
     return $http_code;
 }
+
+// Runs a paginated, prepared-statement search. $params must contain only the
+// values bound to the placeholders inside $where_sql, in order; $types is
+// their mysqli bind_param type string (e.g. "sss"), or '' if $where_sql has
+// no placeholders. $from_sql may be a plain table name or a full join clause
+// (e.g. "t_news n LEFT JOIN t_users u ON u.id = n.submitted_by").
+// Returns ['total' => int, 'total_pages' => int (min 1), 'rows' => array].
+function fetch_paginated_search_results($myConnection, $select_sql, $from_sql, $where_sql, $types, $params, $order_by_sql, $page_no, $per_page)
+{
+    $stmt_count = mysqli_prepare($myConnection, "SELECT COUNT(*) AS c FROM $from_sql WHERE $where_sql");
+    if ($types !== '') {
+        mysqli_stmt_bind_param($stmt_count, $types, ...$params);
+    }
+    mysqli_stmt_execute($stmt_count);
+    $total = (int) mysqli_fetch_assoc(mysqli_stmt_get_result($stmt_count))['c'];
+    mysqli_stmt_close($stmt_count);
+
+    $rows = [];
+    if ($total > 0) {
+        $offset = ($page_no - 1) * $per_page;
+        $stmt = mysqli_prepare($myConnection, "SELECT $select_sql FROM $from_sql WHERE $where_sql ORDER BY $order_by_sql LIMIT ?, ?");
+        $list_types = $types . 'ii';
+        $list_params = array_merge($params, [$offset, $per_page]);
+        mysqli_stmt_bind_param($stmt, $list_types, ...$list_params);
+        mysqli_stmt_execute($stmt);
+        $result = mysqli_stmt_get_result($stmt);
+        while ($row = mysqli_fetch_assoc($result)) {
+            $rows[] = $row;
+        }
+        mysqli_stmt_close($stmt);
+    }
+
+    return [
+        'total' => $total,
+        'total_pages' => max(1, (int) ceil($total / $per_page)),
+        'rows' => $rows,
+    ];
+}
