@@ -197,3 +197,11 @@ function render_cat_checkboxes($nodes, $depth, $selected)
         }
     }
 }
+
+// Returns all t_cal rows ordered by start date. Pure data fetch --
+// the date-range formatting/branching logic stays in sidebar_calendar_sub.php.
+function get_calendar_events($myConnection)
+{
+    $result = mysqli_query($myConnection, "SELECT * FROM t_cal ORDER BY cal_date_start ASC");
+    return mysqli_fetch_all($result, MYSQLI_ASSOC);
+}
