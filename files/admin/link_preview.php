@@ -174,14 +174,14 @@ $line2 = [
 <?php if (!empty($save_errors)): ?>
 						<tr>
 							<td class="bg-white" bgcolor="<?php echo bg_hex('white'); ?>" style="padding:8px;">
-								<div class="txt-2-black" style="color:#c70000;">
+								<font class="txt-2-black" face="Verdana, sans-serif" size="2" color="<?php echo txt_hex('red'); ?>">
 									<b>Cannot save:</b>
 									<ul>
 <?php foreach ($save_errors as $error): ?>
 										<li><?php echo htmlspecialchars($error); ?></li>
 <?php endforeach; ?>
 									</ul>
-								</div>
+								</font>
 							</td>
 						</tr>
 <?php endif; ?>
