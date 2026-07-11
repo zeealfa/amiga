@@ -1,16 +1,13 @@
 
 <ul type="square" style="padding-left: 16px">
 <?php
-$sqlcommand="SELECT * from t_repair order by repair_name";
-$query1=mysqli_query($myConnection, $sqlcommand) or die(mysqli_error($myConnection));
-
-	$line1=mysqli_fetch_array($query1);
+require_once __DIR__ . '/includes/functions.php';
+$repair_rows = get_repair_vendors($myConnection);
 	$hr="<hr>";
 
-		do {
+		foreach ($repair_rows as $line1) {
 				echo "<li> <a target=\"_blank\" href=".$line1['repair_url'].">".$line1['repair_name']."</a> </li>";
 			}
-		while ($line1=mysqli_fetch_array($query1,MYSQLI_ASSOC))
 ?>
 
 </ul>

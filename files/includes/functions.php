@@ -227,3 +227,10 @@ function get_print_publications($myConnection)
     $result = mysqli_query($myConnection, "SELECT * FROM t_mags_print ORDER BY print_name");
     return mysqli_fetch_all($result, MYSQLI_ASSOC);
 }
+
+// Returns all t_repair rows ordered by name.
+function get_repair_vendors($myConnection)
+{
+    $result = mysqli_query($myConnection, "SELECT * FROM t_repair ORDER BY repair_name");
+    return mysqli_fetch_all($result, MYSQLI_ASSOC);
+}
