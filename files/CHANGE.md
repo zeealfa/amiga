@@ -509,4 +509,17 @@ for every link it checks — not just the ones that turned out to be
 live — but it no longer touches the Active checkbox, since that's now
 a manual editorial choice rather than an automatic one.
 
+---
+
+## 2026-07-11 (audit log)
+
+Admins can now see a history of who added, edited, deleted, or
+restored a link, news post, or category, and when. This shows up on
+a new "Audit Log" page in the admin menu, with filters for entity
+type and action.
+
+Note: this needs its database table created on the live site before
+it will work there — it's only been set up on the local dev database
+so far.
+
 
