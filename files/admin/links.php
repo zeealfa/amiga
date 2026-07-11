@@ -339,7 +339,7 @@ document.addEventListener('DOMContentLoaded', function () {
         var rows = document.querySelectorAll('tr[data-link-id]');
         var queue = [];
         rows.forEach(function (row) {
-            var urlCell = row.querySelector('td:nth-child(2) span.txt-1:not([data-url-status])');
+            var urlCell = row.querySelector('td:nth-child(2) font.txt-1:not([data-url-status])');
             var statusEl = row.querySelector('[data-url-status]');
             if (urlCell && statusEl) {
                 queue.push({ id: row.getAttribute('data-link-id'), url: urlCell.textContent, statusEl: statusEl });

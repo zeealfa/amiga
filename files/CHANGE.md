@@ -487,3 +487,14 @@ Note: "Verify All" only works in modern browsers (it needs built-in
 JSON support), unlike the rest of the admin link-checking tools, which
 also work in older browsers. This only affects the admin area — the
 public site is unaffected.
+
+---
+
+## 2026-07-11 (fixed "Check All" button doing nothing on admin links page)
+
+The "Check All" button on the admin Links page has been silently
+broken since July 9 — clicking it did nothing at all. The code that
+reads each link's web address off the page was looking for the wrong
+kind of HTML tag, so it always came up empty and the check never ran.
+Fixed to look for the correct tag. Also fixes "Verify All" (added
+today), which depended on Check All actually running.
