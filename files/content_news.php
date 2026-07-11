@@ -51,7 +51,7 @@
 			<table width="100%" cellpadding="1" cellspacing="1" class="bg-white" bgcolor="<?php echo bg_hex('white'); ?>">
 				<tr>
 					<td align="center" class="bg-teal" bgcolor="<?php echo bg_hex('teal'); ?>">
-						<font class="txt-3-white" face="Verdana, sans-serif" size="3" color="<?php echo txt_hex('white'); ?>"><b>LINK STATS</b></font>
+						<font class="txt-3-white" face="Verdana, sans-serif" size="3" color="<?php echo txt_hex('white'); ?>"><b>SITE STATS</b></font>
 					</td>
 				</tr>
 				<tr>
@@ -65,17 +65,19 @@
 							$total_verified = $link_stats['verified'];
 							$total_left = $total_records - $total_verified;
 							$total_new = $link_stats['new'];
+							$total_categories = get_active_category_count($myConnection);
 
 							$link_metric_boxes = [
-								['Total Links',        $total_records, 'blue'],
-								['Verified',           $total_verified, 'green'],
-								['Remaining',          $total_left,    'orange'],
-								['New (Last 7 Days)',  $total_new,     'purple'],
+								['Total Links',        $total_records,    'blue'],
+								['Verified',           $total_verified,   'green'],
+								['Remaining',          $total_left,       'orange'],
+								['New (Last 7 Days)',  $total_new,        'purple'],
+								['Categories',         $total_categories, 'red'],
 							];
 							foreach ($link_metric_boxes as $box):
 								[$label, $value, $color] = $box;
 							?>
-								<td width="25%" align="center" valign="top" class="bg-gray" bgcolor="<?php echo bg_hex('gray'); ?>">
+								<td width="20%" align="center" valign="top" class="bg-gray" bgcolor="<?php echo bg_hex('gray'); ?>">
 									<table width="100%" cellpadding="6" cellspacing="0">
 										<tr>
 											<td align="center" class="bg-white" bgcolor="<?php echo bg_hex('white'); ?>">

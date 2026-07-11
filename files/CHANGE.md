@@ -452,6 +452,8 @@ misleading. "Verified" now correctly counts links that have actually
 been checked, instead of an old, incorrect method that missed most of
 them. "New links" now means links added in the last 7 days, instead of
 counting everything added since December 2021. The box was also
-renamed to "Link Stats" and given a fresh look with a colored header
+renamed to "Site Stats" and given a fresh look with a colored header
 and a colored number for each stat, to match the style used on the
-admin dashboard.
+admin dashboard. A count of active categories was added as a fifth
+stat, so the box now covers total links, verified links, links added
+this week, and categories.

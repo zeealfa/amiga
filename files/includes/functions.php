@@ -286,6 +286,13 @@ function get_link_stats($myConnection)
     return ['total' => $total, 'verified' => $verified, 'new' => $new];
 }
 
+// Returns the count of active categories, shown on the public news page.
+function get_active_category_count($myConnection)
+{
+    $result = mysqli_query($myConnection, "SELECT COUNT(*) As total_categories FROM t_categories where active=1");
+    return mysqli_fetch_array($result)['total_categories'];
+}
+
 // Returns the count of active, non-deleted t_news rows (used for pagination).
 function get_news_total_count($myConnection)
 {
