@@ -241,3 +241,10 @@ function get_shop_vendors($myConnection)
     $result = mysqli_query($myConnection, "SELECT * FROM t_vendor ORDER BY vendor_name");
     return mysqli_fetch_all($result, MYSQLI_ASSOC);
 }
+
+// Returns all t_top10 rows ordered by top10_order.
+function get_top10_entries($myConnection)
+{
+    $result = mysqli_query($myConnection, "SELECT * FROM t_top10 ORDER BY top10_order");
+    return mysqli_fetch_all($result, MYSQLI_ASSOC);
+}
