@@ -490,11 +490,23 @@ public site is unaffected.
 
 ---
 
-## 2026-07-11 (fixed "Check All" button doing nothing on admin links page)
+## 2026-07-11 (link visibility now controlled by the "Active" checkbox)
 
-The "Check All" button on the admin Links page has been silently
-broken since July 9 — clicking it did nothing at all. The code that
-reads each link's web address off the page was looking for the wrong
-kind of HTML tag, so it always came up empty and the check never ran.
-Fixed to look for the correct tag. Also fixes "Verify All" (added
-today), which depended on Check All actually running.
+Whether a link shows up on the public site is now controlled by its
+"Active" checkbox in the admin link editor, instead of only by whether
+the link was found to be broken. This means an admin can now hide a
+link from public view without deleting it, even if the link itself
+still works — something that wasn't possible before. Links kept for
+the record with an archive.org copy still show up regardless of the
+Active checkbox, same as before.
+
+Also fixed a bug where a link's live-vs-archived display never
+actually checked its Active status, so it always behaved the same way
+no matter what was set.
+
+"Verify All" (see above) now records that a link was checked and when,
+for every link it checks — not just the ones that turned out to be
+live — but it no longer touches the Active checkbox, since that's now
+a manual editorial choice rather than an automatic one.
+
+
