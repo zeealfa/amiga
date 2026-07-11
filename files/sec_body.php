@@ -17,6 +17,7 @@
 										else if($_SESSION["content_type"]=='archived_sites'){ include 'content_archived_sites.php'; }
 										else if($_SESSION["content_type"]=='dead_sites'){ include 'content_dead_sites.php'; }
 										else if($_SESSION["content_type"]=='top_rated'){ include 'content_top_rated.php'; }
+										else if($_SESSION["content_type"]=='advanced_search'){ include 'content_advanced_search.php'; }
 
 								?>
 						</td>
