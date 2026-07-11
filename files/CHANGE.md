@@ -428,3 +428,17 @@ active categories, active users, dead links, and pending submissions
 awaiting review), while regular contributors see their own totals
 (their links, their news posts, and how many of their submissions are
 pending, approved, or rejected).
+
+---
+
+## 2026-07-11 (behind-the-scenes cleanup, no visible changes)
+
+Reorganized how several pages fetch their information from the
+database — news, categories, calendar, crowd funding, online and
+print publications, service & repair listings, shops & vendors, and
+the Top 10 list. Previously the "get the data" step and the "display
+it on the page" step were tangled together in the same block of code;
+they're now cleanly separated, which makes future changes safer and
+easier. This does not change anything visitors see or how any page
+looks or behaves — verified by comparing the exact page output before
+and after each change.
