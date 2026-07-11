@@ -234,3 +234,10 @@ function get_repair_vendors($myConnection)
     $result = mysqli_query($myConnection, "SELECT * FROM t_repair ORDER BY repair_name");
     return mysqli_fetch_all($result, MYSQLI_ASSOC);
 }
+
+// Returns all t_vendor rows ordered by name.
+function get_shop_vendors($myConnection)
+{
+    $result = mysqli_query($myConnection, "SELECT * FROM t_vendor ORDER BY vendor_name");
+    return mysqli_fetch_all($result, MYSQLI_ASSOC);
+}

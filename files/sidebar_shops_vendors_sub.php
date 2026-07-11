@@ -1,16 +1,13 @@
 
 <ul type="square" style="padding-left: 16px">
 <?php
-$sqlcommand="SELECT * from t_vendor order by vendor_name";
-$query1=mysqli_query($myConnection, $sqlcommand) or die(mysqli_error($myConnection));
-
-	$line1=mysqli_fetch_array($query1);
+require_once __DIR__ . '/includes/functions.php';
+$vendor_rows = get_shop_vendors($myConnection);
 	$hr="<hr>";
 
-		do {
+		foreach ($vendor_rows as $line1) {
 				echo "<li> <a target=\"_blank\" href=".$line1['vendor_url'].">".$line1['vendor_name']."</a> </li>";
 			}
-		while ($line1=mysqli_fetch_array($query1,MYSQLI_ASSOC))
 ?>
 
 </ul>
