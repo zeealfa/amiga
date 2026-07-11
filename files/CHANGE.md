@@ -669,3 +669,16 @@ catches near-identical addresses too, like http vs https, with vs without
 "www.", and with vs without a trailing slash), and the URL has to actually
 respond when checked live. Either problem stops the save with a clear error
 message explaining why.
+
+---
+
+## 2026-07-11 (site search now covers the whole site)
+
+The search box now searches much more than just links. A search now also looks
+through news articles (including who submitted them), calendar events,
+crowdfunding campaigns, online and print publications, repair/service
+listings, shops & vendors, and the Top 10 list — not just the links directory.
+Each type of match is shown in its own labeled group, and if a group has a lot
+of matches they're split across pages you can click through. Searching again
+within 15 seconds of a previous search now shows a short "please wait"
+message instead of running another search right away.
