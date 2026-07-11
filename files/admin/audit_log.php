@@ -7,7 +7,7 @@ require_admin();
 require_once __DIR__ . '/../includes/functions.php';
 
 $entity_type = $_GET['entity_type'] ?? 'all';
-$allowed_entity_types = ['link', 'news', 'category', 'calendar', 'crowdfunding'];
+$allowed_entity_types = ['link', 'news', 'category', 'calendar', 'crowdfunding', 'top10', 'vendor', 'repair', 'mags_print', 'mags_online'];
 if (!in_array($entity_type, $allowed_entity_types, true)) {
     $entity_type = 'all';
 }
@@ -113,6 +113,11 @@ $pagination_html = render_pagination_menu($page_no, $total_no_of_pages, $second_
 									<option value="category" <?php echo $entity_type === 'category' ? 'selected' : ''; ?>>Category</option>
 									<option value="calendar" <?php echo $entity_type === 'calendar' ? 'selected' : ''; ?>>Calendar</option>
 									<option value="crowdfunding" <?php echo $entity_type === 'crowdfunding' ? 'selected' : ''; ?>>Crowdfunding</option>
+									<option value="top10" <?php echo $entity_type === 'top10' ? 'selected' : ''; ?>>Top 10+8</option>
+									<option value="vendor" <?php echo $entity_type === 'vendor' ? 'selected' : ''; ?>>Shops and Vendors</option>
+									<option value="repair" <?php echo $entity_type === 'repair' ? 'selected' : ''; ?>>Service and Repair</option>
+									<option value="mags_print" <?php echo $entity_type === 'mags_print' ? 'selected' : ''; ?>>Print Publications</option>
+									<option value="mags_online" <?php echo $entity_type === 'mags_online' ? 'selected' : ''; ?>>Online Publications</option>
 								</select>
 								</td>
 								<td style="white-space:nowrap; padding-right:10px;">Action:
