@@ -658,3 +658,14 @@ by that column — click again to flip between oldest/newest,
 A-to-Z/Z-to-A, and so on. Defaults to oldest submission first, same as
 before.
 
+---
+
+## 2026-07-11 (links now checked for duplicates and dead URLs before saving)
+
+When a link is submitted by a contributor, or added/edited directly by an
+admin, it now has to pass two checks before it can be saved: the URL cannot
+already be in use by another link or by another pending submission (this
+catches near-identical addresses too, like http vs https, with vs without
+"www.", and with vs without a trailing slash), and the URL has to actually
+respond when checked live. Either problem stops the save with a clear error
+message explaining why.
