@@ -269,3 +269,36 @@ function get_category_rows($myConnection, $cat_id)
     $result = mysqli_stmt_get_result($stmt);
     return mysqli_fetch_all($result, MYSQLI_ASSOC);
 }
+
+// Returns link stats used on the news page header: total link count,
+// count verified since 2021-12-01, and count added since 2021-12-01.
+function get_link_stats($myConnection)
+{
+    $result = mysqli_query($myConnection, "SELECT COUNT(*) As total_records FROM t_links");
+    $total = mysqli_fetch_array($result)['total_records'];
+
+    $result = mysqli_query($myConnection, "SELECT COUNT(*) As total_verified FROM t_links where (links_date_verified>'2021-12-01')");
+    $verified = mysqli_fetch_array($result)['total_verified'];
+
+    $result = mysqli_query($myConnection, "SELECT COUNT(*) As total_new FROM t_links where (links_date_added>'2021-12-01')");
+    $new = mysqli_fetch_array($result)['total_new'];
+
+    return ['total' => $total, 'verified' => $verified, 'new' => $new];
+}
+
+// Returns the count of active, non-deleted t_news rows (used for pagination).
+function get_news_total_count($myConnection)
+{
+    $result = mysqli_query($myConnection, "SELECT COUNT(*) As total_records FROM t_news where news_active='1' AND news_deleted_at IS NULL");
+    return mysqli_fetch_array($result)['total_records'];
+}
+
+// Returns one page of active, non-deleted t_news rows, newest first.
+function get_news_page($myConnection, $offset, $limit)
+{
+    $stmt = mysqli_prepare($myConnection, "SELECT * FROM t_news where news_active='1' AND news_deleted_at IS NULL ORDER BY news_date DESC LIMIT ?, ?");
+    mysqli_stmt_bind_param($stmt, "ii", $offset, $limit);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    return mysqli_fetch_all($result, MYSQLI_ASSOC);
+}
