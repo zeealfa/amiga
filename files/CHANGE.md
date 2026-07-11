@@ -534,4 +534,18 @@ time it was used, ever since it was added — it was missing its
 connection to the database, so clicking it would error out instead
 of saving anything. This is now fixed and verified working.
 
+---
+
+## 2026-07-11 (Calendar and Crowdfunding now manageable from admin)
+
+The Calendar and Crowdfunding boxes on the site's sidebar previously
+had no way to be updated except by editing the database directly.
+Admins can now add, edit, and delete both calendar events and
+crowdfunding campaigns from new "Calendar" and "Crowdfunding" pages
+in the admin menu, the same way links and news already work. These
+changes are also recorded in the Audit Log.
+
+Also removed the "Add A Link" box from the sidebar — it was a
+placeholder that said "under construction" and never did anything.
+
 
