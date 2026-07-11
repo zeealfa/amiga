@@ -30,7 +30,7 @@ $descendant_ids = get_category_descendant_ids($myConnection, $cat_id);
 $id_placeholders = implode(',', array_fill(0, count($descendant_ids), '?'));
 $id_types = str_repeat('i', count($descendant_ids));
 
-$stmt_count = mysqli_prepare($myConnection, "SELECT COUNT(DISTINCT l.id) As total_records FROM t_links l JOIN t_link_categories lc ON lc.link_id = l.id WHERE (l.links_dead=0 or (l.links_dead=1 and l.links_archived_url<>'')) and lc.category_id IN ($id_placeholders)");
+$stmt_count = mysqli_prepare($myConnection, "SELECT COUNT(DISTINCT l.id) As total_records FROM t_links l JOIN t_link_categories lc ON lc.link_id = l.id WHERE (l.links_active=1 or l.links_archived_url<>'') and lc.category_id IN ($id_placeholders)");
 mysqli_stmt_bind_param($stmt_count, $id_types, ...$descendant_ids);
 mysqli_stmt_execute($stmt_count);
 $result_count = mysqli_stmt_get_result($stmt_count);
@@ -58,7 +58,7 @@ Page <?php echo $page_no." of ".$total_no_of_pages; ?>
 <?php
 $list_types = $id_types . 'ii';
 $list_params = array_merge($descendant_ids, [$offset, $total_records_per_page]);
-$stmt = mysqli_prepare($myConnection, "SELECT DISTINCT l.* FROM t_links l JOIN t_link_categories lc ON lc.link_id = l.id WHERE (l.links_dead=0 or (l.links_dead=1 and l.links_archived_url<>'')) and lc.category_id IN ($id_placeholders) ORDER BY l.links_name ASC LIMIT ?, ?");
+$stmt = mysqli_prepare($myConnection, "SELECT DISTINCT l.* FROM t_links l JOIN t_link_categories lc ON lc.link_id = l.id WHERE (l.links_active=1 or l.links_archived_url<>'') and lc.category_id IN ($id_placeholders) ORDER BY l.links_name ASC LIMIT ?, ?");
 mysqli_stmt_bind_param($stmt, $list_types, ...$list_params);
 mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);

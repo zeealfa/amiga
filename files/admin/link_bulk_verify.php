@@ -42,19 +42,12 @@ foreach ($results as $result) {
         continue;
     }
 
-    if ($status === 'up') {
-        $stmt = mysqli_prepare(
-            $myConnection,
-            "UPDATE t_links SET links_verified = 1, links_dead = 0, links_date_verified = CURDATE() WHERE id = ? AND links_deleted_at IS NULL"
-        );
-    } else {
-        $stmt = mysqli_prepare(
-            $myConnection,
-            "UPDATE t_links SET links_dead = 1 WHERE id = ? AND links_deleted_at IS NULL"
-        );
-    }
-
-    mysqli_stmt_bind_param($stmt, 'i', $id);
+    $dead = $status === 'up' ? 0 : 1;
+    $stmt = mysqli_prepare(
+        $myConnection,
+        "UPDATE t_links SET links_verified = 1, links_dead = ?, links_date_verified = CURDATE() WHERE id = ? AND links_deleted_at IS NULL"
+    );
+    mysqli_stmt_bind_param($stmt, 'ii', $dead, $id);
     mysqli_stmt_execute($stmt);
     if (mysqli_stmt_affected_rows($stmt) > 0) {
         $updated++;

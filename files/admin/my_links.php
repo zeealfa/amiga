@@ -32,7 +32,7 @@ unset($_SESSION['flash_message']);
 <br>
 
 <center>
-<table width="98%" align="center" cellpadding="0" cellspacing="0">
+<table width="98%" align="center" cellpadding="0" cellspacing="0" style="max-width:1400px;margin:0 auto;">
 <tr>
 	<td width="18%" valign="top" class="bg-gray" bgcolor="<?php echo bg_hex('gray'); ?>">
 		<?php require __DIR__ . '/_nav.php'; ?>

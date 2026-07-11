@@ -53,7 +53,7 @@
 												<TD colspan="2" width=100% class="bg-red" bgcolor="<?php echo bg_hex('red'); ?>">&nbsp;
 													<a target=new href="
 													<?php
-														if ($line2['links_archived_url']<>null and $line2['links_active']="1") { ?>
+														if ($line2['links_archived_url']<>null and $line2['links_active']=="1") { ?>
 															<font class="txt-1" face="Verdana, sans-serif" size="1">
 															<a target=new href="<?php echo $line2['links_archived_url'] ?>">
 
