@@ -54,6 +54,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if (empty($errors)) {
+        $exclude_link_id = $is_edit ? $id : null;
+        if (find_exact_duplicate_link_url($myConnection, $values['links_url'], $exclude_link_id) !== null) {
+            $errors[] = 'This URL already exist';
+        } elseif (!is_link_url_alive($values['links_url'])) {
+            $errors[] = 'Link is not valid';
+        }
+    }
+
+    if (empty($errors)) {
         $category_ids = implode(',', array_unique($values['links_cats']));
         $target_id = $is_edit ? $id : null;
         $action = $is_edit ? 'edit' : 'new';
