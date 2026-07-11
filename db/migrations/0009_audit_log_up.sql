@@ -1,3 +1,7 @@
+-- 0009_audit_log_up.sql
+-- Audit Log: UP
+-- Purely additive: creates t_audit_log only.
+
 CREATE TABLE `t_audit_log` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `entity_type` varchar(20) NOT NULL,
