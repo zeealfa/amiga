@@ -4,6 +4,7 @@ if (!isset($_SESSION)) {
 }
 
 header('Content-Type: application/json');
+require_once __DIR__ . '/../includes/functions.php';
 
 // This is a JSON endpoint, not a page — require_login()/require_admin()
 // (in includes/auth.php) redirect with a Location header on failure,
@@ -41,39 +42,4 @@ if (
     exit;
 }
 
-function probe_url_status($url, $nobody)
-{
-    $ch = curl_init($url);
-    curl_setopt_array($ch, [
-        CURLOPT_NOBODY => $nobody,
-        CURLOPT_CUSTOMREQUEST => $nobody ? 'HEAD' : 'GET',
-        CURLOPT_FOLLOWLOCATION => true,
-        CURLOPT_MAXREDIRS => 5,
-        CURLOPT_PROTOCOLS => CURLPROTO_HTTP | CURLPROTO_HTTPS,
-        CURLOPT_REDIR_PROTOCOLS => CURLPROTO_HTTP | CURLPROTO_HTTPS,
-        CURLOPT_TIMEOUT => 5,
-        CURLOPT_CONNECTTIMEOUT => 5,
-        CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_USERAGENT => 'AmigaSourceLinkChecker/1.0',
-    ]);
-    curl_exec($ch);
-    $errno = curl_errno($ch);
-    $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-    curl_close($ch);
-
-    if ($errno !== 0) {
-        return null;
-    }
-
-    return $http_code;
-}
-
-$http_code = probe_url_status($url, true);
-
-if ($http_code === null || $http_code === 0 || $http_code === 403 || $http_code === 405 || $http_code === 501) {
-    $http_code = probe_url_status($url, false);
-}
-
-$is_up = $http_code !== null && $http_code >= 200 && $http_code < 400;
-
-echo json_encode(['status' => $is_up ? 'up' : 'down']);
+echo json_encode(['status' => is_link_url_alive($url) ? 'up' : 'down']);
