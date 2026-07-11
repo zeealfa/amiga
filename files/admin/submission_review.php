@@ -4,6 +4,7 @@ if (!isset($_SESSION)) {
 }
 require_once __DIR__ . '/_auth.php';
 require_admin();
+require_once __DIR__ . '/../includes/functions.php';
 
 $id = isset($_GET['id']) ? intval($_GET['id']) : (isset($_POST['id']) ? intval($_POST['id']) : 0);
 
@@ -173,6 +174,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['approve'])) {
             }
             mysqli_stmt_close($stmt);
         }
+
+        log_audit($myConnection, 'link', $link_id, $submission['action'] === 'new' ? 'add' : 'edit', $submission['links_name'], $_SESSION['user_id']);
     } else {
         // news_story is contributor-typed plain text (see Task 7 review), but
         // t_news.news_story is echoed RAW/unescaped on the public site
@@ -188,12 +191,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['approve'])) {
             );
             mysqli_stmt_bind_param($stmt, 'ssi', $submission['news_date'], $news_story, $submission['submitted_by']);
             mysqli_stmt_execute($stmt);
+            $news_id = mysqli_insert_id($myConnection);
             mysqli_stmt_close($stmt);
+            log_audit($myConnection, 'news', $news_id, 'add', $submission['news_date'], $_SESSION['user_id']);
         } else {
             $stmt = mysqli_prepare($myConnection, "UPDATE t_news SET news_date=?, news_story=? WHERE id=?");
             mysqli_stmt_bind_param($stmt, 'ssi', $submission['news_date'], $news_story, $submission['target_id']);
             mysqli_stmt_execute($stmt);
             mysqli_stmt_close($stmt);
+            log_audit($myConnection, 'news', (int) $submission['target_id'], 'edit', $submission['news_date'], $_SESSION['user_id']);
         }
     }
 

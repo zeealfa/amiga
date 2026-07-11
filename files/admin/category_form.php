@@ -136,8 +136,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             );
         }
         mysqli_stmt_execute($stmt);
+        $category_id = $is_edit ? $id : mysqli_insert_id($myConnection);
         mysqli_stmt_close($stmt);
 
+        log_audit($myConnection, 'category', $category_id, $is_edit ? 'edit' : 'add', $values['title'], $_SESSION['user_id']);
         $_SESSION['flash_message'] = $is_edit ? 'Category updated' : 'Category added';
         header('Location: categories.php');
         exit;

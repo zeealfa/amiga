@@ -309,3 +309,17 @@ function get_news_page($myConnection, $offset, $limit)
     $result = mysqli_stmt_get_result($stmt);
     return mysqli_fetch_all($result, MYSQLI_ASSOC);
 }
+
+// Records one audit log entry. $label is a human-readable snapshot (e.g. a
+// link name or news date) captured at the time of the action, so the log
+// stays readable even after the entity is later renamed or deleted.
+function log_audit($myConnection, $entity_type, $entity_id, $action, $label, $user_id)
+{
+    $stmt = mysqli_prepare(
+        $myConnection,
+        "INSERT INTO t_audit_log (entity_type, entity_id, action, label, user_id) VALUES (?, ?, ?, ?, ?)"
+    );
+    mysqli_stmt_bind_param($stmt, 'sissi', $entity_type, $entity_id, $action, $label, $user_id);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_close($stmt);
+}

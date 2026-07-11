@@ -4,6 +4,7 @@ if (!isset($_SESSION)) {
 }
 require_once __DIR__ . '/_auth.php';
 require_admin();
+require_once __DIR__ . '/../includes/functions.php';
 
 if (empty($_SESSION['news_preview_data'])) {
     header('Location: news_form.php');
@@ -43,6 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm_save'])) {
         mysqli_stmt_execute($stmt);
         mysqli_stmt_close($stmt);
         $flash = 'News post updated';
+        log_audit($myConnection, 'news', (int) $data['id'], 'edit', $data['news_date'], $_SESSION['user_id']);
     } else {
         $stmt = mysqli_prepare(
             $myConnection,
@@ -54,8 +56,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm_save'])) {
             $data['news_date'], $data['news_story'], $data['news_active']
         );
         mysqli_stmt_execute($stmt);
+        $news_id = mysqli_insert_id($myConnection);
         mysqli_stmt_close($stmt);
         $flash = 'News post added';
+        log_audit($myConnection, 'news', $news_id, 'add', $data['news_date'], $_SESSION['user_id']);
     }
 
     unset($_SESSION['news_preview_data']);

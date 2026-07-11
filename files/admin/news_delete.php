@@ -4,6 +4,7 @@ if (!isset($_SESSION)) {
 }
 require_once __DIR__ . '/_auth.php';
 require_admin();
+require_once __DIR__ . '/../includes/functions.php';
 
 $id = isset($_GET['id']) ? intval($_GET['id']) : (isset($_POST['id']) ? intval($_POST['id']) : 0);
 $action = $_GET['action'] ?? $_POST['action'] ?? 'delete';
@@ -29,6 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $action === 'restore' && isset($_PO
     mysqli_stmt_bind_param($stmt, 'i', $id);
     mysqli_stmt_execute($stmt);
     mysqli_stmt_close($stmt);
+    log_audit($myConnection, 'news', $id, 'restore', $news['news_date'], $_SESSION['user_id']);
     $_SESSION['flash_message'] = 'News post restored';
     header('Location: news.php');
     exit;
@@ -39,6 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm_delete'])) {
     mysqli_stmt_bind_param($stmt, 'i', $id);
     mysqli_stmt_execute($stmt);
     mysqli_stmt_close($stmt);
+    log_audit($myConnection, 'news', $id, 'delete', $news['news_date'], $_SESSION['user_id']);
     $_SESSION['flash_message'] = 'News post deleted';
     header('Location: news.php');
     exit;

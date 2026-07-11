@@ -63,6 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm_save'])) {
         mysqli_stmt_close($stmt);
         $link_id = (int) $data['id'];
         $flash = 'Link updated';
+        log_audit($myConnection, 'link', $link_id, 'edit', $data['links_name'], $_SESSION['user_id']);
     } else {
         $stmt = mysqli_prepare(
             $myConnection,
@@ -83,6 +84,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm_save'])) {
         $link_id = mysqli_insert_id($myConnection);
         mysqli_stmt_close($stmt);
         $flash = 'Link added';
+        log_audit($myConnection, 'link', $link_id, 'add', $data['links_name'], $_SESSION['user_id']);
     }
 
     $stmt = mysqli_prepare($myConnection, "DELETE FROM t_link_categories WHERE link_id = ?");
