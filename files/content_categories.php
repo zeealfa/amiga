@@ -2,20 +2,15 @@
 	<tr>
 		<td> 
 			<?php
+			require_once __DIR__ . '/includes/functions.php';
 			if (isset($_GET['cat_id'])) {
 				$cat_id = intval($_GET['cat_id']);
 			} else {
-				$first_cat_result = mysqli_query($myConnection, "SELECT id FROM t_categories ORDER BY id ASC LIMIT 1");
-				$first_cat_row = mysqli_fetch_assoc($first_cat_result);
-				$cat_id = $first_cat_row ? intval($first_cat_row['id']) : 0;
+				$cat_id = get_default_category_id($myConnection) ?? 0;
 			}
-			$stmt = mysqli_prepare($myConnection, "SELECT * FROM t_categories where id=?");
-			mysqli_stmt_bind_param($stmt, "i", $cat_id);
-			mysqli_stmt_execute($stmt);
-			$query1 = mysqli_stmt_get_result($stmt);
-			$line1=mysqli_fetch_array($query1, MYSQLI_ASSOC);
+			$category_rows = get_category_rows($myConnection, $cat_id);
 
-				do{
+				foreach ($category_rows as $line1){
 					$ph=$line1['title'];
 					$pd=$line1['description'];
 			?>
@@ -71,7 +66,6 @@
 			<br>
 
 			<?php	}
-				while ($line1=mysqli_fetch_array($query1,MYSQLI_ASSOC))
 			?>
 
 			<?php

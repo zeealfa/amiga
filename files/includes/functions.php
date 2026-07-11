@@ -248,3 +248,24 @@ function get_top10_entries($myConnection)
     $result = mysqli_query($myConnection, "SELECT * FROM t_top10 ORDER BY top10_order");
     return mysqli_fetch_all($result, MYSQLI_ASSOC);
 }
+
+// Returns the id of the lowest-id category, used as content_categories.php's
+// fallback when no cat_id is given in the URL. Returns null if t_categories is empty.
+function get_default_category_id($myConnection)
+{
+    $result = mysqli_query($myConnection, "SELECT id FROM t_categories ORDER BY id ASC LIMIT 1");
+    $row = mysqli_fetch_assoc($result);
+    return $row ? (int) $row['id'] : null;
+}
+
+// Returns t_categories rows matching the given id (0 or 1 row, since id is
+// the primary key -- content_categories.php's do/while loop historically
+// handled this as a general result set, preserved here as an array).
+function get_category_rows($myConnection, $cat_id)
+{
+    $stmt = mysqli_prepare($myConnection, "SELECT * FROM t_categories WHERE id=?");
+    mysqli_stmt_bind_param($stmt, "i", $cat_id);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    return mysqli_fetch_all($result, MYSQLI_ASSOC);
+}
