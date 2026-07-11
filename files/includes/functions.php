@@ -205,3 +205,11 @@ function get_calendar_events($myConnection)
     $result = mysqli_query($myConnection, "SELECT * FROM t_cal ORDER BY cal_date_start ASC");
     return mysqli_fetch_all($result, MYSQLI_ASSOC);
 }
+
+// Returns active t_cfund rows ordered by end date. Pure data fetch --
+// the days-remaining calculation stays in sidebar_crowdfunding_sub.php.
+function get_active_crowdfunding($myConnection)
+{
+    $result = mysqli_query($myConnection, "SELECT * FROM t_cfund WHERE cfund_active=1 ORDER BY cfund_date_end");
+    return mysqli_fetch_all($result, MYSQLI_ASSOC);
+}
