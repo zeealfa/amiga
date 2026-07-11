@@ -346,3 +346,106 @@ function log_audit($myConnection, $entity_type, $entity_id, $action, $label, $us
     mysqli_stmt_execute($stmt);
     mysqli_stmt_close($stmt);
 }
+
+// Normalizes a URL for duplicate comparison: lowercases the host, strips a
+// leading "www.", drops the scheme and query string entirely, and collapses
+// a trailing slash so "example.com", "example.com/", and "www.example.com/"
+// all normalize identically. Callers must pass an already-well-formed
+// absolute URL (i.e. one that has passed FILTER_VALIDATE_URL) — this
+// function does not itself validate the URL.
+function normalize_link_url($url)
+{
+    $parts = parse_url($url);
+    $host = strtolower($parts['host'] ?? '');
+    if (strpos($host, 'www.') === 0) {
+        $host = substr($host, 4);
+    }
+
+    $path = $parts['path'] ?? '';
+    if ($path === '/') {
+        $path = '';
+    } elseif (substr($path, -1) === '/') {
+        $path = substr($path, 0, -1);
+    }
+
+    return $host . $path;
+}
+
+// Looks for an existing link (in t_links, excluding soft-deleted rows and
+// $exclude_link_id) or a pending link submission (in t_submissions) whose
+// URL normalizes to the same value as $url. Returns
+// ['source' => 'links'|'submissions', 'id' => int, 'links_url' => string]
+// for the first match found, or null if there is no duplicate.
+function find_exact_duplicate_link_url($myConnection, $url, $exclude_link_id = null)
+{
+    $target = normalize_link_url($url);
+
+    $sql = "SELECT id, links_url FROM t_links WHERE links_deleted_at IS NULL";
+    if ($exclude_link_id !== null) {
+        $sql .= " AND id <> ?";
+        $stmt = mysqli_prepare($myConnection, $sql);
+        mysqli_stmt_bind_param($stmt, 'i', $exclude_link_id);
+        mysqli_stmt_execute($stmt);
+        $result = mysqli_stmt_get_result($stmt);
+    } else {
+        $result = mysqli_query($myConnection, $sql);
+    }
+    while ($row = mysqli_fetch_assoc($result)) {
+        if (normalize_link_url($row['links_url']) === $target) {
+            return ['source' => 'links', 'id' => (int) $row['id'], 'links_url' => $row['links_url']];
+        }
+    }
+
+    $result = mysqli_query($myConnection, "SELECT id, links_url FROM t_submissions WHERE type = 'link' AND status = 'pending'");
+    while ($row = mysqli_fetch_assoc($result)) {
+        if (normalize_link_url($row['links_url']) === $target) {
+            return ['source' => 'submissions', 'id' => (int) $row['id'], 'links_url' => $row['links_url']];
+        }
+    }
+
+    return null;
+}
+
+// Probes $url for liveness: tries a HEAD request first, falling back to GET
+// if the server rejects HEAD (0/403/405/501) or the request otherwise
+// fails to produce a status code. Any 2xx/3xx response counts as alive;
+// everything else (4xx/5xx, timeout, DNS failure, connection refused) is
+// treated identically as not alive — this is a deliberate, coarse up/down
+// signal, not a diagnostic tool.
+function is_link_url_alive($url)
+{
+    $http_code = probe_link_url_status($url, true);
+
+    if ($http_code === null || $http_code === 0 || $http_code === 403 || $http_code === 405 || $http_code === 501) {
+        $http_code = probe_link_url_status($url, false);
+    }
+
+    return $http_code !== null && $http_code >= 200 && $http_code < 400;
+}
+
+function probe_link_url_status($url, $nobody)
+{
+    $ch = curl_init($url);
+    curl_setopt_array($ch, [
+        CURLOPT_NOBODY => $nobody,
+        CURLOPT_CUSTOMREQUEST => $nobody ? 'HEAD' : 'GET',
+        CURLOPT_FOLLOWLOCATION => true,
+        CURLOPT_MAXREDIRS => 5,
+        CURLOPT_PROTOCOLS => CURLPROTO_HTTP | CURLPROTO_HTTPS,
+        CURLOPT_REDIR_PROTOCOLS => CURLPROTO_HTTP | CURLPROTO_HTTPS,
+        CURLOPT_TIMEOUT => 5,
+        CURLOPT_CONNECTTIMEOUT => 5,
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_USERAGENT => 'AmigaSourceLinkChecker/1.0',
+    ]);
+    curl_exec($ch);
+    $errno = curl_errno($ch);
+    $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    curl_close($ch);
+
+    if ($errno !== 0) {
+        return null;
+    }
+
+    return $http_code;
+}
