@@ -54,21 +54,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             mysqli_stmt_close($stmt);
             $event_id = $id;
         } else {
-            // t_cal.id has no AUTO_INCREMENT, so the next id is computed manually.
-            $next_id = mysqli_fetch_assoc(mysqli_query($myConnection, "SELECT COALESCE(MAX(id), 0) + 1 AS next_id FROM t_cal"))['next_id'];
             $stmt = mysqli_prepare(
                 $myConnection,
-                "INSERT INTO t_cal (id, cal_name, cal_url, cal_date_start, cal_date_end, cal_location, cal_v_sub) VALUES (?, ?, ?, ?, ?, ?, 0)"
+                "INSERT INTO t_cal (cal_name, cal_url, cal_date_start, cal_date_end, cal_location, cal_v_sub) VALUES (?, ?, ?, ?, ?, 0)"
             );
             mysqli_stmt_bind_param(
                 $stmt,
-                'isssss',
-                $next_id, $values['cal_name'], $values['cal_url'], $values['cal_date_start'],
+                'sssss',
+                $values['cal_name'], $values['cal_url'], $values['cal_date_start'],
                 $values['cal_date_end'], $values['cal_location']
             );
             mysqli_stmt_execute($stmt);
+            $event_id = mysqli_insert_id($myConnection);
             mysqli_stmt_close($stmt);
-            $event_id = $next_id;
         }
 
         log_audit($myConnection, 'calendar', $event_id, $is_edit ? 'edit' : 'add', $values['cal_name'], $_SESSION['user_id']);
