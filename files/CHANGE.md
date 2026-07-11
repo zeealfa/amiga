@@ -682,3 +682,18 @@ Each type of match is shown in its own labeled group, and if a group has a lot
 of matches they're split across pages you can click through. Searching again
 within 15 seconds of a previous search now shows a short "please wait"
 message instead of running another search right away.
+
+---
+
+## 2026-07-11 (advanced search form)
+
+The "Advanced Search (coming soon)" text in the sidebar is now a working
+link. It opens a new Advanced Search page that searches the same content
+(links, news, calendar, crowdfunding, publications, repair/service, shops
+& vendors, and Top 10) as the regular search box, but adds two extra
+filters: you can limit the search to just the sections you check, and you
+can limit it to items added within a date range. Leaving all sections
+unchecked searches everything, same as before; leaving the date fields
+blank applies no date limit. The advanced form shares the same 15-second
+"please wait" limit as the regular search box, so switching between the
+two doesn't let you search faster.
