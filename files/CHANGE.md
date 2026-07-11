@@ -571,4 +571,45 @@ from new pages in the admin menu, the same way links, news, calendar,
 and crowdfunding already work. These changes are also recorded in the
 Audit Log.
 
+---
+
+## 2026-07-11 (visitors can now recommend a link)
+
+Added a "[+1 recommend]" link next to every listed link (on category
+pages and search results), with a count showing how many visitors have
+recommended it. This works for anyone browsing the site — no login
+needed. Each visitor's computer can only recommend a given link once,
+to keep the count honest; clicking it again from the same computer
+doesn't add another vote. This does not fully stop a large-scale
+automated attack (that would need protection at the hosting level,
+outside what the website's own code can control), but it does stop
+casual repeat-clicking from inflating the numbers.
+
+---
+
+## 2026-07-11 (Quick Links in Categories now work)
+
+The Categories sidebar has had three "Quick Links" — NEW SITES, ARCHIVED
+SITES, and DEAD SITES — that were marked "in prog" and didn't go
+anywhere. They now work:
+
+- **NEW SITES** shows links added in the last 7 days, newest first. If
+  nothing was added in the last week, it shows the 10 most recently
+  added links instead, so the page is never empty.
+- **ARCHIVED SITES** shows every link that has an archived (Wayback
+  Machine) copy on file, most recently archived first.
+- **DEAD SITES** shows every link marked dead, newest listing first.
+
+Both Archived and Dead Sites use the same page-by-page browsing as the
+rest of the site so long lists don't load all at once.
+
+---
+
+## 2026-07-11 (new "Top Rated" Quick Link)
+
+Added a fourth Quick Link, **TOP RATED**, right after NEW SITES in the
+Categories sidebar. It lists links in order of how many times visitors
+have recommended them (most recommended first), using the same
+recommend counts added earlier this week. Uses the same page-by-page
+browsing as the other Quick Links.
 

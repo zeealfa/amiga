@@ -710,10 +710,10 @@
       <div class="ph-num">05</div>
       <div class="ph-title-block">
         <div class="ph-title">User Submission Portal</div>
-        <div class="ph-sub">Visitors can contribute links and news — nothing goes live without admin approval</div>
+        <div class="ph-sub">Logged-in contributors can submit links and news — nothing goes live without admin approval</div>
       </div>
       <div class="ph-meta">
-        <span class="badge s-planned">PLANNED</span>
+        <span class="badge s-partial">PARTIAL</span>
         <span class="ph-dur">⏱ 5–7 hours</span>
         <span class="stars">★★★<span class="e">☆☆</span></span>
         <span class="risk low">LOW</span>
@@ -723,15 +723,18 @@
       <div class="ph-context">
         Client noted the user portal would be "a stripped down admin portal — if the admin portal is done then so is the user portal." Build this after Phase 04 so it can reuse already-tested admin components and the same approval workflow.
       </div>
+      <div class="ph-context">
+        <b>Scope change (2026-07-11):</b> submission requires a logged-in contributor account (<code>require_login()</code>), not fully open/anonymous access — closes the anonymous-flood vector by design, so dedicated honeypot/rate-limiting is deferred rather than dropped. Confirmed by a live round-trip test against the dev DB (submit as contributor → pending row in <code>t_submissions</code> → admin-approve → live row in <code>t_links</code>, then cleaned up).
+      </div>
       <div class="ms-grid">
-        <div class="ms"><div class="ms-box"></div><div class="ms-lbl">User link submission form — no account required <span class="mt ui">UI</span></div></div>
+        <div class="ms done"><div class="ms-box"></div><div class="ms-lbl">User link submission form — requires logged-in contributor account <span class="mt ui">UI</span><span class="ms-note">Scoped down from "no account required" for spam/flood prevention.</span></div></div>
         <div class="ms"><div class="ms-box"></div><div class="ms-lbl">Link preview before final submit (show how it will look live) <span class="mt ui">UI</span></div></div>
-        <div class="ms"><div class="ms-box"></div><div class="ms-lbl">Submission goes into pending queue — not live until approved <span class="mt logic">LOGIC</span></div></div>
-        <div class="ms"><div class="ms-box"></div><div class="ms-lbl">Spam protection: honeypot hidden field + IP rate limiting <span class="mt logic">LOGIC</span></div></div>
-        <div class="ms"><div class="ms-box"></div><div class="ms-lbl">Admin review queue: approve / edit / reject each submission <span class="mt logic">LOGIC</span></div></div>
+        <div class="ms done"><div class="ms-box"></div><div class="ms-lbl">Submission goes into pending queue — not live until approved <span class="mt logic">LOGIC</span></div></div>
+        <div class="ms na"><div class="ms-box"></div><div class="ms-lbl">Spam protection: honeypot hidden field + IP rate limiting <span class="mt logic">LOGIC</span><span class="ms-note">Deferred: login requirement already blocks anonymous flooding; revisit if a logged-in account is used to spam.</span></div></div>
+        <div class="ms"><div class="ms-box"></div><div class="ms-lbl">Admin review queue: approve / edit / reject each submission <span class="mt logic">LOGIC</span><span class="ms-note">Approve/reject work; in-place edit-before-approve not yet built.</span></div></div>
         <div class="ms"><div class="ms-box"></div><div class="ms-lbl">Email notification to admin when new submission arrives <span class="mt logic">LOGIC</span></div></div>
-        <div class="ms"><div class="ms-box"></div><div class="ms-lbl">User news / article submission form (same approval flow) <span class="mt ui">UI</span></div></div>
-        <div class="ms"><div class="ms-box"></div><div class="ms-lbl">Full round-trip test: submit → queue → approve → visible live <span class="mt qa">QA</span></div></div>
+        <div class="ms done"><div class="ms-box"></div><div class="ms-lbl">User news / article submission form (same approval flow) <span class="mt ui">UI</span></div></div>
+        <div class="ms done"><div class="ms-box"></div><div class="ms-lbl">Full round-trip test: submit → queue → approve → visible live <span class="mt qa">QA</span><span class="ms-note">Verified 2026-07-11 against dev DB using a real contributor + admin account.</span></div></div>
       </div>
       <div class="ph-deps">⬩ Dependency: Phase 04 complete</div>
     </div>
@@ -759,8 +762,8 @@
       <div class="ms-grid">
         <div class="ms"><div class="ms-box"></div><div class="ms-lbl">Advanced search form: category, keyword, date range, status <span class="mt ui">UI</span></div></div>
         <div class="ms"><div class="ms-box"></div><div class="ms-lbl">Search results page with pagination <span class="mt logic">LOGIC</span></div></div>
-        <div class="ms"><div class="ms-box"></div><div class="ms-lbl">Anonymous link rating — thumbs up/down, no account needed <span class="mt logic">LOGIC</span></div></div>
-        <div class="ms"><div class="ms-box"></div><div class="ms-lbl">Top-rated links result page <span class="mt ui">UI</span></div></div>
+        <div class="ms done"><div class="ms-box"></div><div class="ms-lbl">Anonymous link rating — thumbs up/down, no account needed <span class="mt logic">LOGIC</span><span class="ms-note">Done as thumbs-up only (a "recommend" count), not thumbs up/down — client asked for a popularity measure, not a negative rating.</span></div></div>
+        <div class="ms done"><div class="ms-box"></div><div class="ms-lbl">Top-rated links result page <span class="mt ui">UI</span><span class="ms-note">"Top Rated" Quick Link added to sidebar_categories.php; content_top_rated.php lists links ordered by vote count (t_link_votes) descending, paginated.</span></div></div>
         <div class="ms"><div class="ms-box"></div><div class="ms-lbl">Download / repository section: file listing with descriptions <span class="mt ui">UI</span></div></div>
         <div class="ms"><div class="ms-box"></div><div class="ms-lbl">Download count tracking (log to DB on each download) <span class="mt db">DB</span></div></div>
         <div class="ms"><div class="ms-box"></div><div class="ms-lbl">Test: search returns accurate results, ratings persist correctly <span class="mt qa">QA</span></div></div>

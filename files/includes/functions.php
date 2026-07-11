@@ -258,6 +258,29 @@ function get_default_category_id($myConnection)
     return $row ? (int) $row['id'] : null;
 }
 
+// Returns the number of distinct votes recorded for a link.
+function get_link_vote_count($myConnection, $link_id)
+{
+    $stmt = mysqli_prepare($myConnection, "SELECT COUNT(*) AS total FROM t_link_votes WHERE link_id=?");
+    mysqli_stmt_bind_param($stmt, "i", $link_id);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    $row = mysqli_fetch_assoc($result);
+    mysqli_stmt_close($stmt);
+    return (int) $row['total'];
+}
+
+// Records a vote for a link from the given IP. Relies on the
+// UNIQUE(link_id, voter_ip) key on t_link_votes for dedup -- INSERT IGNORE
+// silently no-ops on a repeat vote from the same IP instead of erroring.
+function record_link_vote($myConnection, $link_id, $voter_ip)
+{
+    $stmt = mysqli_prepare($myConnection, "INSERT IGNORE INTO t_link_votes (link_id, voter_ip) VALUES (?, ?)");
+    mysqli_stmt_bind_param($stmt, "is", $link_id, $voter_ip);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_close($stmt);
+}
+
 // Returns t_categories rows matching the given id (0 or 1 row, since id is
 // the primary key -- content_categories.php's do/while loop historically
 // handled this as a general result set, preserved here as an array).

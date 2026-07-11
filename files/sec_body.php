@@ -13,6 +13,10 @@
 								<?php if ($_SESSION["content_type"]=='news'){ include 'content_news.php'; }
 										else if($_SESSION["content_type"]=='categories'){ include 'content_categories.php'; }
 										else if($_SESSION["content_type"]=='search'){ include 'content_search.php'; }
+										else if($_SESSION["content_type"]=='new_sites'){ include 'content_new_sites.php'; }
+										else if($_SESSION["content_type"]=='archived_sites'){ include 'content_archived_sites.php'; }
+										else if($_SESSION["content_type"]=='dead_sites'){ include 'content_dead_sites.php'; }
+										else if($_SESSION["content_type"]=='top_rated'){ include 'content_top_rated.php'; }
 
 								?>
 						</td>

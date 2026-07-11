@@ -191,6 +191,15 @@
 														echo "<a target=\"_blank\" href=$ao".$line2['links_url'].">archive.org</a>";
 													?>
 												</TD>
+												<!----------results vote count & thumbs-up link (row 4) --------->
+												<TD  class="bg-lightgray" width=15% bgcolor="<?php echo bg_hex('lightgray'); ?>">&nbsp;
+													<font class="txt-2" face="Verdana, sans-serif" size="2">
+													<?php
+														require_once __DIR__ . '/includes/functions.php';
+														$vote_count = get_link_vote_count($myConnection, $line2['id']);
+														echo '<a href="link_vote.php?id=' . (int) $line2['id'] . '">[+1 recommend]</a> (' . $vote_count . ')';
+													?>
+												</TD>
 												<!----------results id #### (row 4: !C-2i) --------->
 												<TD  class="bg-lightgray" bgcolor="<?php echo bg_hex('lightgray'); ?>">&nbsp;
 													<font class="txt-2" face="Verdana, sans-serif" size="2">
