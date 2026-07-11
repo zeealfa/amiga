@@ -613,3 +613,48 @@ have recommended them (most recommended first), using the same
 recommend counts added earlier this week. Uses the same page-by-page
 browsing as the other Quick Links.
 
+---
+
+## 2026-07-11 (deleting a user account is now a proper soft delete)
+
+The admin Manage Users page could already add users, but "removing"
+one only had a plain Deactivate/Reactivate toggle with no confirmation
+step and no record of who did it. That's now replaced with a Delete /
+Restore flow matching the one already used for links:
+
+- Clicking **Delete** asks for confirmation first, explaining that the
+  account is blocked from logging in but its record is kept (so past
+  submissions/reviews the person made stay attributed to them) and can
+  be restored later.
+- Clicking **Restore** on a deleted account brings it back the same
+  way.
+- Every delete/restore is written to the Audit Log.
+- An admin can no longer delete their own account by mistake.
+
+This has to be a soft delete — permanently erasing a user row would
+either fail or silently break the history of anything they ever
+submitted or approved, since those records point back to the user's
+account.
+
+---
+
+## 2026-07-11 (see a user's full submission history)
+
+The Manage Users list now shows each user's ID number, and clicking a
+username opens a new page listing every link/news submission that
+person has ever made — pending, approved, and rejected — with dates
+and, for rejected ones, the reason given. The existing Submission
+Review Queue only ever showed submissions still waiting for review;
+this new page is the first place to see a contributor's full track
+record.
+
+---
+
+## 2026-07-11 (Submission Review Queue columns are now sortable)
+
+The pending Submission Review Queue's Type, Action, Submitted By, and
+Submitted (date) column headers are now clickable, sorting the list
+by that column — click again to flip between oldest/newest,
+A-to-Z/Z-to-A, and so on. Defaults to oldest submission first, same as
+before.
+

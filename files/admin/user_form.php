@@ -171,7 +171,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 										<td>
 											<select name="status">
 												<option value="active" <?php echo $values['status'] === 'active' ? 'selected' : ''; ?>>Active</option>
-												<option value="removed" <?php echo $values['status'] === 'removed' ? 'selected' : ''; ?>>Removed</option>
+												<option value="removed" <?php echo $values['status'] === 'removed' ? 'selected' : ''; ?>>Deleted</option>
 											</select>
 										</td>
 									</tr>

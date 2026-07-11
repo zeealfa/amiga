@@ -59,19 +59,23 @@ unset($_SESSION['flash_message']);
 						<td class="bg-white" bgcolor="<?php echo bg_hex('white'); ?>" style="padding:8px;">
 							<table width="100%" cellpadding="4" cellspacing="0">
 								<tr class="bg-gray" bgcolor="<?php echo bg_hex('gray'); ?>">
+									<td><font class="txt-2-black" face="Verdana, sans-serif" size="2" color="<?php echo txt_hex('black'); ?>"><b>ID</b></font></td>
 									<td><font class="txt-2-black" face="Verdana, sans-serif" size="2" color="<?php echo txt_hex('black'); ?>"><b>Username</b></font></td>
 									<td><font class="txt-2-black" face="Verdana, sans-serif" size="2" color="<?php echo txt_hex('black'); ?>"><b>Email</b></font></td>
 									<td><font class="txt-2-black" face="Verdana, sans-serif" size="2" color="<?php echo txt_hex('black'); ?>"><b>Role</b></font></td>
 									<td><font class="txt-2-black" face="Verdana, sans-serif" size="2" color="<?php echo txt_hex('black'); ?>"><b>Status</b></font></td>
+									<td><font class="txt-2-black" face="Verdana, sans-serif" size="2" color="<?php echo txt_hex('black'); ?>"><b>Created</b></font></td>
 									<td><font class="txt-2-black" face="Verdana, sans-serif" size="2" color="<?php echo txt_hex('black'); ?>"><b>Actions</b></font></td>
 								</tr>
 <?php foreach ($users as $user): ?>
 <?php $is_locked = $user['locked_until'] !== null && strtotime($user['locked_until']) > time(); ?>
 								<tr>
-									<td><font class="txt-2-black" face="Verdana, sans-serif" size="2" color="<?php echo txt_hex('black'); ?>"><?php echo htmlspecialchars($user['username']); ?></font></td>
+									<td><font class="txt-1" face="Verdana, sans-serif" size="1"><?php echo (int) $user['id']; ?></font></td>
+									<td><font class="txt-2-black" face="Verdana, sans-serif" size="2" color="<?php echo txt_hex('black'); ?>"><a href="user_submissions.php?id=<?php echo (int) $user['id']; ?>"><?php echo htmlspecialchars($user['username']); ?></a></font></td>
 									<td><font class="txt-1" face="Verdana, sans-serif" size="1"><?php echo htmlspecialchars($user['email']); ?></font></td>
 									<td><font class="txt-1" face="Verdana, sans-serif" size="1"><?php echo htmlspecialchars(ucfirst($user['role'])); ?></font></td>
-									<td><font class="txt-1" face="Verdana, sans-serif" size="1"><?php echo htmlspecialchars(ucfirst($user['status'])); ?><?php if ($is_locked): ?> &mdash; Locked until <?php echo htmlspecialchars($user['locked_until']); ?><?php endif; ?></font></td>
+									<td><font class="txt-1" face="Verdana, sans-serif" size="1"><?php echo $user['status'] === 'removed' ? 'Deleted' : htmlspecialchars(ucfirst($user['status'])); ?><?php if ($is_locked): ?> &mdash; Locked until <?php echo htmlspecialchars($user['locked_until']); ?><?php endif; ?></font></td>
+									<td><font class="txt-1" face="Verdana, sans-serif" size="1"><?php echo htmlspecialchars($user['created_at']); ?></font></td>
 									<td><font class="txt-1" face="Verdana, sans-serif" size="1">
 										<a href="user_form.php?id=<?php echo (int) $user['id']; ?>">Edit</a> |
 <?php if ($user['status'] === 'pending'): ?>
@@ -80,12 +84,10 @@ unset($_SESSION['flash_message']);
 											<input type="hidden" name="action" value="approve">
 											<input type="submit" value="Approve" class="txt-1">
 										</form>
+<?php elseif ($user['status'] === 'removed'): ?>
+										<a href="user_delete.php?id=<?php echo (int) $user['id']; ?>&action=restore">Restore</a>
 <?php else: ?>
-										<form method="post" action="user_quick_action.php" style="display:inline;">
-											<input type="hidden" name="id" value="<?php echo (int) $user['id']; ?>">
-											<input type="hidden" name="action" value="toggle_status">
-											<input type="submit" value="<?php echo $user['status'] === 'active' ? 'Deactivate' : 'Reactivate'; ?>" class="txt-1">
-										</form>
+										<a href="user_delete.php?id=<?php echo (int) $user['id']; ?>">Delete</a>
 <?php endif; ?>
 <?php if ($is_locked): ?>
 										|
