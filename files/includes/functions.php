@@ -502,3 +502,40 @@ function fetch_paginated_search_results($myConnection, $select_sql, $from_sql, $
         'rows' => $rows,
     ];
 }
+
+// Validates an optional YYYY-MM-DD date range for advanced search. Returns
+// ['ok' => true, 'from' => 'YYYY-MM-DD'|null, 'to' => 'YYYY-MM-DD'|null] when
+// valid (blank fields are allowed and come back as null), or
+// ['ok' => false, 'error' => '...'] on the first validation failure.
+// Uses DateTime::createFromFormat() with a round-trip equality check rather
+// than a regex, so "2026-02-31" is rejected even though it matches the shape.
+function validate_search_date_range($date_from_raw, $date_to_raw)
+{
+    $parse = function ($raw) {
+        $raw = trim((string) $raw);
+        if ($raw === '') {
+            return [null, true];
+        }
+        $dt = DateTime::createFromFormat('Y-m-d', $raw);
+        if ($dt === false || $dt->format('Y-m-d') !== $raw) {
+            return [null, false];
+        }
+        return [$raw, true];
+    };
+
+    [$date_from, $from_ok] = $parse($date_from_raw);
+    if (!$from_ok) {
+        return ['ok' => false, 'error' => 'Please enter a valid date range.'];
+    }
+
+    [$date_to, $to_ok] = $parse($date_to_raw);
+    if (!$to_ok) {
+        return ['ok' => false, 'error' => 'Please enter a valid date range.'];
+    }
+
+    if ($date_from !== null && $date_to !== null && $date_from > $date_to) {
+        return ['ok' => false, 'error' => 'Please enter a valid date range.'];
+    }
+
+    return ['ok' => true, 'from' => $date_from, 'to' => $date_to];
+}
