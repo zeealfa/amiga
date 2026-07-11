@@ -39,8 +39,18 @@ if (!empty($errors)) {
 }
 
 $duplicates = find_similar_link_urls($myConnection, $data['links_url'], $is_edit ? (int) $data['id'] : null);
+$save_errors = [];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm_save'])) {
+    $exclude_link_id = $is_edit ? (int) $data['id'] : null;
+    if (find_exact_duplicate_link_url($myConnection, $data['links_url'], $exclude_link_id) !== null) {
+        $save_errors[] = 'This URL already exist';
+    } elseif (!is_link_url_alive($data['links_url'])) {
+        $save_errors[] = 'Link is not valid';
+    }
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm_save']) && empty($save_errors)) {
     $cats = array_pad($data['links_cats'], 5, 0);
 
     if ($is_edit) {
@@ -161,6 +171,20 @@ $line2 = [
 							<font class="txt-4-white" face="Verdana, sans-serif" size="4" color="<?php echo txt_hex('white'); ?>"><b>PREVIEW LINK</b></font>
 						</td>
 					</tr>
+<?php if (!empty($save_errors)): ?>
+						<tr>
+							<td class="bg-white" bgcolor="<?php echo bg_hex('white'); ?>" style="padding:8px;">
+								<div class="txt-2-black" style="color:#c70000;">
+									<b>Cannot save:</b>
+									<ul>
+<?php foreach ($save_errors as $error): ?>
+										<li><?php echo htmlspecialchars($error); ?></li>
+<?php endforeach; ?>
+									</ul>
+								</div>
+							</td>
+						</tr>
+<?php endif; ?>
 <?php if (!empty($duplicates)): ?>
 					<tr>
 						<td class="bg-orange" bgcolor="<?php echo bg_hex('orange'); ?>" style="padding:8px;">
