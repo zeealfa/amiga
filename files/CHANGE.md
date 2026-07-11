@@ -559,4 +559,16 @@ This is now fixed so the database numbers new events automatically,
 the same way every other list on the site already works. No visible
 change for admins.
 
+---
+
+## 2026-07-11 (Top 10, Shops & Vendors, Service & Repair, and Publications now manageable from admin)
+
+The rest of the sidebar boxes — "Top 10+8", "Shops and Vendors",
+"Service and Repair", and "Publications" (both Print and Online) —
+previously had no way to be updated except by editing the database
+directly. Admins can now add, edit, and delete entries for all five
+from new pages in the admin menu, the same way links, news, calendar,
+and crowdfunding already work. These changes are also recorded in the
+Audit Log.
+
 
