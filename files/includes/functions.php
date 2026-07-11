@@ -220,3 +220,10 @@ function get_online_publications($myConnection)
     $result = mysqli_query($myConnection, "SELECT * FROM t_mags_online ORDER BY online_name");
     return mysqli_fetch_all($result, MYSQLI_ASSOC);
 }
+
+// Returns all t_mags_print rows ordered by name.
+function get_print_publications($myConnection)
+{
+    $result = mysqli_query($myConnection, "SELECT * FROM t_mags_print ORDER BY print_name");
+    return mysqli_fetch_all($result, MYSQLI_ASSOC);
+}
