@@ -31,6 +31,7 @@ $LEGACY_TXT_COLORS = [
     'green'  => '#229c22',
     'orange' => '#ff9900',
     'purple' => '#842dce',
+    'teal'   => '#336666',
 ];
 
 function bg_hex(string $name): string

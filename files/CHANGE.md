@@ -442,3 +442,16 @@ they're now cleanly separated, which makes future changes safer and
 easier. This does not change anything visitors see or how any page
 looks or behaves — verified by comparing the exact page output before
 and after each change.
+
+---
+
+## 2026-07-11 (public link stats made real)
+
+The "TEMP LINK COUNT" box on the news page is no longer temporary or
+misleading. "Verified" now correctly counts links that have actually
+been checked, instead of an old, incorrect method that missed most of
+them. "New links" now means links added in the last 7 days, instead of
+counting everything added since December 2021. The box was also
+renamed to "Link Stats" and given a fresh look with a colored header
+and a colored number for each stat, to match the style used on the
+admin dashboard.
