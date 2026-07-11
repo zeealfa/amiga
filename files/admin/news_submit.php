@@ -84,6 +84,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <title>AmigaSource.com - <?php echo $is_edit ? 'Edit News Post' : 'Submit News Post'; ?></title>
 <?php include_once __DIR__ . '/../legacy_colors.php'; ?>
 <style><?php include __DIR__ . '/../style.css'; ?></style>
+<script src="https://cdn.jsdelivr.net/npm/tinymce@6/tinymce.min.js" referrerpolicy="origin"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    if (window.tinymce) {
+        tinymce.init({
+            selector: '#news_story',
+            license_key: 'gpl',
+            menubar: false,
+            plugins: 'link lists table',
+            toolbar: 'bold italic underline | bullist numlist | link table | removeformat'
+        });
+    }
+
+    var form = document.getElementById('news_form');
+    form.addEventListener('submit', function () {
+        if (window.tinymce) {
+            tinymce.triggerSave();
+        }
+    });
+});
+</script>
 </head>
 <body class="bg-lightgray" bgcolor="<?php echo bg_hex('lightgray'); ?>">
 
@@ -125,7 +146,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 							</div>
 <?php endif; ?>
 							<p><font class="txt-1" face="Verdana, sans-serif" size="1">Submissions are reviewed by an admin before they go live.</font></p>
-							<form method="post" action="news_submit.php">
+							<form method="post" action="news_submit.php" id="news_form">
 <?php if ($is_edit): ?>
 								<input type="hidden" name="id" value="<?php echo (int) $id; ?>">
 <?php endif; ?>
@@ -136,7 +157,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 									</tr>
 									<tr>
 										<td align="right" valign="top" width="1%" style="white-space:nowrap;"><b>Story:</b></td>
-										<td><textarea name="news_story" rows="12" style="width:100%;"><?php echo htmlspecialchars($values['news_story']); ?></textarea></td>
+										<td><textarea id="news_story" name="news_story" rows="12" style="width:100%;"><?php echo htmlspecialchars($values['news_story']); ?></textarea></td>
 									</tr>
 									<tr>
 										<td colspan="2" align="center">

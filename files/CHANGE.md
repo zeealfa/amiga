@@ -457,3 +457,17 @@ and a colored number for each stat, to match the style used on the
 admin dashboard. A count of active categories was added as a fifth
 stat, so the box now covers total links, verified links, links added
 this week, and categories.
+
+---
+
+## 2026-07-11 (news editor upgrade & link URL checker for contributors)
+
+The contributor "Submit News Post" / "Edit News Post" form now has the
+same rich text editor already used on the admin news form, so
+contributors can format their stories (bold, lists, links, tables)
+instead of typing plain text.
+
+The "Submit Link" / "Edit Link" form now checks a submitted web
+address as soon as you click out of the URL field, showing a checkmark
+or a cross next to it — the same live link-checking already available
+to admins, now also working for regular contributors.

@@ -126,12 +126,92 @@ function enforceCategoryLimit() {
         }
     });
 }
+var urlCheckSeq = 0;
+var lastCheckedUrl = null;
+
+function requestUrlStatus(url, seq, statusEl) {
+    function applyResult(status) {
+        if (seq !== urlCheckSeq) {
+            return;
+        }
+        if (status === 'up') {
+            statusEl.textContent = String.fromCharCode(0x2713);
+            statusEl.style.color = '#008000';
+        } else if (status === 'down') {
+            statusEl.textContent = String.fromCharCode(0x2717);
+            statusEl.style.color = '#c70000';
+        } else {
+            statusEl.textContent = '';
+        }
+    }
+
+    if (window.fetch) {
+        fetch('link_url_check.php?url=' + encodeURIComponent(url), {
+            headers: { 'X-Requested-With': 'XMLHttpRequest' }
+        })
+            .then(function (response) { return response.json(); })
+            .then(function (data) { applyResult(data.status); })
+            .catch(function () { applyResult('down'); });
+        return;
+    }
+
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', 'link_url_check.php?url=' + encodeURIComponent(url), true);
+    xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4) {
+            if (xhr.status === 200) {
+                try {
+                    applyResult(JSON.parse(xhr.responseText).status);
+                } catch (e) {
+                    applyResult('down');
+                }
+            } else {
+                applyResult('down');
+            }
+        }
+    };
+    xhr.send();
+}
+
+function checkUrlStatus() {
+    var urlField = document.getElementById('links_url');
+    var statusEl = document.getElementById('url_status');
+    var value = urlField.value.replace(/^\s+|\s+$/g, '');
+
+    urlCheckSeq += 1;
+    var seq = urlCheckSeq;
+
+    lastCheckedUrl = value;
+
+    if (value === '') {
+        statusEl.textContent = '';
+        return;
+    }
+
+    statusEl.textContent = '...';
+    statusEl.style.color = '#666666';
+    requestUrlStatus(value, seq, statusEl);
+}
+
 document.addEventListener('DOMContentLoaded', function () {
     var boxes = document.querySelectorAll('input[name="links_cats[]"]');
     boxes.forEach(function (box) {
         box.addEventListener('change', enforceCategoryLimit);
     });
     enforceCategoryLimit();
+
+    var urlField = document.getElementById('links_url');
+    urlField.addEventListener('blur', function () {
+        var value = urlField.value.replace(/^\s+|\s+$/g, '');
+        if (value !== lastCheckedUrl) {
+            checkUrlStatus();
+        }
+    });
+
+    if (urlField.value.replace(/^\s+|\s+$/g, '') !== '') {
+        checkUrlStatus();
+    }
 });
 </script>
 </head>
@@ -186,7 +266,7 @@ document.addEventListener('DOMContentLoaded', function () {
 									</tr>
 									<tr>
 										<td align="right" width="1%" style="white-space:nowrap;"><b>URL:</b></td>
-										<td><input type="text" name="links_url" value="<?php echo htmlspecialchars($values['links_url']); ?>" style="width:80%;"></td>
+										<td><input type="text" id="links_url" name="links_url" value="<?php echo htmlspecialchars($values['links_url']); ?>" style="width:80%;"> <span id="url_status"></span></td>
 									</tr>
 									<tr>
 										<td align="right" width="1%" style="white-space:nowrap;"><b>Author:</b></td>

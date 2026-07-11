@@ -5,12 +5,14 @@ if (!isset($_SESSION)) {
 
 header('Content-Type: application/json');
 
-// This is a JSON endpoint, not a page — require_admin() (in
-// includes/auth.php) redirects with a Location header on failure, which
-// would otherwise hand the JS caller an HTML redirect body instead of
-// JSON. Check the session directly instead so an expired/non-admin
-// session gets a JSON error the caller can distinguish from "down".
-if (!isset($_SESSION['user_id']) || !isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
+// This is a JSON endpoint, not a page — require_login()/require_admin()
+// (in includes/auth.php) redirect with a Location header on failure,
+// which would otherwise hand the JS caller an HTML redirect body instead
+// of JSON. Check the session directly instead so an expired session gets
+// a JSON error the caller can distinguish from "down". Any authenticated
+// user is allowed (not just admins) since contributor-facing
+// link_submit.php also calls this endpoint via require_login().
+if (!isset($_SESSION['user_id']) || !isset($_SESSION['role'])) {
     http_response_code(403);
     echo json_encode(['status' => 'unauthorized']);
     exit;
