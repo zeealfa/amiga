@@ -50,7 +50,7 @@
 		<td>
 			<table width="100%" cellpadding="1" cellspacing="1" class="bg-white" bgcolor="<?php echo bg_hex('white'); ?>">
 				<tr>
-					<td align="center" class="bg-red" bgcolor="<?php echo bg_hex('red'); ?>">
+					<td align="center" class="bg-teal" bgcolor="<?php echo bg_hex('teal'); ?>">
 						<font class="txt-3-white" face="Verdana, sans-serif" size="3" color="<?php echo txt_hex('white'); ?>"><b>LINK STATS</b></font>
 					</td>
 				</tr>
