@@ -24,8 +24,13 @@ $LEGACY_BG_COLORS = [
 ];
 
 $LEGACY_TXT_COLORS = [
-    'white' => '#ffffff',
-    'black' => '#000000',
+    'white'  => '#ffffff',
+    'black'  => '#000000',
+    'blue'   => '#006cd9',
+    'red'    => '#ff2626',
+    'green'  => '#229c22',
+    'orange' => '#ff9900',
+    'purple' => '#842dce',
 ];
 
 function bg_hex(string $name): string

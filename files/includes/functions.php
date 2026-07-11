@@ -270,17 +270,17 @@ function get_category_rows($myConnection, $cat_id)
     return mysqli_fetch_all($result, MYSQLI_ASSOC);
 }
 
-// Returns link stats used on the news page header: total link count,
-// count verified since 2021-12-01, and count added since 2021-12-01.
+// Returns link stats shown on the public news page: total link count,
+// count ever verified, and count added in the last 7 days.
 function get_link_stats($myConnection)
 {
     $result = mysqli_query($myConnection, "SELECT COUNT(*) As total_records FROM t_links");
     $total = mysqli_fetch_array($result)['total_records'];
 
-    $result = mysqli_query($myConnection, "SELECT COUNT(*) As total_verified FROM t_links where (links_date_verified>'2021-12-01')");
+    $result = mysqli_query($myConnection, "SELECT COUNT(*) As total_verified FROM t_links where links_date_verified != '0000-00-00'");
     $verified = mysqli_fetch_array($result)['total_verified'];
 
-    $result = mysqli_query($myConnection, "SELECT COUNT(*) As total_new FROM t_links where (links_date_added>'2021-12-01')");
+    $result = mysqli_query($myConnection, "SELECT COUNT(*) As total_new FROM t_links where links_date_added >= DATE_SUB(NOW(), INTERVAL 7 DAY)");
     $new = mysqli_fetch_array($result)['total_new'];
 
     return ['total' => $total, 'verified' => $verified, 'new' => $new];

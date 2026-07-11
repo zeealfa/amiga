@@ -45,31 +45,51 @@
 </center><br>
 
 <center>
-<table width="30%" cellpadding="1" cellspacing="0" width="70%"  class="bg-slateblue" bgcolor="<?php echo bg_hex('slateblue'); ?>">
+<table width="70%" cellpadding="1" cellspacing="0" class="bg-slateblue" bgcolor="<?php echo bg_hex('slateblue'); ?>">
 	<tr>
 		<td>
-			<table cellpadding="1"  cellspacing="1" class="bg-white" bgcolor="<?php echo bg_hex('white'); ?>">
-				<center>
-				<font class="txt-3-black" face="Verdana, sans-serif" size="3" color="<?php echo txt_hex('black'); ?>">
-				<b>TEMP LINK COUNT</b><br>
-				<font class="txt-2-black" face="Verdana, sans-serif" size="2" color="<?php echo txt_hex('black'); ?>">
-				<?php
-				require_once __DIR__ . '/includes/functions.php';
-				$link_stats = get_link_stats($myConnection);
-				$total_records = $link_stats['total'];
-				echo "total records:".$total_records."<br>";
+			<table width="100%" cellpadding="1" cellspacing="1" class="bg-white" bgcolor="<?php echo bg_hex('white'); ?>">
+				<tr>
+					<td align="center" class="bg-red" bgcolor="<?php echo bg_hex('red'); ?>">
+						<font class="txt-3-white" face="Verdana, sans-serif" size="3" color="<?php echo txt_hex('white'); ?>"><b>LINK STATS</b></font>
+					</td>
+				</tr>
+				<tr>
+					<td class="bg-whitesmoke" bgcolor="<?php echo bg_hex('whitesmoke'); ?>" style="padding:12px;">
+						<table width="100%" cellpadding="6" cellspacing="8">
+							<tr>
+							<?php
+							require_once __DIR__ . '/includes/functions.php';
+							$link_stats = get_link_stats($myConnection);
+							$total_records = $link_stats['total'];
+							$total_verified = $link_stats['verified'];
+							$total_left = $total_records - $total_verified;
+							$total_new = $link_stats['new'];
 
-				$total_verified = $link_stats['verified'];
-				echo "verified:".$total_verified."<br>";
-
-				$total_left=$total_records-$total_verified;
-				echo "# remaining:".$total_left."<br>";
-
-				$total_new = $link_stats['new'];
-				echo "new links:".$total_new."<br>";
-				?>
-				</font></font>
-				</center>
+							$link_metric_boxes = [
+								['Total Links',        $total_records, 'blue'],
+								['Verified',           $total_verified, 'green'],
+								['Remaining',          $total_left,    'orange'],
+								['New (Last 7 Days)',  $total_new,     'purple'],
+							];
+							foreach ($link_metric_boxes as $box):
+								[$label, $value, $color] = $box;
+							?>
+								<td width="25%" align="center" valign="top" class="bg-gray" bgcolor="<?php echo bg_hex('gray'); ?>">
+									<table width="100%" cellpadding="6" cellspacing="0">
+										<tr>
+											<td align="center" class="bg-white" bgcolor="<?php echo bg_hex('white'); ?>">
+												<font class="txt-4" face="Verdana, sans-serif" size="4" color="<?php echo txt_hex($color); ?>"><b><?php echo $value; ?></b></font><br>
+												<font class="txt-1" face="Verdana, sans-serif" size="1" color="<?php echo txt_hex('black'); ?>"><?php echo htmlspecialchars($label); ?></font>
+											</td>
+										</tr>
+									</table>
+								</td>
+							<?php endforeach; ?>
+							</tr>
+						</table>
+					</td>
+				</tr>
 			</table>
 		</td>
 	</tr>
