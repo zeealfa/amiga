@@ -548,4 +548,15 @@ changes are also recorded in the Audit Log.
 Also removed the "Add A Link" box from the sidebar — it was a
 placeholder that said "under construction" and never did anything.
 
+---
+
+## 2026-07-11 (calendar events now number themselves automatically)
+
+Behind the scenes, new calendar events were being assigned their ID
+number by the application rather than by the database itself — a
+leftover inconsistency from before the admin Calendar page existed.
+This is now fixed so the database numbers new events automatically,
+the same way every other list on the site already works. No visible
+change for admins.
+
 
