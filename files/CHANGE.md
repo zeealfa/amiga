@@ -749,3 +749,13 @@ look once approved and published, right on the submission form — no
 extra click or page reload needed, it updates automatically as they
 type the name, URL, author, and description. This was one of the
 still-open items from the User Submission Portal phase.
+
+---
+
+## 2026-07-12 (admin review: no edit)
+
+Confirmed and documented that admins reviewing a submission can only
+approve or reject it as the contributor submitted it — there was never
+a way for an admin to change the wording before approving, and that's
+staying intentional rather than being built out. Admins wanting a
+different result reject the submission with a reason instead.
