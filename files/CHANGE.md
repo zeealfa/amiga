@@ -770,3 +770,13 @@ an admin. Every admin-only screen correctly turns away anyone who
 isn't an admin, while the screens meant for regular contributors (link
 and news submission, "My Links"/"My News"/"My Submissions", profile)
 work correctly for both contributors and admins. No issues found.
+
+---
+
+## 2026-07-12 (submission email notifications)
+
+Submitting a link or news post for review now sends an email so it
+doesn't sit unnoticed in the queue. The email goes to
+links@testamigasource.com and includes a note that this inbox may not
+be actively monitored, so it's easy to spot if it needs to be checked
+regularly or forwarded elsewhere.

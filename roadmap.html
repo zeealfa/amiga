@@ -713,7 +713,7 @@
         <div class="ph-sub">Logged-in contributors can submit links and news — nothing goes live without admin approval</div>
       </div>
       <div class="ph-meta">
-        <span class="badge s-partial">PARTIAL</span>
+        <span class="badge s-done">DONE</span>
         <span class="ph-dur">⏱ 5–7 hours</span>
         <span class="stars">★★★<span class="e">☆☆</span></span>
         <span class="risk low">LOW</span>
@@ -732,7 +732,7 @@
         <div class="ms done"><div class="ms-box"></div><div class="ms-lbl">Submission goes into pending queue — not live until approved <span class="mt logic">LOGIC</span></div></div>
         <div class="ms na"><div class="ms-box"></div><div class="ms-lbl">Spam protection: honeypot hidden field + IP rate limiting <span class="mt logic">LOGIC</span><span class="ms-note">Deferred: login requirement already blocks anonymous flooding; revisit if a logged-in account is used to spam.</span></div></div>
         <div class="ms done"><div class="ms-box"></div><div class="ms-lbl">Admin review queue: approve / reject each submission <span class="mt logic">LOGIC</span><span class="ms-note">Scope change (2026-07-12): admin edit-before-approve deliberately dropped — client does not want admins able to alter a contributor's submitted content, only approve or reject as-submitted.</span></div></div>
-        <div class="ms"><div class="ms-box"></div><div class="ms-lbl">Email notification to admin when new submission arrives <span class="mt logic">LOGIC</span></div></div>
+        <div class="ms done"><div class="ms-box"></div><div class="ms-lbl">Email notification to admin when new submission arrives <span class="mt logic">LOGIC</span><span class="ms-note">Sent via GoDaddy cPanel mailbox links@testamigasource.com over authenticated SMTP (native PHP stream_socket_client, no third-party library, per the vanilla-PHP constraint). Verified with a real SMTP transaction (235 Authentication succeeded, 250 OK) and an end-to-end test through link_submit.php. Every notification includes a note that this inbox may not be actively monitored.</span></div></div>
         <div class="ms done"><div class="ms-box"></div><div class="ms-lbl">User news / article submission form (same approval flow) <span class="mt ui">UI</span></div></div>
         <div class="ms done"><div class="ms-box"></div><div class="ms-lbl">Full round-trip test: submit → queue → approve → visible live <span class="mt qa">QA</span><span class="ms-note">Verified 2026-07-11 against dev DB using a real contributor + admin account.</span></div></div>
       </div>
@@ -894,7 +894,7 @@
           <td style="white-space:nowrap;">5–7 hours</td>
           <td><span class="stars">★★★<span class="e">☆☆</span></span></td>
           <td><span class="risk low">LOW</span></td>
-          <td><span class="badge s-planned">PLANNED</span></td>
+          <td><span class="badge s-done">DONE</span></td>
           <td>
             <div class="gantt-wrap">
               <div class="gantt-bar" style="left:78%; width:12%; background:#1A7A44;"></div>

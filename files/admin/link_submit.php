@@ -83,6 +83,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         mysqli_stmt_close($stmt);
 
         if ($success) {
+            require_once __DIR__ . '/../includes/mailer.php';
+            $notify_summary = "Type: Link ($action)\n"
+                . "Name: {$values['links_name']}\n"
+                . "URL: {$values['links_url']}\n"
+                . "Submitted by: {$_SESSION['username']}";
+            $notify_result = notify_admin_new_submission('link', $notify_summary);
+            if (!$notify_result['success']) {
+                error_log('notify_admin_new_submission (link) failed: ' . $notify_result['error']);
+            }
+
             $_SESSION['flash_message'] = $is_edit ? 'Link edit submitted for review.' : 'Link submitted for review.';
             header('Location: my_submissions.php');
             exit;

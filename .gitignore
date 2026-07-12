@@ -1,5 +1,6 @@
 error_log
 docs/audit/*.sql
+files/includes/mail_config.php
 
 .worktrees/
 .superpowers/

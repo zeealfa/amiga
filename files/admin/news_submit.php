@@ -55,6 +55,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         mysqli_stmt_close($stmt);
 
         if ($success) {
+            require_once __DIR__ . '/../includes/mailer.php';
+            $notify_excerpt = mb_substr(trim(strip_tags($values['news_story'])), 0, 200);
+            $notify_summary = "Type: News ($action)\n"
+                . "Date: {$values['news_date']}\n"
+                . "Excerpt: {$notify_excerpt}...\n"
+                . "Submitted by: {$_SESSION['username']}";
+            $notify_result = notify_admin_new_submission('news', $notify_summary);
+            if (!$notify_result['success']) {
+                error_log('notify_admin_new_submission (news) failed: ' . $notify_result['error']);
+            }
+
             $_SESSION['flash_message'] = $is_edit ? 'News edit submitted for review.' : 'News post submitted for review.';
             header('Location: my_submissions.php');
             exit;
