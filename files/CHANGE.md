@@ -728,3 +728,14 @@ links, news, and everything else already covered by search. Files that an
 admin marks inactive are hidden from the listing page, from search
 results, and can no longer be downloaded, but stay on record so their
 past download counts aren't lost.
+
+---
+
+## 2026-07-12 (file repository — live deploy)
+
+Put the new File Repository onto the actual working site. The database
+change (adding the new table that tracks uploaded files) was applied to
+the live database, and the new public and admin pages were uploaded
+alongside it. Verified live: the File Repository page loads, an
+uploaded file downloads correctly and its download count goes up, and
+the folder files are stored in cannot be browsed to directly.
