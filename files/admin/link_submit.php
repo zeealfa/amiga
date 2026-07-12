@@ -135,6 +135,25 @@ function enforceCategoryLimit() {
         }
     });
 }
+function updateLinkPreview() {
+    var nameField = document.getElementById('links_name');
+    var urlField = document.getElementById('links_url');
+    var authorField = document.getElementById('links_author');
+    var descField = document.getElementById('links_desc');
+
+    var name = nameField.value.replace(/^\s+|\s+$/g, '');
+    var url = urlField.value.replace(/^\s+|\s+$/g, '');
+    var author = authorField.value.replace(/^\s+|\s+$/g, '');
+    var desc = descField.value.replace(/^\s+|\s+$/g, '');
+
+    document.getElementById('preview_name').textContent = name === '' ? '(link name)' : name;
+    document.getElementById('preview_author').textContent = author === '' ? '(author)' : author;
+    document.getElementById('preview_desc').textContent = desc === '' ? '(description)' : desc;
+
+    var urlNote = document.getElementById('preview_url_note');
+    urlNote.textContent = url === '' ? '' : 'Links to: ' + url;
+}
+
 var urlCheckSeq = 0;
 var lastCheckedUrl = null;
 
@@ -221,6 +240,11 @@ document.addEventListener('DOMContentLoaded', function () {
     if (urlField.value.replace(/^\s+|\s+$/g, '') !== '') {
         checkUrlStatus();
     }
+
+    ['links_name', 'links_url', 'links_author', 'links_desc'].forEach(function (fieldId) {
+        document.getElementById(fieldId).addEventListener('input', updateLinkPreview);
+    });
+    updateLinkPreview();
 });
 </script>
 </head>
@@ -308,7 +332,37 @@ document.addEventListener('DOMContentLoaded', function () {
 				</table>
 			</td></tr>
 		</table>
-		<br><br>
+		<br>
+			<table width="100%" cellpadding="1" cellspacing="0" class="bg-darkolive" bgcolor="<?php echo bg_hex('darkolive'); ?>">
+				<tr><td>
+					<table width="100%" cellpadding="0" cellspacing="0" class="bg-white" bgcolor="<?php echo bg_hex('white'); ?>">
+						<tr>
+							<td colspan="2"><font class="txt-1" face="Verdana, sans-serif" size="1"><b>Preview &mdash; how this will look live once approved:</b></font></td>
+						</tr>
+						<tr>
+							<td colspan="2" class="bg-red" bgcolor="<?php echo bg_hex('red'); ?>">&nbsp;
+								<font class="txt-3-white" face="Verdana, sans-serif" size="3" color="<?php echo txt_hex('white'); ?>"><b><span id="preview_name">(link name)</span></b></font>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2" class="bg-lightgray" bgcolor="<?php echo bg_hex('lightgray'); ?>">&nbsp;
+								<font class="txt-2" face="Verdana, sans-serif" size="2"><b>Author:</b> <span id="preview_author">(author)</span></font>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2" class="bg-white" bgcolor="<?php echo bg_hex('white'); ?>">&nbsp;
+								<font class="txt-2" face="Verdana, sans-serif" size="2"><span id="preview_desc">(description)</span></font>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2" class="bg-white" bgcolor="<?php echo bg_hex('white'); ?>">&nbsp;
+								<font class="txt-1" face="Verdana, sans-serif" size="1"><span id="preview_url_note"></span></font>
+							</td>
+						</tr>
+					</table>
+				</td></tr>
+			</table>
+	<br><br>
 	</td>
 </tr>
 </table>

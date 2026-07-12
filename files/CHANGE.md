@@ -739,3 +739,13 @@ the live database, and the new public and admin pages were uploaded
 alongside it. Verified live: the File Repository page loads, an
 uploaded file downloads correctly and its download count goes up, and
 the folder files are stored in cannot be browsed to directly.
+
+---
+
+## 2026-07-12 (link submission preview)
+
+Contributors submitting a link now see a live preview of how it will
+look once approved and published, right on the submission form — no
+extra click or page reload needed, it updates automatically as they
+type the name, URL, author, and description. This was one of the
+still-open items from the User Submission Portal phase.
