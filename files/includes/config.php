@@ -18,5 +18,10 @@ define('ADMIN_NEWS_PER_PAGE', 20);  // admin news list page size (files/admin/ne
 define('AUDIT_LOG_PER_PAGE', 30);   // admin audit log page size (files/admin/audit_log.php)
 define('SEARCH_RESULTS_PER_PAGE', 10);  // per-section page size on the public search page (files/content_search_proc.php)
 
+define('FILES_PER_PAGE', 10);  // public file repository listing page size (files/content_files.php)
+define('FILE_REPO_MAX_BYTES', 25 * 1024 * 1024);  // 25MB upload cap
+define('FILE_REPO_ALLOWED_EXTENSIONS', ['zip', 'lha', 'lzx', 'adf', 'dms', 'hdf', 'exe', 'txt', 'pdf', 'doc', 'docx', 'jpg', 'jpeg', 'png', 'gif']);
+define('FILE_REPO_STORAGE_DIR', __DIR__ . '/../storage');  // files/storage — locked down by its own .htaccess, never served directly
+
 define('LOGIN_MAX_ATTEMPTS', 5);      // Phase 03a: wrong-password count before lockout
 define('LOGIN_LOCKOUT_MINUTES', 15);  // Phase 03a: lockout duration

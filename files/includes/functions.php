@@ -362,6 +362,67 @@ function log_audit($myConnection, $entity_type, $entity_id, $action, $label, $us
     mysqli_stmt_close($stmt);
 }
 
+// Formats a byte count as a short human-readable size string (e.g. "2.4 MB").
+function format_file_size($bytes)
+{
+    $bytes = (int) $bytes;
+    if ($bytes >= 1048576) {
+        return round($bytes / 1048576, 1) . ' MB';
+    }
+    if ($bytes >= 1024) {
+        return round($bytes / 1024, 1) . ' KB';
+    }
+    return $bytes . ' bytes';
+}
+
+// Validates a single $_FILES[...] entry against an extension whitelist and a
+// max byte size. Returns ['ok' => bool, 'error' => string|null, 'ext' =>
+// string|null]. Does not move or read the file's contents — callers are
+// still responsible for move_uploaded_file().
+function validate_file_upload($file, $allowed_extensions, $max_bytes)
+{
+    if (!is_array($file) || !isset($file['error'])) {
+        return ['ok' => false, 'error' => 'No file was uploaded.', 'ext' => null];
+    }
+    if ($file['error'] === UPLOAD_ERR_NO_FILE) {
+        return ['ok' => false, 'error' => 'No file was uploaded.', 'ext' => null];
+    }
+    if ($file['error'] !== UPLOAD_ERR_OK) {
+        return ['ok' => false, 'error' => 'File upload failed (error code ' . $file['error'] . ').', 'ext' => null];
+    }
+    if ((int) $file['size'] <= 0) {
+        return ['ok' => false, 'error' => 'Uploaded file is empty.', 'ext' => null];
+    }
+    if ((int) $file['size'] > $max_bytes) {
+        return ['ok' => false, 'error' => 'File exceeds the maximum allowed size of ' . format_file_size($max_bytes) . '.', 'ext' => null];
+    }
+    $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+    if ($ext === '' || !in_array($ext, $allowed_extensions, true)) {
+        return ['ok' => false, 'error' => 'File type not allowed. Allowed types: ' . implode(', ', $allowed_extensions) . '.', 'ext' => null];
+    }
+    if (!is_uploaded_file($file['tmp_name'])) {
+        return ['ok' => false, 'error' => 'Upload validation failed.', 'ext' => null];
+    }
+    return ['ok' => true, 'error' => null, 'ext' => $ext];
+}
+
+// Returns the count of active t_files rows (used for public-listing pagination).
+function get_files_total_count($myConnection)
+{
+    $result = mysqli_query($myConnection, "SELECT COUNT(*) AS total_records FROM t_files WHERE active = 1");
+    return mysqli_fetch_array($result)['total_records'];
+}
+
+// Returns one page of active t_files rows, newest first.
+function get_files_page($myConnection, $offset, $limit)
+{
+    $stmt = mysqli_prepare($myConnection, "SELECT * FROM t_files WHERE active = 1 ORDER BY created_at DESC LIMIT ?, ?");
+    mysqli_stmt_bind_param($stmt, "ii", $offset, $limit);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    return mysqli_fetch_all($result, MYSQLI_ASSOC);
+}
+
 // Normalizes a URL for duplicate comparison: lowercases the host, strips a
 // leading "www.", drops the scheme and query string entirely, and collapses
 // a trailing slash so "example.com", "example.com/", and "www.example.com/"
