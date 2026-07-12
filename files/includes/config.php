@@ -25,3 +25,5 @@ define('FILE_REPO_STORAGE_DIR', __DIR__ . '/../storage');  // files/storage — 
 
 define('LOGIN_MAX_ATTEMPTS', 5);      // Phase 03a: wrong-password count before lockout
 define('LOGIN_LOCKOUT_MINUTES', 15);  // Phase 03a: lockout duration
+
+define('PASSWORD_RESET_TOKEN_MINUTES', 60);  // reset link validity window

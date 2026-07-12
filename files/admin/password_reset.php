@@ -10,24 +10,30 @@ if (isset($_SESSION['user_id'])) {
     exit;
 }
 
+$token = trim($_GET['token'] ?? ($_POST['token'] ?? ''));
 $error = null;
+$success = false;
+$token_valid = $token !== '' && verify_reset_token($myConnection, $token) !== null;
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $identifier = trim($_POST['identifier'] ?? '');
-    $password = $_POST['password'] ?? '';
+if (!$token_valid) {
+    $error = 'This reset link is invalid or has expired.';
+} elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $new_password = $_POST['new_password'] ?? '';
+    $confirm_password = $_POST['confirm_password'] ?? '';
 
-    $result = attempt_login($myConnection, $identifier, $password);
+    $result = complete_password_reset($myConnection, $token, $new_password, $confirm_password);
     if ($result['success']) {
-        header('Location: dashboard.php');
-        exit;
+        $success = true;
+        $token_valid = false;
+    } else {
+        $error = $result['error'];
     }
-    $error = $result['error'];
 }
 ?>
 <!DOCTYPE html>
 <html>
 <head>
-<title>AmigaSource.com - Login</title>
+<title>AmigaSource.com - Reset Password</title>
 <?php include_once __DIR__ . '/../legacy_colors.php'; ?>
 <style><?php include __DIR__ . '/../style.css'; ?></style>
 </head>
@@ -65,7 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 						<table width="100%" cellspacing="0" cellpadding="12">
 							<tr>
 								<td align="center" valign="top" class="bg-red" bgcolor="<?php echo bg_hex('red'); ?>">
-									<font class="txt-5-white" face="Verdana, sans-serif" size="5" color="<?php echo txt_hex('white'); ?>"><b>LOGIN</b></font>
+									<font class="txt-5-white" face="Verdana, sans-serif" size="5" color="<?php echo txt_hex('white'); ?>"><b>RESET PASSWORD</b></font>
 								</td>
 							</tr>
 						</table>
@@ -75,42 +81,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 								<td class="bg-white" bgcolor="<?php echo bg_hex('white'); ?>">
 									<font class="txt-2-black" face="Verdana, sans-serif" size="2" color="<?php echo txt_hex('black'); ?>">
 
+<?php if ($success): ?>
+										<p>Your password has been reset. You can now log in with your new password.</p>
+										<p><a href="login.php">Go to Login</a></p>
+<?php elseif (!$token_valid): ?>
+										<p class="txt-2-black" style="color:#c70000;"><b><?php echo htmlspecialchars($error); ?></b></p>
+										<p><a href="forgot_password.php">Request a new reset link</a></p>
+<?php else: ?>
 <?php if ($error): ?>
 										<p class="txt-2-black" style="color:#c70000;"><b><?php echo htmlspecialchars($error); ?></b></p>
 <?php endif; ?>
-
-										<form method="post" action="login.php">
+										<form method="post" action="password_reset.php">
+										<input type="hidden" name="token" value="<?php echo htmlspecialchars($token); ?>">
 										<table width="100%" cellpadding="4" cellspacing="0">
 											<tr>
-												<td align="right"><b>Username or Email:</b></td>
-												<td><input type="text" name="identifier" style="width:180px;"></td>
+												<td align="right"><b>New Password:</b></td>
+												<td><input type="password" name="new_password" style="width:180px;"></td>
 											</tr>
 											<tr>
-												<td align="right"><b>Password:</b></td>
-												<td><input type="password" name="password" style="width:180px;"></td>
-											</tr>
-											<tr>
-												<td colspan="2" align="right"><font class="txt-1" face="Verdana, sans-serif" size="1"><a href="forgot_password.php">Forgot your password?</a></font></td>
+												<td align="right"><b>Confirm Password:</b></td>
+												<td><input type="password" name="confirm_password" style="width:180px;"></td>
 											</tr>
 											<tr>
 												<td colspan="2" align="center">
 													<br>
-													<input type="submit" value="Log In" class="bg-slateblue" style="color:#ffffff; font-weight:bold; padding:4px 20px;">
+													<input type="submit" value="Reset Password" class="bg-slateblue" style="color:#ffffff; font-weight:bold; padding:4px 20px;">
 												</td>
 											</tr>
 										</table>
 										</form>
+<?php endif; ?>
 
-									</font>
-								</td>
-							</tr>
-						</table>
-
-						<table width="100%" cellspacing="0" cellpadding="8">
-							<tr>
-								<td align="center" class="bg-whitesmoke" bgcolor="<?php echo bg_hex('whitesmoke'); ?>">
-									<font class="txt-1" face="Verdana, sans-serif" size="1">
-										Don't have an account yet? <a href="register.php">Register here</a>.
 									</font>
 								</td>
 							</tr>

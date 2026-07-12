@@ -11,23 +11,23 @@ if (isset($_SESSION['user_id'])) {
 }
 
 $error = null;
+$submitted = false;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $identifier = trim($_POST['identifier'] ?? '');
-    $password = $_POST['password'] ?? '';
+    $email = trim($_POST['email'] ?? '');
 
-    $result = attempt_login($myConnection, $identifier, $password);
-    if ($result['success']) {
-        header('Location: dashboard.php');
-        exit;
+    if ($email === '' || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $error = 'Please enter a valid email address.';
+    } else {
+        request_password_reset($myConnection, $email);
+        $submitted = true;
     }
-    $error = $result['error'];
 }
 ?>
 <!DOCTYPE html>
 <html>
 <head>
-<title>AmigaSource.com - Login</title>
+<title>AmigaSource.com - Forgot Password</title>
 <?php include_once __DIR__ . '/../legacy_colors.php'; ?>
 <style><?php include __DIR__ . '/../style.css'; ?></style>
 </head>
@@ -65,7 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 						<table width="100%" cellspacing="0" cellpadding="12">
 							<tr>
 								<td align="center" valign="top" class="bg-red" bgcolor="<?php echo bg_hex('red'); ?>">
-									<font class="txt-5-white" face="Verdana, sans-serif" size="5" color="<?php echo txt_hex('white'); ?>"><b>LOGIN</b></font>
+									<font class="txt-5-white" face="Verdana, sans-serif" size="5" color="<?php echo txt_hex('white'); ?>"><b>FORGOT PASSWORD</b></font>
 								</td>
 							</tr>
 						</table>
@@ -75,31 +75,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 								<td class="bg-white" bgcolor="<?php echo bg_hex('white'); ?>">
 									<font class="txt-2-black" face="Verdana, sans-serif" size="2" color="<?php echo txt_hex('black'); ?>">
 
+<?php if ($submitted): ?>
+										<p>If that email address matches an account, a password reset link has been sent. The link expires in <?php echo (int) PASSWORD_RESET_TOKEN_MINUTES; ?> minutes.</p>
+										<p><a href="login.php">Back to Login</a></p>
+<?php else: ?>
 <?php if ($error): ?>
 										<p class="txt-2-black" style="color:#c70000;"><b><?php echo htmlspecialchars($error); ?></b></p>
 <?php endif; ?>
-
-										<form method="post" action="login.php">
+										<p>Enter the email address associated with your account and we'll send you a link to reset your password.</p>
+										<form method="post" action="forgot_password.php">
 										<table width="100%" cellpadding="4" cellspacing="0">
 											<tr>
-												<td align="right"><b>Username or Email:</b></td>
-												<td><input type="text" name="identifier" style="width:180px;"></td>
-											</tr>
-											<tr>
-												<td align="right"><b>Password:</b></td>
-												<td><input type="password" name="password" style="width:180px;"></td>
-											</tr>
-											<tr>
-												<td colspan="2" align="right"><font class="txt-1" face="Verdana, sans-serif" size="1"><a href="forgot_password.php">Forgot your password?</a></font></td>
+												<td align="right"><b>Email:</b></td>
+												<td><input type="email" name="email" style="width:200px;" value="<?php echo htmlspecialchars($_POST['email'] ?? ''); ?>"></td>
 											</tr>
 											<tr>
 												<td colspan="2" align="center">
 													<br>
-													<input type="submit" value="Log In" class="bg-slateblue" style="color:#ffffff; font-weight:bold; padding:4px 20px;">
+													<input type="submit" value="Send Reset Link" class="bg-slateblue" style="color:#ffffff; font-weight:bold; padding:4px 20px;">
 												</td>
 											</tr>
 										</table>
 										</form>
+<?php endif; ?>
 
 									</font>
 								</td>
@@ -110,7 +108,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 							<tr>
 								<td align="center" class="bg-whitesmoke" bgcolor="<?php echo bg_hex('whitesmoke'); ?>">
 									<font class="txt-1" face="Verdana, sans-serif" size="1">
-										Don't have an account yet? <a href="register.php">Register here</a>.
+										<a href="login.php">Back to Login</a>
 									</font>
 								</td>
 							</tr>

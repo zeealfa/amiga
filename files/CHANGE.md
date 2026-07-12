@@ -780,3 +780,27 @@ doesn't sit unnoticed in the queue. The email goes to
 links@testamigasource.com and includes a note that this inbox may not
 be actively monitored, so it's easy to spot if it needs to be checked
 regularly or forwarded elsewhere.
+
+---
+
+## 2026-07-12 (email delivery fix — sender/recipient mailbox)
+
+Real-world testing found that sending the notification email from
+links@testamigasource.com to that same address was silently swallowed
+by the mail server — no error, no bounce, it just never arrived. A
+test send to an outside address (Gmail) confirmed the mail server and
+login worked fine; the problem was specifically sending an address to
+itself. The notification is now sent from a separate mailbox
+(nobody@testamigasource.com) to links@testamigasource.com to avoid
+that same-address issue.
+
+---
+
+## 2026-07-12 (forgot password)
+
+Added a "Forgot your password?" link on the login page. Contributors and
+admins who can't remember their password can now request a reset email
+containing a one-time link; the link is valid for 60 minutes and can
+only be used once. Requesting a reset always shows the same message
+regardless of whether the email address is registered, so the feature
+can't be used to check who has an account.

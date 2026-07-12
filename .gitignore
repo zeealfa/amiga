@@ -2,5 +2,8 @@ error_log
 docs/audit/*.sql
 files/includes/mail_config.php
 
+files/storage/*
+!files/storage/.htaccess
+
 .worktrees/
 .superpowers/
