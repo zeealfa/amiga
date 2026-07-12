@@ -210,6 +210,19 @@ if ($search_2 !== "" && strlen($search_2) > 2) {
                 'extra_label' => null,
                 'extra_field' => null,
             ],
+            'files' => [
+                'heading' => 'Files',
+                'from' => 't_files',
+                'where' => "active = 1 AND (title LIKE ? OR description LIKE ?)",
+                'types' => 'ss',
+                'like_count' => 2,
+                'order_by' => 'title ASC',
+                'select' => "*, CONCAT('/file_download.php?id=', id) AS download_url",
+                'name_field' => 'title',
+                'url_field' => 'download_url',
+                'extra_label' => 'Downloads',
+                'extra_field' => 'download_count',
+            ],
         ];
 
         foreach ($simple_sections as $section_key => $section) {
@@ -217,7 +230,7 @@ if ($search_2 !== "" && strlen($search_2) > 2) {
             $page_no = isset($_GET[$page_param]) && $_GET[$page_param] !== '' ? max(1, intval($_GET[$page_param])) : 1;
             $section_result = fetch_paginated_search_results(
                 $myConnection,
-                '*',
+                $section['select'] ?? '*',
                 $section['from'],
                 $section['where'],
                 $section['types'],

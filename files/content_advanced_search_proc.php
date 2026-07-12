@@ -11,6 +11,7 @@ $all_sections = [
     'repair' => 'Repair & Service',
     'vendor' => 'Shops & Vendors',
     'top10'  => 'Top 10',
+    'files'  => 'Files',
 ];
 
 $is_submission = $_SERVER['REQUEST_METHOD'] === 'POST' || isset($_GET['search']);
@@ -287,6 +288,19 @@ if ($is_submission && $search_2 !== "" && strlen($search_2) > 2) {
                     'extra_label' => null,
                     'extra_field' => null,
                 ],
+                'files' => [
+                    'heading' => 'Files',
+                    'from' => 't_files',
+                    'where' => "active = 1 AND (title LIKE ? OR description LIKE ?)",
+                    'types' => 'ss',
+                    'like_count' => 2,
+                    'order_by' => 'title ASC',
+                    'select' => "*, CONCAT('/file_download.php?id=', id) AS download_url",
+                    'name_field' => 'title',
+                    'url_field' => 'download_url',
+                    'extra_label' => 'Downloads',
+                    'extra_field' => 'download_count',
+                ],
             ];
 
             foreach ($simple_sections as $section_key => $section) {
@@ -300,7 +314,7 @@ if ($is_submission && $search_2 !== "" && strlen($search_2) > 2) {
                 $section_params = array_merge(array_fill(0, $section['like_count'], $like), $date_params);
                 $section_result = fetch_paginated_search_results(
                     $myConnection,
-                    '*',
+                    $section['select'] ?? '*',
                     $section['from'],
                     $section_where,
                     $section_types,
