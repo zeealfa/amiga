@@ -697,3 +697,34 @@ unchecked searches everything, same as before; leaving the date fields
 blank applies no date limit. The advanced form shares the same 15-second
 "please wait" limit as the regular search box, so switching between the
 two doesn't let you search faster.
+
+---
+
+## 2026-07-12 (file repository)
+
+Visitors can now download files directly from the site. A new "File
+Repository" page lists every file an admin has uploaded — title, a short
+description, the file size, and how many times it's been downloaded — in
+one simple, unsorted list, the same look and feel as the News page. A
+"FILES" link was added to the sidebar's quick-links list so visitors can
+find it.
+
+Only admins can add files, from a new "Files" screen in the admin area.
+Adding a file means actually uploading it through the browser (there's no
+option to just link to a file hosted somewhere else) — the file is copied
+onto the server and can be replaced or taken down (marked inactive)
+later without losing its download count history. Uploads are capped at
+25MB and only a specific list of file types is allowed (things like zip,
+lha, lzx, adf, dms, hdf, exe, txt, pdf, doc/docx, and common image
+formats) — anything else is rejected before it's saved. Every uploaded
+file is renamed to a random, unguessable name when it's stored, and the
+folder they're stored in is locked down so the only way to actually get a
+file is by clicking its "Download" link on the site, which is also what
+counts the download.
+
+The title and description of each file are now included when you use the
+site's search box or the Advanced Search page, so files show up alongside
+links, news, and everything else already covered by search. Files that an
+admin marks inactive are hidden from the listing page, from search
+results, and can no longer be downloaded, but stay on record so their
+past download counts aren't lost.
