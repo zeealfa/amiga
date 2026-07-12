@@ -759,3 +759,14 @@ approve or reject it as the contributor submitted it — there was never
 a way for an admin to change the wording before approving, and that's
 staying intentional rather than being built out. Admins wanting a
 different result reject the submission with a reason instead.
+
+---
+
+## 2026-07-12 (access control QA pass)
+
+Tested the site's login permissions from every angle on the live test
+site: signed out, logged in as a regular contributor, and logged in as
+an admin. Every admin-only screen correctly turns away anyone who
+isn't an admin, while the screens meant for regular contributors (link
+and news submission, "My Links"/"My News"/"My Submissions", profile)
+work correctly for both contributors and admins. No issues found.
