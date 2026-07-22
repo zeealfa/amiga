@@ -10,8 +10,9 @@ $search = trim($_GET['search'] ?? '');
 $status = $_GET['status'] ?? 'all';
 $cat_id = isset($_GET['cat_id']) && $_GET['cat_id'] !== '' ? intval($_GET['cat_id']) : null;
 $show_deleted = isset($_GET['show_deleted']) && $_GET['show_deleted'] === '1';
+$view = (($_GET['view'] ?? 'paged') === 'all') ? 'all' : 'paged';
 
-$allowed_sorts = ['links_name' => 'links_name', 'links_date_added' => 'links_date_added'];
+$allowed_sorts = ['links_name' => 'links_name', 'links_url' => 'links_url', 'links_date_added' => 'links_date_added'];
 $sort = isset($_GET['sort']) && isset($allowed_sorts[$_GET['sort']]) ? $allowed_sorts[$_GET['sort']] : 'links_name';
 $dir = isset($_GET['dir']) && strtoupper($_GET['dir']) === 'DESC' ? 'DESC' : 'ASC';
 
@@ -63,11 +64,18 @@ $total_no_of_pages = max(1, (int) ceil($total_records / $total_records_per_page)
 $second_last = max(1, $total_no_of_pages - 1);
 $adjacents = 2;
 
-$list_types = $types . 'ii';
-$list_params = array_merge($params, [$offset, $total_records_per_page]);
-
-$stmt = mysqli_prepare($myConnection, "SELECT * FROM t_links WHERE $where_sql ORDER BY $sort $dir LIMIT ?, ?");
-mysqli_stmt_bind_param($stmt, $list_types, ...$list_params);
+if ($view === 'all') {
+    $list_types = $types;
+    $list_params = $params;
+    $stmt = mysqli_prepare($myConnection, "SELECT * FROM t_links WHERE $where_sql ORDER BY $sort $dir");
+} else {
+    $list_types = $types . 'ii';
+    $list_params = array_merge($params, [$offset, $total_records_per_page]);
+    $stmt = mysqli_prepare($myConnection, "SELECT * FROM t_links WHERE $where_sql ORDER BY $sort $dir LIMIT ?, ?");
+}
+if ($list_types !== '') {
+    mysqli_stmt_bind_param($stmt, $list_types, ...$list_params);
+}
 mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
 $links = [];
@@ -112,7 +120,7 @@ if (!empty($links)) {
 
 $url_prefix = 'search=' . urlencode($search) . '&status=' . urlencode($status)
     . '&cat_id=' . urlencode((string) $cat_id) . '&show_deleted=' . ($show_deleted ? '1' : '0')
-    . '&sort=' . urlencode($sort) . '&dir=' . urlencode($dir) . '&';
+    . '&view=' . urlencode($view) . '&sort=' . urlencode($sort) . '&dir=' . urlencode($dir) . '&';
 $pagination_html = render_pagination_menu($page_no, $total_no_of_pages, $second_last, $adjacents, $url_prefix);
 
 function sort_link($column, $label, $current_sort, $current_dir, $base_qs)
@@ -124,9 +132,21 @@ function sort_link($column, $label, $current_sort, $current_dir, $base_qs)
 }
 
 $base_qs = 'search=' . urlencode($search) . '&status=' . urlencode($status)
-    . '&cat_id=' . urlencode((string) $cat_id) . '&show_deleted=' . ($show_deleted ? '1' : '0');
+    . '&cat_id=' . urlencode((string) $cat_id) . '&show_deleted=' . ($show_deleted ? '1' : '0')
+    . '&view=' . urlencode($view);
 $full_qs = $base_qs . '&sort=' . urlencode($sort) . '&dir=' . urlencode($dir)
     . '&page_no=' . $page_no;
+$cat_filter_qs = 'search=' . urlencode($search) . '&status=' . urlencode($status)
+    . '&show_deleted=' . ($show_deleted ? '1' : '0') . '&view=' . urlencode($view)
+    . '&sort=' . urlencode($sort) . '&dir=' . urlencode($dir);
+$view_toggle_qs = 'search=' . urlencode($search) . '&status=' . urlencode($status)
+    . '&cat_id=' . urlencode((string) $cat_id) . '&show_deleted=' . ($show_deleted ? '1' : '0')
+    . '&sort=' . urlencode($sort) . '&dir=' . urlencode($dir);
+
+function cat_filter_link($cat_id, $title, $cat_filter_qs)
+{
+    return '<a href="links.php?' . $cat_filter_qs . '&cat_id=' . $cat_id . '">' . htmlspecialchars($title) . '</a>';
+}
 $flash = $_SESSION['flash_message'] ?? null;
 unset($_SESSION['flash_message']);
 // Quick-action buttons (Mark Dead/Verified, Archive.org) are built but hidden for now.
@@ -184,7 +204,7 @@ $show_quick_actions = false;
 								</select>
 								</td>
 								<td style="white-space:nowrap; padding-right:10px;">Category:
-								<select name="cat_id">
+								<select name="cat_id" onchange="this.form.submit()">
 									<option value="">All</option>
 									<?php
 									function render_cat_filter_options($nodes, $depth, $cat_id) {
@@ -205,12 +225,20 @@ $show_quick_actions = false;
 								</select>
 								</td>
 								<td style="white-space:nowrap; padding-right:10px;"><label><input type="checkbox" name="show_deleted" value="1" <?php echo $show_deleted ? 'checked' : ''; ?>> Show deleted</label></td>
-								<td style="white-space:nowrap; padding-right:10px;"><input type="submit" value="Apply" class="bg-slateblue" style="color:#ffffff; font-weight:bold;"></td>
+								<td style="white-space:nowrap; padding-right:10px;"><input type="hidden" name="view" value="<?php echo htmlspecialchars($view); ?>"><input type="submit" value="Apply" class="bg-slateblue" style="color:#ffffff; font-weight:bold;"></td>
 								<td style="white-space:nowrap;"><a href="link_form.php" class="bg-green" style="color:#ffffff; font-weight:bold; padding:4px 10px; text-decoration:none;">+ Add Link</a></td>
 								</tr></table>
 							</form>
 							<button type="button" id="check_all_links_btn" class="txt-1">Check All</button>
 							<button type="button" id="verify_all_links_btn" class="txt-1" disabled>Verify All</button>
+							<span style="white-space:nowrap; margin-left:10px;">
+							<font class="txt-1" face="Verdana, sans-serif" size="1">View:</font>
+<?php if ($view === 'all'): ?>
+							<a href="links.php?<?php echo $view_toggle_qs; ?>&view=paged" class="txt-1">In Pages</a> | <b><font class="txt-1" face="Verdana, sans-serif" size="1">Show All</font></b>
+<?php else: ?>
+							<b><font class="txt-1" face="Verdana, sans-serif" size="1">In Pages</font></b> | <a href="links.php?<?php echo $view_toggle_qs; ?>&view=all" class="txt-1">Show All</a>
+<?php endif; ?>
+							</span>
 						</td>
 					</tr>
 					<tr>
@@ -218,7 +246,7 @@ $show_quick_actions = false;
 							<table width="100%" cellpadding="4" cellspacing="0">
 								<tr class="bg-gray" bgcolor="<?php echo bg_hex('gray'); ?>">
 									<td><font class="txt-2-black" face="Verdana, sans-serif" size="2" color="<?php echo txt_hex('black'); ?>"><b><?php echo sort_link('links_name', 'Name', $sort, $dir, $base_qs); ?></b></font></td>
-									<td style="width:22%;"><font class="txt-2-black" face="Verdana, sans-serif" size="2" color="<?php echo txt_hex('black'); ?>"><b>URL</b></font></td>
+									<td style="width:22%;"><font class="txt-2-black" face="Verdana, sans-serif" size="2" color="<?php echo txt_hex('black'); ?>"><b><?php echo sort_link('links_url', 'URL', $sort, $dir, $base_qs); ?></b></font></td>
 									<td><font class="txt-2-black" face="Verdana, sans-serif" size="2" color="<?php echo txt_hex('black'); ?>"><b><?php echo sort_link('links_date_added', 'Added', $sort, $dir, $base_qs); ?></b></font></td>
 									<td><font class="txt-2-black" face="Verdana, sans-serif" size="2" color="<?php echo txt_hex('black'); ?>"><b>Category</b></font></td>
 									<td><font class="txt-2-black" face="Verdana, sans-serif" size="2" color="<?php echo txt_hex('black'); ?>"><b>Status</b></font></td>
@@ -230,13 +258,14 @@ $show_quick_actions = false;
 <?php foreach ($links as $link): ?>
 <?php
     $cat_ids = $link_cat_ids[(int) $link['id']] ?? [];
-    $cat_label = '&mdash;';
-    if (!empty($cat_ids)) {
-        $first_title = find_cat_title($category_tree, $cat_ids[0]);
-        if ($first_title !== null) {
-            $cat_label = htmlspecialchars($first_title) . (count($cat_ids) > 1 ? ' +' . (count($cat_ids) - 1) . ' more' : '');
+    $cat_links = [];
+    foreach ($cat_ids as $cid) {
+        $title = find_cat_title($category_tree, $cid);
+        if ($title !== null) {
+            $cat_links[] = cat_filter_link($cid, $title, $cat_filter_qs);
         }
     }
+    $cat_label = !empty($cat_links) ? implode(', ', $cat_links) : '&mdash;';
     $status_parts = [];
     if ($link['links_active']) { $status_parts[] = 'active'; }
     if ($link['links_dead']) { $status_parts[] = 'dead'; }
@@ -281,7 +310,7 @@ $show_quick_actions = false;
 					</tr>
 					<tr>
 						<td class="bg-whitesmoke" bgcolor="<?php echo bg_hex('whitesmoke'); ?>" align="center" style="padding:8px;">
-							<font class="txt-2-black" face="Verdana, sans-serif" size="2" color="<?php echo txt_hex('black'); ?>">Page <?php echo $page_no . ' of ' . $total_no_of_pages; ?><?php echo $pagination_html; ?></font>
+							<font class="txt-2-black" face="Verdana, sans-serif" size="2" color="<?php echo txt_hex('black'); ?>"><?php echo $view === 'all' ? 'Showing all ' . $total_records . ' link(s)' : ('Page ' . $page_no . ' of ' . $total_no_of_pages . $pagination_html); ?></font>
 						</td>
 					</tr>
 				</table>

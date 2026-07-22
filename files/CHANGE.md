@@ -804,3 +804,12 @@ containing a one-time link; the link is valid for 60 minutes and can
 only be used once. Requesting a reset always shows the same message
 regardless of whether the email address is registered, so the feature
 can't be used to check who has an account.
+
+---
+
+## 2026-07-22 (admin links: show all toggle)
+
+Added a "Show All / In Pages" switch to the admin Manage Links screen.
+Admins can now flip between the usual paged list and one long list of
+every matching link, without losing whatever search, status, category,
+or sort filters were already applied.
