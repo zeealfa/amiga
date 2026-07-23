@@ -1,6 +1,7 @@
 error_log
 docs/audit/*.sql
 files/includes/mail_config.php
+files/includes/config.php
 
 files/storage/*
 !files/storage/.htaccess
