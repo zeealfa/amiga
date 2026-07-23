@@ -27,3 +27,14 @@ define('LOGIN_MAX_ATTEMPTS', 5);      // Phase 03a: wrong-password count before 
 define('LOGIN_LOCKOUT_MINUTES', 15);  // Phase 03a: lockout duration
 
 define('PASSWORD_RESET_TOKEN_MINUTES', 60);  // reset link validity window
+
+// Dev-only page-level checklist widget (see
+// docs/superpowers/specs/2026-07-23-page-todo-checklist-design.md).
+// Flip to false before the site goes live -- this must never reach real
+// site visitors.
+define('PAGE_TODO_ENABLED', true);
+
+// Telegram notification fired when a new page-todo item is added.
+// This is Zee's personal bot/chat, unrelated to any other project secret.
+define('TELEGRAM_BOT_TOKEN', '8360607840:AAG_Mos5zGsSfKvSH51LqRA52xniylhz5ss');
+define('TELEGRAM_CHAT_ID', '469493995');
