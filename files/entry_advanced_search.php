@@ -1,7 +1,9 @@
 <?php
+	ob_start();
 	if(!isset($_SESSION)){
 		session_start();
 	}
+	require_once __DIR__ . '/includes/page_todo.php';
 	$_SESSION["content_type"]='advanced_search';
 	include_once __DIR__ . '/legacy_colors.php';
 ?>
@@ -10,6 +12,7 @@
 		<font class="txt-4-black" face="Verdana, sans-serif" size="4" color="<?php echo txt_hex('black'); ?>">
 			<?php
 				include ("login_db.php");
+				handle_page_todo_action($myConnection);
 				include ("page_builder.php");
 			?>
 		</font>

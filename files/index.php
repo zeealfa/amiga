@@ -1,3 +1,4 @@
+<?php ob_start(); ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 			
 <html lang="en">
@@ -20,7 +21,9 @@
 	if(!isset($_SESSION)){
 		session_start();
 	}
+	require_once __DIR__ . '/includes/page_todo.php';
 	include 'login_db.php';
+	handle_page_todo_action($myConnection);
 
 		$_SESSION["content_type"]='news';
 
