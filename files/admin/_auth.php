@@ -4,8 +4,11 @@ if (!isset($_SESSION)) {
 }
 require_once __DIR__ . '/../includes/auth.php';
 require_once __DIR__ . '/../includes/db.php';
+require_once __DIR__ . '/../includes/page_todo.php';
 
 require_login();
+
+handle_page_todo_action($myConnection);
 
 $current_script = basename($_SERVER['SCRIPT_NAME']);
 if (!empty($_SESSION['must_change_password']) && $current_script !== 'force_password_change.php') {
