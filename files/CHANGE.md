@@ -813,3 +813,22 @@ Added a "Show All / In Pages" switch to the admin Manage Links screen.
 Admins can now flip between the usual paged list and one long list of
 every matching link, without losing whatever search, status, category,
 or sort filters were already applied.
+
+---
+
+## 2026-07-23 (page notes / checklist)
+
+Added a small notes box at the bottom of every page — both the public
+site and the admin area. Anyone looking at a page can type in a
+request right there ("add a search box here", "this date is wrong",
+etc.), and it shows up as a checklist item on that exact page instead
+of getting lost in email or chat. Once the request is handled, it gets
+checked off and stays on the page crossed out, so it's clear it was
+seen and done rather than just disappearing. There's also one admin
+screen that lists every open request across the whole site in one
+place. Adding a new request also sends an instant notification so
+nothing sits unnoticed.
+
+This is a temporary development tool, not a real site feature — no
+login is required to use it, which is fine for now but means it must
+be switched off before the site goes live to real visitors.
